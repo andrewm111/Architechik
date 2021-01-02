@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1F11590B25A0D2DB00682A69 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F11590A25A0D2DB00682A69 /* AppDelegate.swift */; };
-		1F11590D25A0D2DB00682A69 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F11590C25A0D2DB00682A69 /* OnboardingViewController.swift */; };
+		1F11590D25A0D2DB00682A69 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F11590C25A0D2DB00682A69 /* LoginViewController.swift */; };
 		1F11590F25A0D2DC00682A69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F11590E25A0D2DC00682A69 /* Assets.xcassets */; };
 		1F11591225A0D2DC00682A69 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F11591025A0D2DC00682A69 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -16,10 +16,11 @@
 /* Begin PBXFileReference section */
 		1F11590725A0D2DB00682A69 /* Architechik.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Architechik.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F11590A25A0D2DB00682A69 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1F11590C25A0D2DB00682A69 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		1F11590C25A0D2DB00682A69 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		1F11590E25A0D2DC00682A69 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1F11591125A0D2DC00682A69 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1F11591325A0D2DC00682A69 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1F11591A25A0D4A200682A69 /* Architechik.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Architechik.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,8 +53,9 @@
 		1F11590925A0D2DB00682A69 /* Architechik */ = {
 			isa = PBXGroup;
 			children = (
+				1F11591A25A0D4A200682A69 /* Architechik.entitlements */,
 				1F11590A25A0D2DB00682A69 /* AppDelegate.swift */,
-				1F11590C25A0D2DB00682A69 /* OnboardingViewController.swift */,
+				1F11590C25A0D2DB00682A69 /* LoginViewController.swift */,
 				1F11590E25A0D2DC00682A69 /* Assets.xcassets */,
 				1F11591025A0D2DC00682A69 /* LaunchScreen.storyboard */,
 				1F11591325A0D2DC00682A69 /* Info.plist */,
@@ -132,7 +134,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F11590B25A0D2DB00682A69 /* AppDelegate.swift in Sources */,
-				1F11590D25A0D2DB00682A69 /* OnboardingViewController.swift in Sources */,
+				1F11590D25A0D2DB00682A69 /* LoginViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,6 +270,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Architechik/Architechik.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P4RLTSR7RF;
 				INFOPLIST_FILE = Architechik/Info.plist;
@@ -286,6 +289,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Architechik/Architechik.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = P4RLTSR7RF;
 				INFOPLIST_FILE = Architechik/Info.plist;
