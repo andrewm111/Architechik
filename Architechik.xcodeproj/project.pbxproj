@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,16 @@
 		1F11590D25A0D2DB00682A69 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F11590C25A0D2DB00682A69 /* LoginViewController.swift */; };
 		1F11590F25A0D2DC00682A69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F11590E25A0D2DC00682A69 /* Assets.xcassets */; };
 		1F11591225A0D2DC00682A69 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F11591025A0D2DC00682A69 /* LaunchScreen.storyboard */; };
+		1F35B5BE25A7947100F04ECD /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F35B5BD25A7947100F04ECD /* DataManager.swift */; };
+		1F6E92E025A85B0B00DF974F /* data.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1F35B5BF25A7A5FA00F04ECD /* data.sqlite */; };
+		1F6E92E325A8666A00DF974F /* CourseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6E92E225A8666A00DF974F /* CourseModel.swift */; };
+		1F6E92E625A8A04900DF974F /* ArticleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6E92E525A8A04900DF974F /* ArticleModel.swift */; };
+		1F83355425A753A100BCEDE8 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83355325A753A100BCEDE8 /* TabBarController.swift */; };
+		1F83355725A7569900BCEDE8 /* CoursesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83355625A7569900BCEDE8 /* CoursesViewController.swift */; };
+		1F83355925A756A500BCEDE8 /* ArticlesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83355825A756A500BCEDE8 /* ArticlesViewController.swift */; };
+		1F83355B25A756AF00BCEDE8 /* GrammarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83355A25A756AF00BCEDE8 /* GrammarViewController.swift */; };
+		1F83355D25A756BC00BCEDE8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83355C25A756BC00BCEDE8 /* ProfileViewController.swift */; };
+		C0B22BFD07B552E7208C5D16 /* Pods_Architechik.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F195700772561840F364B00 /* Pods_Architechik.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +31,18 @@
 		1F11591125A0D2DC00682A69 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1F11591325A0D2DC00682A69 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1F11591A25A0D4A200682A69 /* Architechik.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Architechik.entitlements; sourceTree = "<group>"; };
+		1F35B5BD25A7947100F04ECD /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		1F35B5BF25A7A5FA00F04ECD /* data.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = data.sqlite; sourceTree = "<group>"; };
+		1F6E92E225A8666A00DF974F /* CourseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseModel.swift; sourceTree = "<group>"; };
+		1F6E92E525A8A04900DF974F /* ArticleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleModel.swift; sourceTree = "<group>"; };
+		1F83355325A753A100BCEDE8 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		1F83355625A7569900BCEDE8 /* CoursesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoursesViewController.swift; sourceTree = "<group>"; };
+		1F83355825A756A500BCEDE8 /* ArticlesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlesViewController.swift; sourceTree = "<group>"; };
+		1F83355A25A756AF00BCEDE8 /* GrammarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrammarViewController.swift; sourceTree = "<group>"; };
+		1F83355C25A756BC00BCEDE8 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		23D38CBAF79B14BAF1B63776 /* Pods-Architechik.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Architechik.release.xcconfig"; path = "Target Support Files/Pods-Architechik/Pods-Architechik.release.xcconfig"; sourceTree = "<group>"; };
+		27292450B5B9F49514CF1B72 /* Pods-Architechik.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Architechik.debug.xcconfig"; path = "Target Support Files/Pods-Architechik/Pods-Architechik.debug.xcconfig"; sourceTree = "<group>"; };
+		3F195700772561840F364B00 /* Pods_Architechik.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Architechik.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -28,6 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0B22BFD07B552E7208C5D16 /* Pods_Architechik.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -39,6 +62,8 @@
 			children = (
 				1F11590925A0D2DB00682A69 /* Architechik */,
 				1F11590825A0D2DB00682A69 /* Products */,
+				41F16CF0C495B5D9C177C613 /* Pods */,
+				40E7A878EFDFF66E8A6D3E9D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -53,14 +78,64 @@
 		1F11590925A0D2DB00682A69 /* Architechik */ = {
 			isa = PBXGroup;
 			children = (
+				1F11590C25A0D2DB00682A69 /* LoginViewController.swift */,
+				1F35B5BD25A7947100F04ECD /* DataManager.swift */,
+				1F6E92E425A8A03A00DF974F /* Models */,
+				1F83355525A7568200BCEDE8 /* Main */,
+				1F83355225A752C100BCEDE8 /* Supporting files */,
+			);
+			path = Architechik;
+			sourceTree = "<group>";
+		};
+		1F6E92E425A8A03A00DF974F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1F6E92E225A8666A00DF974F /* CourseModel.swift */,
+				1F6E92E525A8A04900DF974F /* ArticleModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		1F83355225A752C100BCEDE8 /* Supporting files */ = {
+			isa = PBXGroup;
+			children = (
 				1F11591A25A0D4A200682A69 /* Architechik.entitlements */,
 				1F11590A25A0D2DB00682A69 /* AppDelegate.swift */,
-				1F11590C25A0D2DB00682A69 /* LoginViewController.swift */,
 				1F11590E25A0D2DC00682A69 /* Assets.xcassets */,
 				1F11591025A0D2DC00682A69 /* LaunchScreen.storyboard */,
 				1F11591325A0D2DC00682A69 /* Info.plist */,
+				1F35B5BF25A7A5FA00F04ECD /* data.sqlite */,
 			);
-			path = Architechik;
+			path = "Supporting files";
+			sourceTree = "<group>";
+		};
+		1F83355525A7568200BCEDE8 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				1F83355325A753A100BCEDE8 /* TabBarController.swift */,
+				1F83355625A7569900BCEDE8 /* CoursesViewController.swift */,
+				1F83355825A756A500BCEDE8 /* ArticlesViewController.swift */,
+				1F83355A25A756AF00BCEDE8 /* GrammarViewController.swift */,
+				1F83355C25A756BC00BCEDE8 /* ProfileViewController.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		40E7A878EFDFF66E8A6D3E9D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3F195700772561840F364B00 /* Pods_Architechik.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		41F16CF0C495B5D9C177C613 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				27292450B5B9F49514CF1B72 /* Pods-Architechik.debug.xcconfig */,
+				23D38CBAF79B14BAF1B63776 /* Pods-Architechik.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -70,9 +145,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1F11591625A0D2DC00682A69 /* Build configuration list for PBXNativeTarget "Architechik" */;
 			buildPhases = (
+				ED7285ED7E03E2A73AC682F5 /* [CP] Check Pods Manifest.lock */,
 				1F11590325A0D2DB00682A69 /* Sources */,
 				1F11590425A0D2DB00682A69 /* Frameworks */,
 				1F11590525A0D2DB00682A69 /* Resources */,
+				D11C01C45E94689574EBDD47 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -123,18 +200,69 @@
 			files = (
 				1F11590F25A0D2DC00682A69 /* Assets.xcassets in Resources */,
 				1F11591225A0D2DC00682A69 /* LaunchScreen.storyboard in Resources */,
+				1F6E92E025A85B0B00DF974F /* data.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D11C01C45E94689574EBDD47 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Architechik/Pods-Architechik-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Architechik/Pods-Architechik-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Architechik/Pods-Architechik-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ED7285ED7E03E2A73AC682F5 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Architechik-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1F11590325A0D2DB00682A69 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F6E92E325A8666A00DF974F /* CourseModel.swift in Sources */,
+				1F83355B25A756AF00BCEDE8 /* GrammarViewController.swift in Sources */,
+				1F35B5BE25A7947100F04ECD /* DataManager.swift in Sources */,
+				1F83355425A753A100BCEDE8 /* TabBarController.swift in Sources */,
+				1F83355725A7569900BCEDE8 /* CoursesViewController.swift in Sources */,
 				1F11590B25A0D2DB00682A69 /* AppDelegate.swift in Sources */,
+				1F6E92E625A8A04900DF974F /* ArticleModel.swift in Sources */,
+				1F83355D25A756BC00BCEDE8 /* ProfileViewController.swift in Sources */,
 				1F11590D25A0D2DB00682A69 /* LoginViewController.swift in Sources */,
+				1F83355925A756A500BCEDE8 /* ArticlesViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,7 +330,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -256,7 +384,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -268,18 +396,22 @@
 		};
 		1F11591725A0D2DC00682A69 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 27292450B5B9F49514CF1B72 /* Pods-Architechik.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Architechik/Architechik.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Architechik/Supporting files/Architechik.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = P4RLTSR7RF;
-				INFOPLIST_FILE = Architechik/Info.plist;
+				DEVELOPMENT_TEAM = MT79ZFSN79;
+				INFOPLIST_FILE = "$(SRCROOT)/Architechik/Supporting files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Tsvetkov.Alexander.Architechik;
+				PRODUCT_BUNDLE_IDENTIFIER = mikel.Shmonov.Architechik;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -287,18 +419,22 @@
 		};
 		1F11591825A0D2DC00682A69 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 23D38CBAF79B14BAF1B63776 /* Pods-Architechik.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Architechik/Architechik.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "Architechik/Supporting files/Architechik.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = P4RLTSR7RF;
-				INFOPLIST_FILE = Architechik/Info.plist;
+				DEVELOPMENT_TEAM = MT79ZFSN79;
+				INFOPLIST_FILE = "$(SRCROOT)/Architechik/Supporting files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = Tsvetkov.Alexander.Architechik;
+				PRODUCT_BUNDLE_IDENTIFIER = mikel.Shmonov.Architechik;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

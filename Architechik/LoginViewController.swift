@@ -7,23 +7,62 @@
 //
 
 import UIKit
-import AuthenticationServices
+import WebKit
 
 class LoginViewController: UIViewController {
     
-    private let loginButton: ASAuthorizationAppleIDButton = {
-        let view = ASAuthorizationAppleIDButton()
-        view.cornerRadius = 10
+    //MARK: - Subviews
+    private let webView: WKWebView = {
+        let view = WKWebView()
+        view.load(URLRequest(url: URL(string: "https://appleid.apple.com/auth/authorize")!))
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    private let loginButton: UIButton = {
+        let view = UIButton(type: .custom)
+        view.setImage(UIImage(named: "signInApple"), for: .normal)
+        view.contentMode = .scaleToFill
+        view.imageView?.contentMode = .scaleToFill
+        view.contentVerticalAlignment = .fill
+        view.contentHorizontalAlignment = .fill
+        view.layer.cornerRadius = 10
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    private let imageView: UIImageView = {
+        let view = UIImageView()
+        //view.image = UIImage(named: "")
+        view.backgroundColor = .green
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    private let titleLabel: UILabel = {
+        let view = UILabel()
+        view.textAlignment = .center
+        view.text = "Architechik"
+        view.textColor = .purple
+        view.font = UIFont(name: "Arial-BoldMT", size: 44)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    private let subtitleLabel: UILabel = {
+        let view = UILabel()
+        view.textAlignment = .center
+        view.text = "курсы для архитекторов"
+        view.textColor = .purple
+        view.font = UIFont(name: "Arial", size: 30)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
+    //MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         initialSetup()
         setupSubviews()
     }
 
+    //MARK: - Supporting methods
     private func initialSetup() {
         view.backgroundColor = .white
         loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
@@ -31,37 +70,43 @@ class LoginViewController: UIViewController {
     
     private func setupSubviews() {
         view.addSubview(loginButton)
+        view.addSubview(imageView)
+        view.addSubview(titleLabel)
+        view.addSubview(subtitleLabel)
+        view.addSubview(webView)
         
         NSLayoutConstraint.activate([
+            webView.topAnchor.constraint(equalTo: view.topAnchor),
+            webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
+            imageView.topAnchor.constraint(equalTo: view.topAnchor),
+            imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.62),
+            imageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -20),
+            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            titleLabel.heightAnchor.constraint(equalToConstant: 40),
+            titleLabel.bottomAnchor.constraint(equalTo: subtitleLabel.topAnchor, constant: -20),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
+            
+            subtitleLabel.heightAnchor.constraint(equalToConstant: 32),
+            subtitleLabel.bottomAnchor.constraint(equalTo: loginButton.topAnchor, constant: -20),
+            subtitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            subtitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            
+            loginButton.heightAnchor.constraint(equalToConstant: 58),
+            loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 6),
+            loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -6),
         ])
     }
     
+    //MARK: - User events handling
     @objc private func loginButtonTapped() {
-        let appleIDProvider = ASAuthorizationAppleIDProvider()
-        let request = appleIDProvider.createRequest()
-        request.requestedScopes = [.fullName, .email]
-        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-        authorizationController.delegate = self
-        authorizationController.performRequests()
+        print(123)
     }
 
-}
-
-extension LoginViewController: ASAuthorizationControllerDelegate {
-    
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
-        
-        guard let appleIDCredential = authorization.credential as?  ASAuthorizationAppleIDCredential else { return }
-        let userIdentifier = appleIDCredential.user
-        let fullName = appleIDCredential.fullName
-        let email = appleIDCredential.email
-        print("User id is \(userIdentifier) \n Full Name is \(String(describing: fullName)) \n Email id is \(String(describing: email))")
-    }
-    
-    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        print(error)
-    }
-    
 }
 
