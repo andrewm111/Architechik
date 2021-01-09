@@ -21,7 +21,7 @@ class TabBarController: UITabBarController {
         selectedViewController = coursesVC
         tabBar.tintColor = UIColor.systemBlue
         tabBar.unselectedItemTintColor = UIColor.white
-        tabBar.barTintColor = UIColor.clear
+        tabBar.barTintColor = UIColor.black
     }
     
     required init?(coder: NSCoder) {

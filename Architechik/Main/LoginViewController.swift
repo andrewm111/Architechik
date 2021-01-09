@@ -7,17 +7,10 @@
 //
 
 import UIKit
-import WebKit
 
 class LoginViewController: UIViewController {
     
     //MARK: - Subviews
-    private let webView: WKWebView = {
-        let view = WKWebView()
-        view.load(URLRequest(url: URL(string: "https://appleid.apple.com/auth/authorize")!))
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
     private let loginButton: UIButton = {
         let view = UIButton(type: .custom)
         view.setImage(UIImage(named: "signInApple"), for: .normal)
@@ -73,14 +66,8 @@ class LoginViewController: UIViewController {
         view.addSubview(imageView)
         view.addSubview(titleLabel)
         view.addSubview(subtitleLabel)
-        view.addSubview(webView)
         
         NSLayoutConstraint.activate([
-            webView.topAnchor.constraint(equalTo: view.topAnchor),
-            webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
             imageView.topAnchor.constraint(equalTo: view.topAnchor),
             imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.62),
             imageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -20),
@@ -105,7 +92,9 @@ class LoginViewController: UIViewController {
     
     //MARK: - User events handling
     @objc private func loginButtonTapped() {
-        print(123)
+        let tabBarController = TabBarController()
+        tabBarController.modalTransitionStyle = .crossDissolve
+        present(tabBarController, animated: true)
     }
 
 }

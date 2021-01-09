@@ -12,6 +12,7 @@
 		1F11590F25A0D2DC00682A69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F11590E25A0D2DC00682A69 /* Assets.xcassets */; };
 		1F11591225A0D2DC00682A69 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F11591025A0D2DC00682A69 /* LaunchScreen.storyboard */; };
 		1F35B5BE25A7947100F04ECD /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F35B5BD25A7947100F04ECD /* DataManager.swift */; };
+		1F45852725A8F0B0007E46F2 /* CourseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F45852625A8F0B0007E46F2 /* CourseCell.swift */; };
 		1F6E92E025A85B0B00DF974F /* data.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1F35B5BF25A7A5FA00F04ECD /* data.sqlite */; };
 		1F6E92E325A8666A00DF974F /* CourseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6E92E225A8666A00DF974F /* CourseModel.swift */; };
 		1F6E92E625A8A04900DF974F /* ArticleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6E92E525A8A04900DF974F /* ArticleModel.swift */; };
@@ -20,6 +21,12 @@
 		1F83355925A756A500BCEDE8 /* ArticlesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83355825A756A500BCEDE8 /* ArticlesViewController.swift */; };
 		1F83355B25A756AF00BCEDE8 /* GrammarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83355A25A756AF00BCEDE8 /* GrammarViewController.swift */; };
 		1F83355D25A756BC00BCEDE8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83355C25A756BC00BCEDE8 /* ProfileViewController.swift */; };
+		1FF4706925AA4156001E427F /* UIColor + HexValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF4706825AA4156001E427F /* UIColor + HexValue.swift */; };
+		1FF4706B25AA4304001E427F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF4706A25AA4304001E427F /* ViewController.swift */; };
+		1FF6706E25A9B314006D4EEE /* UITableView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF6706D25A9B314006D4EEE /* UITableView + Extension.swift */; };
+		1FF6707025A9B386006D4EEE /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF6706F25A9B386006D4EEE /* TableViewCell.swift */; };
+		1FF6707225A9F3F0006D4EEE /* CourseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF6707125A9F3F0006D4EEE /* CourseViewController.swift */; };
+		1FF6707625A9F44E006D4EEE /* LessonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF6707325A9F410006D4EEE /* LessonCell.swift */; };
 		C0B22BFD07B552E7208C5D16 /* Pods_Architechik.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F195700772561840F364B00 /* Pods_Architechik.framework */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +40,7 @@
 		1F11591A25A0D4A200682A69 /* Architechik.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Architechik.entitlements; sourceTree = "<group>"; };
 		1F35B5BD25A7947100F04ECD /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		1F35B5BF25A7A5FA00F04ECD /* data.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = data.sqlite; sourceTree = "<group>"; };
+		1F45852625A8F0B0007E46F2 /* CourseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCell.swift; sourceTree = "<group>"; };
 		1F6E92E225A8666A00DF974F /* CourseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseModel.swift; sourceTree = "<group>"; };
 		1F6E92E525A8A04900DF974F /* ArticleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleModel.swift; sourceTree = "<group>"; };
 		1F83355325A753A100BCEDE8 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -40,6 +48,12 @@
 		1F83355825A756A500BCEDE8 /* ArticlesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlesViewController.swift; sourceTree = "<group>"; };
 		1F83355A25A756AF00BCEDE8 /* GrammarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrammarViewController.swift; sourceTree = "<group>"; };
 		1F83355C25A756BC00BCEDE8 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		1FF4706825AA4156001E427F /* UIColor + HexValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor + HexValue.swift"; sourceTree = "<group>"; };
+		1FF4706A25AA4304001E427F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1FF6706D25A9B314006D4EEE /* UITableView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView + Extension.swift"; sourceTree = "<group>"; };
+		1FF6706F25A9B386006D4EEE /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		1FF6707125A9F3F0006D4EEE /* CourseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseViewController.swift; sourceTree = "<group>"; };
+		1FF6707325A9F410006D4EEE /* LessonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonCell.swift; sourceTree = "<group>"; };
 		23D38CBAF79B14BAF1B63776 /* Pods-Architechik.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Architechik.release.xcconfig"; path = "Target Support Files/Pods-Architechik/Pods-Architechik.release.xcconfig"; sourceTree = "<group>"; };
 		27292450B5B9F49514CF1B72 /* Pods-Architechik.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Architechik.debug.xcconfig"; path = "Target Support Files/Pods-Architechik/Pods-Architechik.debug.xcconfig"; sourceTree = "<group>"; };
 		3F195700772561840F364B00 /* Pods_Architechik.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Architechik.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,13 +92,30 @@
 		1F11590925A0D2DB00682A69 /* Architechik */ = {
 			isa = PBXGroup;
 			children = (
-				1F11590C25A0D2DB00682A69 /* LoginViewController.swift */,
-				1F35B5BD25A7947100F04ECD /* DataManager.swift */,
+				1F45852525A8F08B007E46F2 /* Services */,
 				1F6E92E425A8A03A00DF974F /* Models */,
 				1F83355525A7568200BCEDE8 /* Main */,
+				1FF6706C25A9B2AB006D4EEE /* Helpers */,
 				1F83355225A752C100BCEDE8 /* Supporting files */,
 			);
 			path = Architechik;
+			sourceTree = "<group>";
+		};
+		1F45852525A8F08B007E46F2 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				1F35B5BD25A7947100F04ECD /* DataManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		1F45852825A8F11A007E46F2 /* Courses */ = {
+			isa = PBXGroup;
+			children = (
+				1F83355625A7569900BCEDE8 /* CoursesViewController.swift */,
+				1F45852625A8F0B0007E46F2 /* CourseCell.swift */,
+			);
+			path = Courses;
 			sourceTree = "<group>";
 		};
 		1F6E92E425A8A03A00DF974F /* Models */ = {
@@ -112,13 +143,35 @@
 		1F83355525A7568200BCEDE8 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				1F11590C25A0D2DB00682A69 /* LoginViewController.swift */,
 				1F83355325A753A100BCEDE8 /* TabBarController.swift */,
-				1F83355625A7569900BCEDE8 /* CoursesViewController.swift */,
+				1F45852825A8F11A007E46F2 /* Courses */,
+				1FF6707525A9F421006D4EEE /* Course */,
 				1F83355825A756A500BCEDE8 /* ArticlesViewController.swift */,
 				1F83355A25A756AF00BCEDE8 /* GrammarViewController.swift */,
 				1F83355C25A756BC00BCEDE8 /* ProfileViewController.swift */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		1FF6706C25A9B2AB006D4EEE /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				1FF4706825AA4156001E427F /* UIColor + HexValue.swift */,
+				1FF6706D25A9B314006D4EEE /* UITableView + Extension.swift */,
+				1FF6706F25A9B386006D4EEE /* TableViewCell.swift */,
+				1FF4706A25AA4304001E427F /* ViewController.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		1FF6707525A9F421006D4EEE /* Course */ = {
+			isa = PBXGroup;
+			children = (
+				1FF6707125A9F3F0006D4EEE /* CourseViewController.swift */,
+				1FF6707325A9F410006D4EEE /* LessonCell.swift */,
+			);
+			path = Course;
 			sourceTree = "<group>";
 		};
 		40E7A878EFDFF66E8A6D3E9D /* Frameworks */ = {
@@ -253,9 +306,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1FF6707025A9B386006D4EEE /* TableViewCell.swift in Sources */,
 				1F6E92E325A8666A00DF974F /* CourseModel.swift in Sources */,
+				1FF6706E25A9B314006D4EEE /* UITableView + Extension.swift in Sources */,
+				1FF4706B25AA4304001E427F /* ViewController.swift in Sources */,
 				1F83355B25A756AF00BCEDE8 /* GrammarViewController.swift in Sources */,
 				1F35B5BE25A7947100F04ECD /* DataManager.swift in Sources */,
+				1F45852725A8F0B0007E46F2 /* CourseCell.swift in Sources */,
 				1F83355425A753A100BCEDE8 /* TabBarController.swift in Sources */,
 				1F83355725A7569900BCEDE8 /* CoursesViewController.swift in Sources */,
 				1F11590B25A0D2DB00682A69 /* AppDelegate.swift in Sources */,
@@ -263,6 +320,9 @@
 				1F83355D25A756BC00BCEDE8 /* ProfileViewController.swift in Sources */,
 				1F11590D25A0D2DB00682A69 /* LoginViewController.swift in Sources */,
 				1F83355925A756A500BCEDE8 /* ArticlesViewController.swift in Sources */,
+				1FF4706925AA4156001E427F /* UIColor + HexValue.swift in Sources */,
+				1FF6707625A9F44E006D4EEE /* LessonCell.swift in Sources */,
+				1FF6707225A9F3F0006D4EEE /* CourseViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

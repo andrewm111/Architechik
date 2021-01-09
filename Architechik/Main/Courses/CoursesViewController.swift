@@ -1,0 +1,112 @@
+//
+//  CoursesViewController.swift
+//  Architechik
+//
+//  Created by Александр Цветков on 07.01.2021.
+//  Copyright © 2021 Александр Цветков. All rights reserved.
+//
+
+import UIKit
+import SQLite3
+
+class CoursesViewController: ViewController {
+    
+    //MARK: - Subviews
+    private let tableView: UITableView = {
+        let view = UITableView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    private let testButton: UIButton = {
+        let view = UIButton(type: .custom)
+        view.layer.cornerRadius = 25
+        let font = UIFont(name: "Arial", size: 17) ?? UIFont.systemFont(ofSize: 17)
+        let attributedString = NSAttributedString(string: "Пройти вводный тест", attributes: [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.black])
+        view.setAttributedTitle(attributedString, for: .normal)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .systemBlue
+        return view
+    }()
+    private let filterButton: UIButton = {
+        let view = UIButton(type: .custom)
+        view.layer.cornerRadius = 25
+        view.backgroundColor = .systemBlue
+        view.setImage(UIImage(named: "menuIcon"), for: .normal)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    //MARK: - View lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        initialSetup()
+        setupSubviews()
+    }
+    
+    //MARK: - Setup
+    private func initialSetup() {
+        view.backgroundColor = UIColor(hex: "1F1F24")
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(CourseCell.self)
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = .clear
+        tableView.isUserInteractionEnabled = true
+    }
+
+    private func setupSubviews() {
+        view.addSubview(tableView)
+        view.addSubview(testButton)
+        view.addSubview(filterButton)
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            filterButton.heightAnchor.constraint(equalToConstant: 50),
+            filterButton.widthAnchor.constraint(equalToConstant: 50),
+            filterButton.bottomAnchor.constraint(equalTo: tableView.bottomAnchor, constant: -20),
+            filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            testButton.centerYAnchor.constraint(equalTo: filterButton.centerYAnchor),
+            testButton.heightAnchor.constraint(equalToConstant: 50),
+            testButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 3),
+            testButton.trailingAnchor.constraint(equalTo: filterButton.leadingAnchor, constant: -6),
+        ])
+    }
+    
+    //MARK: - Supporting methods
+    
+
+}
+
+//MARK: - UITableViewDelegate, UITableViewDataSource
+extension CoursesViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 190
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: CourseCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
+        cell.configure(withDelegate: self, indexPath: indexPath)
+        return cell
+    }
+}
+
+//MARK: - CellTapDelegate
+extension CoursesViewController: CellTapDelegate {
+    func cellTapped(indexPath: IndexPath) {
+        let vc = CourseViewController()
+        self.tabBarController?.tabBar.isHidden = false
+        //vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
+    }
+}

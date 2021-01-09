@@ -1,0 +1,17 @@
+//
+//  ViewController.swift
+//  Architechik
+//
+//  Created by Александр Цветков on 09.01.2021.
+//  Copyright © 2021 Александр Цветков. All rights reserved.
+//
+
+import UIKit
+
+class ViewController: UIViewController {
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+}
