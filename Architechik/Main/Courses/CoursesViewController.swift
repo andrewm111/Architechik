@@ -35,6 +35,7 @@ class CoursesViewController: ViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
 
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -42,6 +43,16 @@ class CoursesViewController: ViewController {
         initialSetup()
         setupSubviews()
     }
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        self.tabBarController?.tabBar.isHidden = false
+//    }
+//
+//    override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        self.tabBarController?.tabBar.isHidden = true
+//    }
     
     //MARK: - Setup
     private func initialSetup() {
@@ -53,6 +64,7 @@ class CoursesViewController: ViewController {
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.isUserInteractionEnabled = true
+        tableView.addGestureRecognizer(tap)
     }
 
     private func setupSubviews() {
@@ -79,7 +91,24 @@ class CoursesViewController: ViewController {
     }
     
     //MARK: - Supporting methods
-    
+    @objc
+    private func cellTapped() {
+        let vc = CourseViewController()
+        vc.isModalInPopover = true
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.modalTransitionStyle = .coverVertical
+        self.tabBarController?.tabBar.isHidden = true
+//        let transition = CATransition()
+//        transition.duration = 0.5
+//        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+//        transition.type = CATransitionType.push
+//        transition.subtype = CATransitionSubtype.fromRight
+//        self.view.window!.layer.add(transition, forKey: nil)
+        present(vc, animated: true)
+//        let tapLocation = tap.location(in: tableView)
+//        guard let tapIndexPath = self.tableView.indexPathForRow(at: tapLocation) else { return }
+//        let tappedCell = tableView.cellForRow(at: tapIndexPath) as? CourseCell
+    }
 
 }
 
@@ -96,17 +125,8 @@ extension CoursesViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: CourseCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
-        cell.configure(withDelegate: self, indexPath: indexPath)
+        cell.configure()
         return cell
     }
 }
 
-//MARK: - CellTapDelegate
-extension CoursesViewController: CellTapDelegate {
-    func cellTapped(indexPath: IndexPath) {
-        let vc = CourseViewController()
-        self.tabBarController?.tabBar.isHidden = false
-        //vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true)
-    }
-}

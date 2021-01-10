@@ -59,6 +59,7 @@ class CourseViewController: ViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    lazy var pan = UIPanGestureRecognizer(target: self, action: #selector(viewDragged))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,6 +75,8 @@ class CourseViewController: ViewController {
         tableView.register(LessonCell.self)
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
+        tableView.isUserInteractionEnabled = true
+        view.addGestureRecognizer(pan)
     }
 
     private func setupSubviews() {
@@ -116,6 +119,35 @@ class CourseViewController: ViewController {
             unlockButton.widthAnchor.constraint(equalToConstant: 120),
             unlockButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
+    }
+    
+    @objc
+    private func viewDragged() {
+        switch pan.state {
+        case .changed:
+            handlePanChangedState()
+        case .ended:
+            handlePanEndedState()
+        default:
+            break
+        }
+    }
+    
+    private func handlePanChangedState() {
+        let translationX = pan.translation(in: view).x
+        guard translationX > 0 else { return }
+        view.transform = CGAffineTransform(translationX: translationX, y: 0)
+    }
+    
+    private func handlePanEndedState() {
+        let translationX = pan.translation(in: view).x
+        if translationX > UIScreen.main.bounds.width / 3 {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.view.transform = CGAffineTransform(translationX: UIScreen.main.bounds.width, y: 0)
+            }) { _ in
+                self.dismiss(animated: false)
+            }
+        }
     }
 }
 

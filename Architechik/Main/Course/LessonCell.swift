@@ -62,7 +62,7 @@ class LessonCell: TableViewCell {
     
     //MARK: - Setup
     private func initialSetup() {
-        
+        isUserInteractionEnabled = true
     }
     
     private func setupSubviews() {

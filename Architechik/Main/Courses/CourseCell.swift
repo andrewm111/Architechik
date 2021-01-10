@@ -70,23 +70,16 @@ class CourseCell: TableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    var delegate: CellTapDelegate?
-    var indexPath: IndexPath!
-    lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
 
-    func configure(withDelegate delegate: CellTapDelegate, indexPath: IndexPath) {
-        self.indexPath = indexPath
-        self.delegate = delegate
+    override func configure() {
+        super.configure()
         initialSetup()
         setupSubviews()
     }
     
     //MARK: - Setup
     private func initialSetup() {
-        backgroundColor = .clear
-        selectionStyle = .none
         isUserInteractionEnabled = true
-        backImageView.addGestureRecognizer(tap)
     }
     
     private func setupSubviews() {
@@ -134,12 +127,6 @@ class CourseCell: TableViewCell {
             progressView.trailingAnchor.constraint(equalTo: backImageView.trailingAnchor, constant: -12),
         ])
     }
-    
-    @objc
-    private func cellTapped() {
-        print(#function)
-        delegate?.cellTapped(indexPath: indexPath)
-    }
 }
 
 //MARK: - UIGestureRecognizerDelegate
@@ -151,8 +138,4 @@ extension CourseCell {
             return false
         }
     }
-}
-
-protocol CellTapDelegate {
-    func cellTapped(indexPath: IndexPath)
 }

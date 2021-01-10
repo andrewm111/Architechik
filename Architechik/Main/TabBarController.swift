@@ -13,6 +13,10 @@ class TabBarController: UITabBarController {
     //MARK: - Init
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        
+//        let coursesVC: UINavigationController = generateViewController(vcType: UINavigationController.self, title: "Courses", imageName: "menuIcon")
+//        coursesVC.navigationBar.isHidden = true
+//        coursesVC.viewControllers = [CoursesViewController()]
         let coursesVC = generateViewController(vcType: CoursesViewController.self, title: "Courses", imageName: "menuIcon")
         let articlesVC = generateViewController(vcType: ArticlesViewController.self, title: "Articles", imageName: "menuIcon")
         let grammarVC = generateViewController(vcType: GrammarViewController.self, title: "Grammar", imageName: "menuIcon")

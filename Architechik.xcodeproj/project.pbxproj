@@ -21,6 +21,7 @@
 		1F83355925A756A500BCEDE8 /* ArticlesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83355825A756A500BCEDE8 /* ArticlesViewController.swift */; };
 		1F83355B25A756AF00BCEDE8 /* GrammarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83355A25A756AF00BCEDE8 /* GrammarViewController.swift */; };
 		1F83355D25A756BC00BCEDE8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83355C25A756BC00BCEDE8 /* ProfileViewController.swift */; };
+		1FED14B225AB9818009A6B0C /* AchievementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED14B125AB9818009A6B0C /* AchievementCell.swift */; };
 		1FF4706925AA4156001E427F /* UIColor + HexValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF4706825AA4156001E427F /* UIColor + HexValue.swift */; };
 		1FF4706B25AA4304001E427F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF4706A25AA4304001E427F /* ViewController.swift */; };
 		1FF6706E25A9B314006D4EEE /* UITableView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF6706D25A9B314006D4EEE /* UITableView + Extension.swift */; };
@@ -48,6 +49,7 @@
 		1F83355825A756A500BCEDE8 /* ArticlesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlesViewController.swift; sourceTree = "<group>"; };
 		1F83355A25A756AF00BCEDE8 /* GrammarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrammarViewController.swift; sourceTree = "<group>"; };
 		1F83355C25A756BC00BCEDE8 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		1FED14B125AB9818009A6B0C /* AchievementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementCell.swift; sourceTree = "<group>"; };
 		1FF4706825AA4156001E427F /* UIColor + HexValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor + HexValue.swift"; sourceTree = "<group>"; };
 		1FF4706A25AA4304001E427F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1FF6706D25A9B314006D4EEE /* UITableView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView + Extension.swift"; sourceTree = "<group>"; };
@@ -149,9 +151,18 @@
 				1FF6707525A9F421006D4EEE /* Course */,
 				1F83355825A756A500BCEDE8 /* ArticlesViewController.swift */,
 				1F83355A25A756AF00BCEDE8 /* GrammarViewController.swift */,
-				1F83355C25A756BC00BCEDE8 /* ProfileViewController.swift */,
+				1FED14B025AB97E1009A6B0C /* Profile */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		1FED14B025AB97E1009A6B0C /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				1F83355C25A756BC00BCEDE8 /* ProfileViewController.swift */,
+				1FED14B125AB9818009A6B0C /* AchievementCell.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		1FF6706C25A9B2AB006D4EEE /* Helpers */ = {
@@ -307,6 +318,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1FF6707025A9B386006D4EEE /* TableViewCell.swift in Sources */,
+				1FED14B225AB9818009A6B0C /* AchievementCell.swift in Sources */,
 				1F6E92E325A8666A00DF974F /* CourseModel.swift in Sources */,
 				1FF6706E25A9B314006D4EEE /* UITableView + Extension.swift in Sources */,
 				1FF4706B25AA4304001E427F /* ViewController.swift in Sources */,
