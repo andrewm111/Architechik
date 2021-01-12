@@ -21,6 +21,9 @@
 		1F83355925A756A500BCEDE8 /* ArticlesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83355825A756A500BCEDE8 /* ArticlesViewController.swift */; };
 		1F83355B25A756AF00BCEDE8 /* GrammarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83355A25A756AF00BCEDE8 /* GrammarViewController.swift */; };
 		1F83355D25A756BC00BCEDE8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83355C25A756BC00BCEDE8 /* ProfileViewController.swift */; };
+		1FA1A13D25ACC880008621FB /* GrammarArticleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA1A13C25ACC880008621FB /* GrammarArticleModel.swift */; };
+		1FA1A13F25ACCBF0008621FB /* StudentsProgressModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA1A13E25ACCBF0008621FB /* StudentsProgressModel.swift */; };
+		1FA1A14125ACCD70008621FB /* CourseStructureModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA1A14025ACCD70008621FB /* CourseStructureModel.swift */; };
 		1FED14B225AB9818009A6B0C /* AchievementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED14B125AB9818009A6B0C /* AchievementCell.swift */; };
 		1FF4706925AA4156001E427F /* UIColor + HexValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF4706825AA4156001E427F /* UIColor + HexValue.swift */; };
 		1FF4706B25AA4304001E427F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF4706A25AA4304001E427F /* ViewController.swift */; };
@@ -49,6 +52,9 @@
 		1F83355825A756A500BCEDE8 /* ArticlesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlesViewController.swift; sourceTree = "<group>"; };
 		1F83355A25A756AF00BCEDE8 /* GrammarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrammarViewController.swift; sourceTree = "<group>"; };
 		1F83355C25A756BC00BCEDE8 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		1FA1A13C25ACC880008621FB /* GrammarArticleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrammarArticleModel.swift; sourceTree = "<group>"; };
+		1FA1A13E25ACCBF0008621FB /* StudentsProgressModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentsProgressModel.swift; sourceTree = "<group>"; };
+		1FA1A14025ACCD70008621FB /* CourseStructureModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseStructureModel.swift; sourceTree = "<group>"; };
 		1FED14B125AB9818009A6B0C /* AchievementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementCell.swift; sourceTree = "<group>"; };
 		1FF4706825AA4156001E427F /* UIColor + HexValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor + HexValue.swift"; sourceTree = "<group>"; };
 		1FF4706A25AA4304001E427F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -125,6 +131,9 @@
 			children = (
 				1F6E92E225A8666A00DF974F /* CourseModel.swift */,
 				1F6E92E525A8A04900DF974F /* ArticleModel.swift */,
+				1FA1A13C25ACC880008621FB /* GrammarArticleModel.swift */,
+				1FA1A13E25ACCBF0008621FB /* StudentsProgressModel.swift */,
+				1FA1A14025ACCD70008621FB /* CourseStructureModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -324,6 +333,7 @@
 				1FF4706B25AA4304001E427F /* ViewController.swift in Sources */,
 				1F83355B25A756AF00BCEDE8 /* GrammarViewController.swift in Sources */,
 				1F35B5BE25A7947100F04ECD /* DataManager.swift in Sources */,
+				1FA1A14125ACCD70008621FB /* CourseStructureModel.swift in Sources */,
 				1F45852725A8F0B0007E46F2 /* CourseCell.swift in Sources */,
 				1F83355425A753A100BCEDE8 /* TabBarController.swift in Sources */,
 				1F83355725A7569900BCEDE8 /* CoursesViewController.swift in Sources */,
@@ -334,6 +344,8 @@
 				1F83355925A756A500BCEDE8 /* ArticlesViewController.swift in Sources */,
 				1FF4706925AA4156001E427F /* UIColor + HexValue.swift in Sources */,
 				1FF6707625A9F44E006D4EEE /* LessonCell.swift in Sources */,
+				1FA1A13D25ACC880008621FB /* GrammarArticleModel.swift in Sources */,
+				1FA1A13F25ACCBF0008621FB /* StudentsProgressModel.swift in Sources */,
 				1FF6707225A9F3F0006D4EEE /* CourseViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
