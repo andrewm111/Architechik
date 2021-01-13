@@ -13,7 +13,9 @@ class ProfileViewController: UIViewController {
     //MARK: - Subviews
     private let avatarView: UIImageView = {
         let view = UIImageView()
-        view.backgroundColor = .systemBlue
+        //view.backgroundColor = .systemBlue
+        view.image = UIImage(named: "avatar")
+        view.contentMode = .scaleAspectFill
         view.layer.cornerRadius = 75
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false

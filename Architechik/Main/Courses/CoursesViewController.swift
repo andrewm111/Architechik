@@ -94,7 +94,7 @@ class CoursesViewController: ViewController {
     @objc
     private func cellTapped() {
         let vc = CourseViewController()
-        vc.isModalInPopover = true
+        //vc.isModalInPopover = true
         vc.modalPresentationStyle = .overCurrentContext
         vc.modalTransitionStyle = .coverVertical
         self.tabBarController?.tabBar.isHidden = true

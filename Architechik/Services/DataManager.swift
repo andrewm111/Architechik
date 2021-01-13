@@ -15,15 +15,16 @@ class DataManager {
     let path = Bundle.main.path(forResource: "data", ofType: "sqlite") ?? ""
     
     fileprivate init() {
-//        do {
-//            let dbQueue = try DatabaseQueue(path: path)
-//            try dbQueue.read { db in
-//                let article = try Articles.filter(Column("id") == "4").fetchOne(db)
-//                print(article)
-//            }
-//        } catch {
-//            print(error)
-//        }
+        do {
+            print(path)
+            let dbQueue = try DatabaseQueue(path: path)
+            try dbQueue.read { db in
+                let article = try Articles.fetchAll(db)
+                print(article)
+            }
+        } catch {
+            print(error)
+        }
     }
     
 }

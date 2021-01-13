@@ -7,18 +7,38 @@
 //
 
 import UIKit
+import AuthenticationServices
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = .white
-        window?.rootViewController = LoginViewController()
-        window?.makeKeyAndVisible()
+        self.window?.rootViewController = TabBarController()
+        self.window?.makeKeyAndVisible()
+        let _ = DataManager.shared
+//        let appleIDProvider = ASAuthorizationAppleIDProvider()
+//        appleIDProvider.getCredentialState(forUserID: KeychainItem.currentUserIdentifier) { (credentialState, error) in
+//            switch credentialState {
+//            case .authorized:
+//                DispatchQueue.main.async {
+//                    self.window?.rootViewController = TabBarController()
+//                    self.window?.makeKeyAndVisible()
+//                }
+//            case .revoked, .notFound:
+//                // The Apple ID credential is either revoked or was not found, so show the sign-in UI.
+//                DispatchQueue.main.async {
+//                    self.window?.rootViewController = LoginViewController()
+//                    self.window?.makeKeyAndVisible()
+//                }
+//            default:
+//                break
+//            }
+//        }
+        
         return true
     }
 
