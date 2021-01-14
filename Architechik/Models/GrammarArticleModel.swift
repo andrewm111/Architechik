@@ -7,17 +7,12 @@
 //
 
 import Foundation
-import GRDB
 
-struct Grammar {
+struct Grammar: Hashable, Codable {
     var id: Int64?
     var title: String
     var description: String
     var category: String
     var img: String
     var file: String
-}
-
-extension Grammar: Hashable, Codable, FetchableRecord, MutablePersistableRecord {
-    
 }

@@ -13,7 +13,9 @@ class CourseViewController: ViewController {
     //MARK: - Subviews
     private let imageView: UIImageView = {
         let view = UIImageView()
-        view.backgroundColor = UIColor(hex: "1F1F24")
+        //view.backgroundColor = UIColor(hex: "1F1F24")
+        view.image = UIImage(named: "backImage")
+        view.contentMode = .scaleAspectFill
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -28,13 +30,13 @@ class CourseViewController: ViewController {
     }()
     private let titleView: UIView = {
         let view = UIView()
-        view.backgroundColor = .purple
+        view.backgroundColor = .blue
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     private let descriptionLabel: UILabel = {
         let view = UILabel()
-        view.font = UIFont(name: "Arial", size: 15)
+        view.font = UIFont(name: "Arial", size: 17)
         view.textColor = .white
         view.text = "Этот курс - большой сборник архитектурных терминов и упражнений, чтобы легко ориентироваться в англоязычных текстах про любой стиль и эпоху."
         view.textAlignment = .left
@@ -51,8 +53,8 @@ class CourseViewController: ViewController {
     private let unlockButton: UIButton = {
         let view = UIButton()
         view.layer.cornerRadius = 25
-        let font = UIFont(name: "Arial", size: 17) ?? UIFont.systemFont(ofSize: 17)
-        let attributedString = NSAttributedString(string: "Начать", attributes: [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.black])
+        let font = UIFont(name: "Arial-BoldMT", size: 17) ?? UIFont.systemFont(ofSize: 17)
+        let attributedString = NSAttributedString(string: "Разблокировать", attributes: [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.white])
         view.setAttributedTitle(attributedString, for: .normal)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .blue
@@ -104,7 +106,7 @@ class CourseViewController: ViewController {
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             
-            descriptionLabel.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: 24),
+            descriptionLabel.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: 14),
             descriptionLabel.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: -4),
             descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
@@ -115,12 +117,13 @@ class CourseViewController: ViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
             unlockButton.heightAnchor.constraint(equalToConstant: 50),
-            unlockButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            unlockButton.widthAnchor.constraint(equalToConstant: 120),
+            unlockButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -4),
+            unlockButton.widthAnchor.constraint(equalToConstant: 160),
             unlockButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
     }
     
+    //MARK: - Handle swipe to dismiss gesture
     @objc
     private func viewDragged() {
         switch pan.state {
@@ -136,17 +139,35 @@ class CourseViewController: ViewController {
     private func handlePanChangedState() {
         let translationX = pan.translation(in: view).x
         guard translationX > 0 else { return }
+        guard translationX < UIScreen.main.bounds.width / 3 else {
+            pan.isEnabled = false
+            animateDismiss()
+            return
+        }
         view.transform = CGAffineTransform(translationX: translationX, y: 0)
     }
     
     private func handlePanEndedState() {
         let translationX = pan.translation(in: view).x
         if translationX > UIScreen.main.bounds.width / 3 {
-            UIView.animate(withDuration: 0.2, animations: {
-                self.view.transform = CGAffineTransform(translationX: UIScreen.main.bounds.width, y: 0)
-            }) { _ in
-                self.dismiss(animated: false)
-            }
+            animateDismiss()
+        } else {
+            animateReturnToNormalState()
+        }
+    }
+    
+    private func animateDismiss() {
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.transform = CGAffineTransform(translationX: UIScreen.main.bounds.width, y: 0)
+        }) { _ in
+            self.pan.isEnabled = true
+            self.dismiss(animated: false)
+        }
+    }
+    
+    private func animateReturnToNormalState() {
+        UIView.animate(withDuration: 0.2) {
+            self.view.transform = .identity
         }
     }
 }

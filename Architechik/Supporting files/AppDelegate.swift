@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.backgroundColor = .white
         self.window?.rootViewController = TabBarController()
         self.window?.makeKeyAndVisible()
-        let _ = DataManager.shared
 //        let appleIDProvider = ASAuthorizationAppleIDProvider()
 //        appleIDProvider.getCredentialState(forUserID: KeychainItem.currentUserIdentifier) { (credentialState, error) in
 //            switch credentialState {

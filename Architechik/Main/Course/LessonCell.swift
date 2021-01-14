@@ -12,7 +12,9 @@ class LessonCell: TableViewCell {
     
     private let backImageView: UIImageView = {
         let view = UIImageView()
-        view.backgroundColor = .systemBlue
+        //view.backgroundColor = .systemBlue
+        view.image = UIImage(named: "articleBack")
+        view.contentMode = .scaleAspectFill
         view.layer.cornerRadius = 10
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -20,7 +22,7 @@ class LessonCell: TableViewCell {
     }()
     private let titleLabel: UILabel = {
         let view = UILabel()
-        view.font = UIFont(name: "Arial", size: 16)
+        view.font = UIFont(name: "Arial", size: 18)
         view.textColor = .white
         view.text = "Вступление: Hey there! What's going on?"
         view.textAlignment = .left
@@ -29,7 +31,7 @@ class LessonCell: TableViewCell {
     }()
     private let descriptionLabel: UILabel = {
         let view = UILabel()
-        view.font = UIFont(name: "Arial", size: 16)
+        view.font = UIFont(name: "Arial", size: 17)
         view.textColor = .white
         view.lineBreakMode = .byWordWrapping
         view.text = "Небольшое вступление про курс, из чего состоит курс, что мы будем делать и где это использовать дальше"
@@ -49,15 +51,26 @@ class LessonCell: TableViewCell {
     }()
     private let doneIcon: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "menuIcon")
+        view.image = UIImage(named: "checkmark")
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
+    //MARK: - Config
     override func  configure() {
         super.configure()
         initialSetup()
         setupSubviews()
+    }
+    
+    func makeDone() {
+        doneLabel.isHidden = false
+        doneIcon.isHidden = false
+    }
+    
+    func makeNotDone() {
+        doneLabel.isHidden = true
+        doneIcon.isHidden = true
     }
     
     //MARK: - Setup

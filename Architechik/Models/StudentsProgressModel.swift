@@ -7,16 +7,11 @@
 //
 
 import Foundation
-import GRDB
 
-struct StudentsProgress {
+struct StudentProgress: Hashable, Codable {
     var id: Int64?
     var studentToken: Int
     var courseId: Int
     var currentProgress: Int
     var courseAccess: Int
-}
-
-extension StudentsProgress: Hashable, Codable, FetchableRecord, MutablePersistableRecord {
-    
 }

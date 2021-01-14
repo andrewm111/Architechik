@@ -7,17 +7,12 @@
 //
 
 import Foundation
-import GRDB
 
-struct CourseStructure {
+struct CourseStructure: Hashable, Codable {
     var id: Int64?
     var courseId: Int
     var title: String
     var description: String
     var category: String
     var file: String
-}
-
-extension CourseStructure: Hashable, Codable, FetchableRecord, MutablePersistableRecord {
-    
 }

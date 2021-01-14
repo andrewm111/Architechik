@@ -13,7 +13,7 @@ class AchievementCell: TableViewCell {
     //MARK: - Subviews
     private let achievementImageView: UIImageView = {
         let view = UIImageView()
-        view.layer.cornerRadius = 25
+        view.layer.cornerRadius = 50
         view.backgroundColor = .systemBlue
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -46,12 +46,12 @@ class AchievementCell: TableViewCell {
         NSLayoutConstraint.activate([
             achievementImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14),
             achievementImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            achievementImageView.heightAnchor.constraint(equalToConstant: 50),
-            achievementImageView.widthAnchor.constraint(equalToConstant: 50),
+            achievementImageView.heightAnchor.constraint(equalToConstant: 100),
+            achievementImageView.widthAnchor.constraint(equalToConstant: 100),
             
             achievementLabel.centerYAnchor.constraint(equalTo: achievementImageView.centerYAnchor),
             achievementLabel.heightAnchor.constraint(equalToConstant: 24),
-            achievementLabel.leadingAnchor.constraint(equalTo: achievementImageView.trailingAnchor, constant: 10),
+            achievementLabel.leadingAnchor.constraint(equalTo: achievementImageView.trailingAnchor, constant: 20),
             achievementLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -14),
         ])
     }

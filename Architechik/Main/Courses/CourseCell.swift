@@ -10,9 +10,17 @@ import UIKit
 
 class CourseCell: TableViewCell {
 
-    private let backImageView: UIImageView = {
+    private lazy var backImageView: UIImageView = {
         let view = UIImageView()
-        view.backgroundColor = .gray
+        //view.backgroundColor = #colorLiteral(red: 0.3419600844, green: 0.5, blue: 0.4824177847, alpha: 1)
+        view.image = UIImage(named: "backImage")
+        view.contentMode = .scaleAspectFill
+        let coverLayer = CALayer()
+        let rect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 200)
+        coverLayer.frame = rect
+        coverLayer.backgroundColor = UIColor.black.cgColor
+        view.layer.addSublayer(coverLayer)
+        coverLayer.opacity = 0.6
         view.layer.cornerRadius = 10
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -21,23 +29,23 @@ class CourseCell: TableViewCell {
     private let numberOfLessonsLabel: UILabel = {
         let view = UILabel()
         view.textColor = .white
-        view.text = "6 уроков"
-        view.font = UIFont(name: "Arial", size: 14)
+        view.text = "16 уроков"
+        view.font = UIFont(name: "Arial", size: 15)
         view.textAlignment = .left
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     private let lessonIcon: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "menuIcon")
+        view.image = UIImage(named: "paper")
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     private let priceLabel: UILabel = {
         let view = UILabel()
         view.textColor = .white
-        view.text = "Бесплатно"
-        view.font = UIFont(name: "Arial", size: 14)
+        //view.text = "Бесплатно"
+        view.font = UIFont(name: "Arial", size: 15)
         view.textAlignment = .left
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -45,18 +53,18 @@ class CourseCell: TableViewCell {
     private let titleLabel: UILabel = {
         let view = UILabel()
         view.textColor = .white
-        view.text = "Вводный тест"
-        view.font = UIFont(name: "Arial-BoldMT", size: 16)
+        //view.text = "Вводный тест"
+        view.font = UIFont(name: "Arial-BoldMT", size: 17)
         view.textAlignment = .left
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let descriptionLabel: UILabel = {
+    let descriptionLabel: UILabel = {
         let view = UILabel()
         view.textColor = .white
-        view.text = "Определите свой уровень владения английским,и мы поможем вам выбрать подходящий курс"
+        //view.text = "Определите свой уровень владения английским,и мы поможем вам выбрать подходящий курс"
         view.numberOfLines = 0
-        view.font = UIFont(name: "Arial", size: 14)
+        view.font = UIFont(name: "Arial", size: 15)
         view.textAlignment = .left
         view.lineBreakMode = .byWordWrapping
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -70,15 +78,21 @@ class CourseCell: TableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    var model: Course?
 
-    override func configure() {
-        super.configure()
+    func configure(withModel model: Course) {
+        self.model = model
+        titleLabel.text = model.title
+        descriptionLabel.text = model.description
+        priceLabel.text = "\(model.price) ₽"
         initialSetup()
         setupSubviews()
     }
     
     //MARK: - Setup
     private func initialSetup() {
+        selectionStyle = .none
+        backgroundColor = .clear
         isUserInteractionEnabled = true
     }
     
@@ -87,8 +101,9 @@ class CourseCell: TableViewCell {
         backImageView.addSubview(numberOfLessonsLabel)
         backImageView.addSubview(lessonIcon)
         backImageView.addSubview(priceLabel)
-        backImageView.addSubview(titleLabel)
-        backImageView.addSubview(descriptionLabel)
+        
+        addSubview(titleLabel)
+        addSubview(descriptionLabel)
         backImageView.addSubview(progressView)
         
         NSLayoutConstraint.activate([
@@ -112,19 +127,20 @@ class CourseCell: TableViewCell {
             priceLabel.leadingAnchor.constraint(greaterThanOrEqualTo: numberOfLessonsLabel.trailingAnchor, constant: 50),
             priceLabel.trailingAnchor.constraint(equalTo: backImageView.trailingAnchor, constant: -12),
             
-            titleLabel.topAnchor.constraint(equalTo: lessonIcon.bottomAnchor, constant: 24),
+            titleLabel.topAnchor.constraint(equalTo: lessonIcon.bottomAnchor, constant: 8),
             titleLabel.leadingAnchor.constraint(equalTo: backImageView.leadingAnchor, constant: 12),
-            titleLabel.heightAnchor.constraint(equalToConstant: 27),
+            titleLabel.heightAnchor.constraint(equalToConstant: 22),
             titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: backImageView.trailingAnchor, constant: -20),
             
-            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 14),
+            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 6),
             descriptionLabel.leadingAnchor.constraint(equalTo: backImageView.leadingAnchor, constant: 12),
             descriptionLabel.trailingAnchor.constraint(equalTo: backImageView.trailingAnchor, constant: -12),
-            descriptionLabel.bottomAnchor.constraint(equalTo: progressView.topAnchor, constant: -14),
+            descriptionLabel.bottomAnchor.constraint(equalTo: progressView.topAnchor, constant: -10),
             
             progressView.heightAnchor.constraint(equalToConstant: 6),
             progressView.leadingAnchor.constraint(equalTo: backImageView.leadingAnchor, constant: 12),
             progressView.trailingAnchor.constraint(equalTo: backImageView.trailingAnchor, constant: -12),
+            progressView.bottomAnchor.constraint(equalTo: backImageView.bottomAnchor, constant: -12),
         ])
     }
 }

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,7 +11,8 @@
 		1F11590D25A0D2DB00682A69 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F11590C25A0D2DB00682A69 /* LoginViewController.swift */; };
 		1F11590F25A0D2DC00682A69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F11590E25A0D2DC00682A69 /* Assets.xcassets */; };
 		1F11591225A0D2DC00682A69 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F11591025A0D2DC00682A69 /* LaunchScreen.storyboard */; };
-		1F35B5BE25A7947100F04ECD /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F35B5BD25A7947100F04ECD /* DataManager.swift */; };
+		1F3CB71825AF122B000B6922 /* String + Height.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3CB71725AF122B000B6922 /* String + Height.swift */; };
+		1F3CB71A25B092BC000B6922 /* UIViewController + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3CB71925B092BC000B6922 /* UIViewController + Extension.swift */; };
 		1F45852725A8F0B0007E46F2 /* CourseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F45852625A8F0B0007E46F2 /* CourseCell.swift */; };
 		1F517F4B25ADF71400F121D4 /* WebImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F517F4A25ADF71400F121D4 /* WebImageView.swift */; };
 		1F517F4D25AE050900F121D4 /* KeychainItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F517F4C25AE050900F121D4 /* KeychainItem.swift */; };
@@ -23,12 +24,16 @@
 		1F83355925A756A500BCEDE8 /* ArticlesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83355825A756A500BCEDE8 /* ArticlesViewController.swift */; };
 		1F83355B25A756AF00BCEDE8 /* GrammarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83355A25A756AF00BCEDE8 /* GrammarViewController.swift */; };
 		1F83355D25A756BC00BCEDE8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83355C25A756BC00BCEDE8 /* ProfileViewController.swift */; };
+		1F942B5025AEDEB800EFD60E /* course_structure.json in Resources */ = {isa = PBXBuildFile; fileRef = 1F942B4A25AEDEB800EFD60E /* course_structure.json */; };
+		1F942B5125AEDEB800EFD60E /* courses.json in Resources */ = {isa = PBXBuildFile; fileRef = 1F942B4B25AEDEB800EFD60E /* courses.json */; };
+		1F942B5225AEDEB800EFD60E /* students_progress.json in Resources */ = {isa = PBXBuildFile; fileRef = 1F942B4C25AEDEB800EFD60E /* students_progress.json */; };
+		1F942B5325AEDEB800EFD60E /* grammar.json in Resources */ = {isa = PBXBuildFile; fileRef = 1F942B4D25AEDEB800EFD60E /* grammar.json */; };
+		1F942B5425AEDEB800EFD60E /* achievements.json in Resources */ = {isa = PBXBuildFile; fileRef = 1F942B4E25AEDEB800EFD60E /* achievements.json */; };
+		1F942B5525AEDEB800EFD60E /* articles.json in Resources */ = {isa = PBXBuildFile; fileRef = 1F942B4F25AEDEB800EFD60E /* articles.json */; };
 		1FA1A13D25ACC880008621FB /* GrammarArticleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA1A13C25ACC880008621FB /* GrammarArticleModel.swift */; };
 		1FA1A13F25ACCBF0008621FB /* StudentsProgressModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA1A13E25ACCBF0008621FB /* StudentsProgressModel.swift */; };
 		1FA1A14125ACCD70008621FB /* CourseStructureModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA1A14025ACCD70008621FB /* CourseStructureModel.swift */; };
 		1FED14B225AB9818009A6B0C /* AchievementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED14B125AB9818009A6B0C /* AchievementCell.swift */; };
-		1FEFC08D25AE4602006A2CFC /* data.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1FEFC08C25AE4602006A2CFC /* data.sqlite */; };
-		1FEFC08F25AE46D7006A2CFC /* a.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 1FEFC08E25AE46D7006A2CFC /* a.sqlite */; };
 		1FF4706925AA4156001E427F /* UIColor + HexValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF4706825AA4156001E427F /* UIColor + HexValue.swift */; };
 		1FF4706B25AA4304001E427F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF4706A25AA4304001E427F /* ViewController.swift */; };
 		1FF6706E25A9B314006D4EEE /* UITableView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF6706D25A9B314006D4EEE /* UITableView + Extension.swift */; };
@@ -46,7 +51,8 @@
 		1F11591125A0D2DC00682A69 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1F11591325A0D2DC00682A69 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1F11591A25A0D4A200682A69 /* Architechik.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Architechik.entitlements; sourceTree = "<group>"; };
-		1F35B5BD25A7947100F04ECD /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
+		1F3CB71725AF122B000B6922 /* String + Height.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Height.swift"; sourceTree = "<group>"; };
+		1F3CB71925B092BC000B6922 /* UIViewController + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Extension.swift"; sourceTree = "<group>"; };
 		1F45852625A8F0B0007E46F2 /* CourseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCell.swift; sourceTree = "<group>"; };
 		1F517F4A25ADF71400F121D4 /* WebImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImageView.swift; sourceTree = "<group>"; };
 		1F517F4C25AE050900F121D4 /* KeychainItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainItem.swift; sourceTree = "<group>"; };
@@ -58,12 +64,16 @@
 		1F83355825A756A500BCEDE8 /* ArticlesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlesViewController.swift; sourceTree = "<group>"; };
 		1F83355A25A756AF00BCEDE8 /* GrammarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrammarViewController.swift; sourceTree = "<group>"; };
 		1F83355C25A756BC00BCEDE8 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		1F942B4A25AEDEB800EFD60E /* course_structure.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = course_structure.json; sourceTree = "<group>"; };
+		1F942B4B25AEDEB800EFD60E /* courses.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = courses.json; sourceTree = "<group>"; };
+		1F942B4C25AEDEB800EFD60E /* students_progress.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = students_progress.json; sourceTree = "<group>"; };
+		1F942B4D25AEDEB800EFD60E /* grammar.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = grammar.json; sourceTree = "<group>"; };
+		1F942B4E25AEDEB800EFD60E /* achievements.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = achievements.json; sourceTree = "<group>"; };
+		1F942B4F25AEDEB800EFD60E /* articles.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = articles.json; sourceTree = "<group>"; };
 		1FA1A13C25ACC880008621FB /* GrammarArticleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrammarArticleModel.swift; sourceTree = "<group>"; };
 		1FA1A13E25ACCBF0008621FB /* StudentsProgressModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentsProgressModel.swift; sourceTree = "<group>"; };
 		1FA1A14025ACCD70008621FB /* CourseStructureModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseStructureModel.swift; sourceTree = "<group>"; };
 		1FED14B125AB9818009A6B0C /* AchievementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementCell.swift; sourceTree = "<group>"; };
-		1FEFC08C25AE4602006A2CFC /* data.sqlite */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = data.sqlite; sourceTree = "<group>"; };
-		1FEFC08E25AE46D7006A2CFC /* a.sqlite */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = a.sqlite; sourceTree = "<group>"; };
 		1FF4706825AA4156001E427F /* UIColor + HexValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor + HexValue.swift"; sourceTree = "<group>"; };
 		1FF4706A25AA4304001E427F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1FF6706D25A9B314006D4EEE /* UITableView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView + Extension.swift"; sourceTree = "<group>"; };
@@ -108,21 +118,13 @@
 		1F11590925A0D2DB00682A69 /* Architechik */ = {
 			isa = PBXGroup;
 			children = (
-				1F45852525A8F08B007E46F2 /* Services */,
 				1F6E92E425A8A03A00DF974F /* Models */,
 				1F83355525A7568200BCEDE8 /* Main */,
 				1FF6706C25A9B2AB006D4EEE /* Helpers */,
+				1F942B4925AEDE9000EFD60E /* SampleData */,
 				1F83355225A752C100BCEDE8 /* Supporting files */,
 			);
 			path = Architechik;
-			sourceTree = "<group>";
-		};
-		1F45852525A8F08B007E46F2 /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				1F35B5BD25A7947100F04ECD /* DataManager.swift */,
-			);
-			path = Services;
 			sourceTree = "<group>";
 		};
 		1F45852825A8F11A007E46F2 /* Courses */ = {
@@ -154,8 +156,6 @@
 				1F11590E25A0D2DC00682A69 /* Assets.xcassets */,
 				1F11591025A0D2DC00682A69 /* LaunchScreen.storyboard */,
 				1F11591325A0D2DC00682A69 /* Info.plist */,
-				1FEFC08E25AE46D7006A2CFC /* a.sqlite */,
-				1FEFC08C25AE4602006A2CFC /* data.sqlite */,
 			);
 			path = "Supporting files";
 			sourceTree = "<group>";
@@ -172,6 +172,19 @@
 				1FED14B025AB97E1009A6B0C /* Profile */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		1F942B4925AEDE9000EFD60E /* SampleData */ = {
+			isa = PBXGroup;
+			children = (
+				1F942B4E25AEDEB800EFD60E /* achievements.json */,
+				1F942B4F25AEDEB800EFD60E /* articles.json */,
+				1F942B4A25AEDEB800EFD60E /* course_structure.json */,
+				1F942B4B25AEDEB800EFD60E /* courses.json */,
+				1F942B4D25AEDEB800EFD60E /* grammar.json */,
+				1F942B4C25AEDEB800EFD60E /* students_progress.json */,
+			);
+			path = SampleData;
 			sourceTree = "<group>";
 		};
 		1FED14B025AB97E1009A6B0C /* Profile */ = {
@@ -193,6 +206,8 @@
 				1F517F4A25ADF71400F121D4 /* WebImageView.swift */,
 				1F517F4C25AE050900F121D4 /* KeychainItem.swift */,
 				1F517F4E25AE0FBB00F121D4 /* Data + Extension.swift */,
+				1F3CB71725AF122B000B6922 /* String + Height.swift */,
+				1F3CB71925B092BC000B6922 /* UIViewController + Extension.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -234,7 +249,6 @@
 				1F11590325A0D2DB00682A69 /* Sources */,
 				1F11590425A0D2DB00682A69 /* Frameworks */,
 				1F11590525A0D2DB00682A69 /* Resources */,
-				D11C01C45E94689574EBDD47 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -283,33 +297,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F942B5225AEDEB800EFD60E /* students_progress.json in Resources */,
+				1F942B5125AEDEB800EFD60E /* courses.json in Resources */,
 				1F11590F25A0D2DC00682A69 /* Assets.xcassets in Resources */,
-				1FEFC08F25AE46D7006A2CFC /* a.sqlite in Resources */,
-				1FEFC08D25AE4602006A2CFC /* data.sqlite in Resources */,
+				1F942B5325AEDEB800EFD60E /* grammar.json in Resources */,
+				1F942B5525AEDEB800EFD60E /* articles.json in Resources */,
+				1F942B5025AEDEB800EFD60E /* course_structure.json in Resources */,
 				1F11591225A0D2DC00682A69 /* LaunchScreen.storyboard in Resources */,
+				1F942B5425AEDEB800EFD60E /* achievements.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		D11C01C45E94689574EBDD47 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Architechik/Pods-Architechik-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Architechik/Pods-Architechik-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Architechik/Pods-Architechik-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		ED7285ED7E03E2A73AC682F5 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -345,7 +346,7 @@
 				1FF6706E25A9B314006D4EEE /* UITableView + Extension.swift in Sources */,
 				1FF4706B25AA4304001E427F /* ViewController.swift in Sources */,
 				1F83355B25A756AF00BCEDE8 /* GrammarViewController.swift in Sources */,
-				1F35B5BE25A7947100F04ECD /* DataManager.swift in Sources */,
+				1F3CB71A25B092BC000B6922 /* UIViewController + Extension.swift in Sources */,
 				1F517F4D25AE050900F121D4 /* KeychainItem.swift in Sources */,
 				1FA1A14125ACCD70008621FB /* CourseStructureModel.swift in Sources */,
 				1F45852725A8F0B0007E46F2 /* CourseCell.swift in Sources */,
@@ -359,6 +360,7 @@
 				1F517F4B25ADF71400F121D4 /* WebImageView.swift in Sources */,
 				1F83355925A756A500BCEDE8 /* ArticlesViewController.swift in Sources */,
 				1FF4706925AA4156001E427F /* UIColor + HexValue.swift in Sources */,
+				1F3CB71825AF122B000B6922 /* String + Height.swift in Sources */,
 				1FF6707625A9F44E006D4EEE /* LessonCell.swift in Sources */,
 				1FA1A13D25ACC880008621FB /* GrammarArticleModel.swift in Sources */,
 				1FA1A13F25ACCBF0008621FB /* StudentsProgressModel.swift in Sources */,

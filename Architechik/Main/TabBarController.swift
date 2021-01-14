@@ -42,11 +42,14 @@ class TabBarController: UITabBarController {
     //MARK: - Supporting methods
     private func generateViewController<T: UIViewController>(vcType: T.Type, title: String, imageName: String) -> T {
         let vc = T()
-        let image = UIImage(named: "\(imageName)Gray")
-        let selectedImage = UIImage(named: imageName)
+        let itemImageName = smallScreen ? "\(imageName)GraySmall" : "\(imageName)Gray"
+        let itemSelectedImageName = smallScreen  ? "\(imageName)Small" : "\(imageName)"
+        let image = UIImage(named: itemImageName)
+        let selectedImage = UIImage(named: itemSelectedImageName)
         let tabBarItem = UITabBarItem(title: title, image: image, selectedImage: selectedImage)
         tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: 0, right: 0)
-        //tabBarItem.titlePositionAdjustment
+        let verticalOffset: CGFloat = smallScreen ? 1 : 5
+        tabBarItem.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: verticalOffset)
         let font = UIFont(name: "Arial", size: 13) ?? UIFont.systemFont(ofSize: 13)
         let attributesNormal = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: font] as [NSAttributedString.Key: Any]
         let attributesSelected = [NSAttributedString.Key.foregroundColor: UIColor.systemBlue, NSAttributedString.Key.font: font] as [NSAttributedString.Key: Any]

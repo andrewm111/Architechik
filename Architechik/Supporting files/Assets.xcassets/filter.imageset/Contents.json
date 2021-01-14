@@ -6,12 +6,12 @@
       "scale" : "1x"
     },
     {
-      "filename" : "filter 128.png",
+      "filename" : "filter 64-1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "filter 128-1.png",
+      "filename" : "filter 64-2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -7,17 +7,12 @@
 //
 
 import Foundation
-import GRDB
 
-struct Articles {
+struct Article: Hashable, Codable {
     var id: Int64?
     var title: String
     var description: String
     var category: String
     var img: String
     var file: String
-}
-
-extension Articles: Hashable, Codable, FetchableRecord, MutablePersistableRecord {
-    
 }

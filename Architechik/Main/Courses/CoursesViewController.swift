@@ -31,11 +31,16 @@ class CoursesViewController: ViewController {
         let view = UIButton(type: .custom)
         view.layer.cornerRadius = 25
         view.backgroundColor = .systemBlue
-        view.setImage(UIImage(named: "menuIcon"), for: .normal)
+        view.setImage(UIImage(named: "filter"), for: .normal)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
+    //MARK: - Properties
     lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
+    lazy var jsonPath = Bundle.main.path(forResource: "courses", ofType: "json")
+    var models: Array<Course> = []
+    var cellHeights: Array<CGFloat> = []
 
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -65,6 +70,7 @@ class CoursesViewController: ViewController {
         tableView.backgroundColor = .clear
         tableView.isUserInteractionEnabled = true
         tableView.addGestureRecognizer(tap)
+        fetchJSON()
     }
 
     private func setupSubviews() {
@@ -74,18 +80,18 @@ class CoursesViewController: ViewController {
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: filterButton.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
             filterButton.heightAnchor.constraint(equalToConstant: 50),
             filterButton.widthAnchor.constraint(equalToConstant: 50),
-            filterButton.bottomAnchor.constraint(equalTo: tableView.bottomAnchor, constant: -20),
-            filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
             
             testButton.centerYAnchor.constraint(equalTo: filterButton.centerYAnchor),
             testButton.heightAnchor.constraint(equalToConstant: 50),
-            testButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 3),
+            testButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
             testButton.trailingAnchor.constraint(equalTo: filterButton.leadingAnchor, constant: -6),
         ])
     }
@@ -97,17 +103,32 @@ class CoursesViewController: ViewController {
         //vc.isModalInPopover = true
         vc.modalPresentationStyle = .overCurrentContext
         vc.modalTransitionStyle = .coverVertical
-        self.tabBarController?.tabBar.isHidden = true
 //        let transition = CATransition()
 //        transition.duration = 0.5
 //        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
 //        transition.type = CATransitionType.push
 //        transition.subtype = CATransitionSubtype.fromRight
 //        self.view.window!.layer.add(transition, forKey: nil)
-        present(vc, animated: true)
+        present(vc, animated: true) {
+            //self.tabBarController?.tabBar.isHidden = true
+        }
 //        let tapLocation = tap.location(in: tableView)
 //        guard let tapIndexPath = self.tableView.indexPathForRow(at: tapLocation) else { return }
 //        let tappedCell = tableView.cellForRow(at: tapIndexPath) as? CourseCell
+    }
+    
+    private func fetchJSON() {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        guard let path = jsonPath else { return }
+        let jsonURL = URL(fileURLWithPath: path)
+        do {
+            let data = try Data(contentsOf: jsonURL)
+            let models = try decoder.decode([Course].self, from: data)
+            self.models = models
+        } catch {
+            print("Error with converting json file to model")
+        }
     }
 
 }
@@ -116,16 +137,20 @@ class CoursesViewController: ViewController {
 extension CoursesViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 190
+        let font = UIFont(name: "Arial", size: 15) ?? UIFont.systemFont(ofSize: 15)
+        let width = UIScreen.main.bounds.width - 16
+        let string = models[indexPath.row].description
+        let height = string.height(width: width, font: font) + 129
+        return height
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return models.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: CourseCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
-        cell.configure()
+        cell.configure(withModel: models[indexPath.row])
         return cell
     }
 }

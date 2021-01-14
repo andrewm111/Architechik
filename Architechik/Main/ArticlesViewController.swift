@@ -20,7 +20,7 @@ class ArticlesViewController: UIViewController {
         let view = UIButton(type: .custom)
         view.layer.cornerRadius = 25
         view.backgroundColor = .systemBlue
-        view.setImage(UIImage(named: "menuIcon"), for: .normal)
+        view.setImage(UIImage(named: "filter"), for: .normal)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
