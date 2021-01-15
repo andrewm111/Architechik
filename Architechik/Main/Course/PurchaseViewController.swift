@@ -41,6 +41,7 @@ class PurchaseViewController: UIViewController {
     
     //MARK: - Properties
     var product: SKProduct?
+    var helper: IAPHelper = IAPHelper(productIds: ["FirstInArchitectureCourseTest"])
 
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -53,11 +54,19 @@ class PurchaseViewController: UIViewController {
     private func initialSetup() {
         view.backgroundColor = .white
         //showSpinner()
-        guard let product = product else {
-            print("Product is nil in PurchaseVC")
-            return
+        helper.requestProducts { (success, products) in
+            self.product = products?.first
+            print("---Request products---")
+            print(success)
+            print(products ?? "Products is nil")
+            print("---Request products---")
+            guard let _ = self.product else {
+                print("Product is nil in PurchaseVC")
+                return
+            }
+            
         }
-        updateButton(purchaseButton, with: product)
+        
         purchaseButton.addTarget(self, action: #selector(purchasePressed), for: .touchUpInside)
         restoreButton.addTarget(self, action: #selector(restorePressed), for: .touchUpInside)
     }
@@ -86,40 +95,18 @@ class PurchaseViewController: UIViewController {
     //MARK: - Handle user events
     @objc
     private func purchasePressed(_ sender: UIButton) {
-        print("Pressed once")
-        showSpinner()
-        Purchases.default.purchaseProduct(productId: "FirstInArchitectureCourseTest") { [weak self] result in
-            self?.hideSpinner()
-            print("Enter completion")
-            switch result {
-            case .success(let bool):
-                print(bool)
-                print("Success with purchasing")
-            case .failure(let error):
-                print("Error with purchasing: \(error)")
-            }
-            
-        }
+        helper.buyProduct(product!)
     }
     
     @objc
     private func restorePressed(_ sender: UIButton) {
-        showSpinner()
-        Purchases.default.restorePurchases { [weak self] result in
-            self?.hideSpinner()
-            print("Success with restoring")
-            print(result)
-        }
+        helper.restorePurchases()
     }
 
 }
 
 //MARK: - Supporting methods
 extension PurchaseViewController {
-    private func updateButton(_ button: UIButton, with product: SKProduct) {
-        let title = "\(product.title ?? product.productIdentifier) за \(product.localizedPrice)"
-        button.setTitle(title, for: .normal)
-    }
 
     private func showSpinner() {
         DispatchQueue.main.async {

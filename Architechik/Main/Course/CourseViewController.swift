@@ -88,18 +88,7 @@ class CourseViewController: ViewController {
     }
     
     private func getProducts() {
-        Purchases.default.initialize { [weak self] result in
-            guard let self = self else { return }
-
-            switch result {
-            case let .success(products):
-                DispatchQueue.main.async {
-                    self.products = products
-                }
-            case .failure(let error):
-                print("Error while trying to get products: \(error)")
-            }
-        }
+        
     }
 
     private func setupSubviews() {

@@ -12,7 +12,7 @@
 		1F11590F25A0D2DC00682A69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F11590E25A0D2DC00682A69 /* Assets.xcassets */; };
 		1F11591225A0D2DC00682A69 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F11591025A0D2DC00682A69 /* LaunchScreen.storyboard */; };
 		1F3B0E3925B0EA8F005CF0BC /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F3B0E3825B0EA8F005CF0BC /* StoreKit.framework */; };
-		1F3B0E5B25B1CFB1005CF0BC /* Purchases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3B0E5A25B1CFB1005CF0BC /* Purchases.swift */; };
+		1F3B0E5B25B1CFB1005CF0BC /* IAPHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3B0E5A25B1CFB1005CF0BC /* IAPHelper.swift */; };
 		1F3B0E5D25B1D294005CF0BC /* PurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3B0E5C25B1D294005CF0BC /* PurchaseViewController.swift */; };
 		1F3CB71825AF122B000B6922 /* String + Height.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3CB71725AF122B000B6922 /* String + Height.swift */; };
 		1F3CB71A25B092BC000B6922 /* UIViewController + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3CB71925B092BC000B6922 /* UIViewController + Extension.swift */; };
@@ -56,7 +56,7 @@
 		1F11591325A0D2DC00682A69 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1F3B0E3525B0E677005CF0BC /* Architechik.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = Architechik.entitlements; path = "Architechik/Supporting files/Architechik.entitlements"; sourceTree = SOURCE_ROOT; };
 		1F3B0E3825B0EA8F005CF0BC /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		1F3B0E5A25B1CFB1005CF0BC /* Purchases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Purchases.swift; sourceTree = "<group>"; };
+		1F3B0E5A25B1CFB1005CF0BC /* IAPHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPHelper.swift; sourceTree = "<group>"; };
 		1F3B0E5C25B1D294005CF0BC /* PurchaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseViewController.swift; sourceTree = "<group>"; };
 		1F3CB71725AF122B000B6922 /* String + Height.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Height.swift"; sourceTree = "<group>"; };
 		1F3CB71925B092BC000B6922 /* UIViewController + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Extension.swift"; sourceTree = "<group>"; };
@@ -140,7 +140,7 @@
 		1F3B0E5925B1CFA4005CF0BC /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				1F3B0E5A25B1CFB1005CF0BC /* Purchases.swift */,
+				1F3B0E5A25B1CFB1005CF0BC /* IAPHelper.swift */,
 				1F41C9DD25B1D741005F7EBF /* PurchaseError.swift */,
 			);
 			path = Services;
@@ -379,7 +379,7 @@
 				1F41C9DE25B1D741005F7EBF /* PurchaseError.swift in Sources */,
 				1F6E92E625A8A04900DF974F /* ArticleModel.swift in Sources */,
 				1F83355D25A756BC00BCEDE8 /* ProfileViewController.swift in Sources */,
-				1F3B0E5B25B1CFB1005CF0BC /* Purchases.swift in Sources */,
+				1F3B0E5B25B1CFB1005CF0BC /* IAPHelper.swift in Sources */,
 				1F11590D25A0D2DB00682A69 /* LoginViewController.swift in Sources */,
 				1F517F4B25ADF71400F121D4 /* WebImageView.swift in Sources */,
 				1F83355925A756A500BCEDE8 /* ArticlesViewController.swift in Sources */,
