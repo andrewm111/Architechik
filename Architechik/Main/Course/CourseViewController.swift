@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import StoreKit
 
 class CourseViewController: ViewController {
     
@@ -61,7 +62,10 @@ class CourseViewController: ViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
+    //MARK: - Properties
     lazy var pan = UIPanGestureRecognizer(target: self, action: #selector(viewDragged))
+    var products: Array<SKProduct> = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,6 +76,7 @@ class CourseViewController: ViewController {
     //MARK: - Setup
     private func initialSetup() {
         view.backgroundColor = UIColor(hex: "1F1F24")
+        getProducts()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(LessonCell.self)
@@ -79,6 +84,22 @@ class CourseViewController: ViewController {
         tableView.backgroundColor = .clear
         tableView.isUserInteractionEnabled = true
         view.addGestureRecognizer(pan)
+        unlockButton.addTarget(self, action: #selector(unlockButtonTapped), for: .touchUpInside)
+    }
+    
+    private func getProducts() {
+        Purchases.default.initialize { [weak self] result in
+            guard let self = self else { return }
+
+            switch result {
+            case let .success(products):
+                DispatchQueue.main.async {
+                    self.products = products
+                }
+            case .failure(let error):
+                print("Error while trying to get products: \(error)")
+            }
+        }
     }
 
     private func setupSubviews() {
@@ -123,7 +144,16 @@ class CourseViewController: ViewController {
         ])
     }
     
-    //MARK: - Handle swipe to dismiss gesture
+    //MARK: - Handle user events
+    @objc
+    private func unlockButtonTapped() {
+        let vc = PurchaseViewController()
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.modalTransitionStyle = .coverVertical
+        vc.product = products.first
+        present(vc, animated: true)
+    }
+    
     @objc
     private func viewDragged() {
         switch pan.state {
@@ -136,6 +166,7 @@ class CourseViewController: ViewController {
         }
     }
     
+    //MARK: - Handle swipe to dismiss gesture
     private func handlePanChangedState() {
         let translationX = pan.translation(in: view).x
         guard translationX > 0 else { return }
