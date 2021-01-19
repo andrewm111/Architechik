@@ -22,6 +22,20 @@ extension UIViewController {
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
+    
+    func addTabBarSeparator() {
+        let separatorView = UIView()
+        separatorView.translatesAutoresizingMaskIntoConstraints = false
+        separatorView.backgroundColor = UIColor(hex: "222222")
+        view.addSubview(separatorView)
+        
+        NSLayoutConstraint.activate([
+            separatorView.heightAnchor.constraint(equalToConstant: 2),
+            separatorView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            separatorView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ])
+    }
 }
 
 extension UIView {

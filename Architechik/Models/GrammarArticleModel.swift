@@ -9,10 +9,10 @@
 import Foundation
 
 struct Grammar: Hashable, Codable {
-    var id: Int64?
+    var id: String
     var title: String
     var description: String
-    var category: String
+    var idCategory: String
     var img: String
     var file: String
 }

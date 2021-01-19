@@ -24,15 +24,16 @@ class ProfileViewController: UIViewController {
     private let progressLabel: UILabel = {
         let view = UILabel()
         view.font = UIFont(name: "Arial", size: 18)
-        view.textColor = .systemBlue
+        view.textColor = UIColor(hex: "613191")
         view.text = "Кол-во пройденных курсов"
-        view.textAlignment = .left
+        view.textAlignment = .center
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     private let progressView: UIProgressView = {
         let view = UIProgressView()
-        view.layer.cornerRadius = 6
+        view.layer.cornerRadius = 3
+        view.progressTintColor = UIColor(hex: "613191")
         view.progress = 0.75
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -53,7 +54,8 @@ class ProfileViewController: UIViewController {
 
     //MARK: - Setup
     private func initialSetup() {
-        view.backgroundColor = UIColor(hex: "1F1F24")
+        //view.backgroundColor = UIColor(hex: "1F1F24")
+        view.backgroundColor = UIColor.black
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(AchievementCell.self)
@@ -63,6 +65,7 @@ class ProfileViewController: UIViewController {
     }
     
     private func setupSubviews() {
+        addTabBarSeparator()
         view.addSubview(avatarView)
         view.addSubview(progressLabel)
         view.addSubview(progressView)

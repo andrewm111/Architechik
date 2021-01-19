@@ -25,7 +25,8 @@ class TabBarController: UITabBarController {
         selectedViewController = coursesVC
         tabBar.tintColor = UIColor.systemBlue
         tabBar.unselectedItemTintColor = UIColor.white
-        tabBar.barTintColor = UIColor(hex: "1F1F24")
+        //tabBar.barTintColor = UIColor(hex: "1F1F24")
+        tabBar.barTintColor = UIColor.black
         tabBar.isTranslucent = false
     }
     
@@ -42,17 +43,20 @@ class TabBarController: UITabBarController {
     //MARK: - Supporting methods
     private func generateViewController<T: UIViewController>(vcType: T.Type, title: String, imageName: String) -> T {
         let vc = T()
-        let itemImageName = smallScreen ? "\(imageName)GraySmall" : "\(imageName)Gray"
-        let itemSelectedImageName = smallScreen  ? "\(imageName)Small" : "\(imageName)"
+//        let itemImageName = smallScreen ? "\(imageName)GraySmall" : "\(imageName)Gray"
+//        let itemSelectedImageName = smallScreen  ? "\(imageName)Small" : "\(imageName)"
+        let itemImageName = "\(imageName)Gray"
+        let itemSelectedImageName = imageName
         let image = UIImage(named: itemImageName)
         let selectedImage = UIImage(named: itemSelectedImageName)
         let tabBarItem = UITabBarItem(title: title, image: image, selectedImage: selectedImage)
         tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: 0, right: 0)
-        let verticalOffset: CGFloat = smallScreen ? 1 : 5
+        let verticalOffset: CGFloat = smallScreen ? 3 : 5
+        let fontSize: CGFloat = smallScreen ? 13 : 14
         tabBarItem.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: verticalOffset)
-        let font = UIFont(name: "Arial", size: 13) ?? UIFont.systemFont(ofSize: 13)
+        let font = UIFont(name: "Arial", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize)
         let attributesNormal = [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: font] as [NSAttributedString.Key: Any]
-        let attributesSelected = [NSAttributedString.Key.foregroundColor: UIColor.systemBlue, NSAttributedString.Key.font: font] as [NSAttributedString.Key: Any]
+        let attributesSelected = [NSAttributedString.Key.foregroundColor: UIColor(hex: "613191"), NSAttributedString.Key.font: font] as [NSAttributedString.Key: Any]
         tabBarItem.setTitleTextAttributes(attributesNormal, for: .normal)
         tabBarItem.setTitleTextAttributes(attributesSelected, for: .selected)
         vc.tabBarItem = tabBarItem

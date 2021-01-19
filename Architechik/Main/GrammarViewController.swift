@@ -18,7 +18,7 @@ class GrammarViewController: UIViewController {
     }()
     private let filterButton: UIButton = {
         let view = UIButton(type: .custom)
-        view.layer.cornerRadius = 25
+        view.layer.cornerRadius = 20
         view.backgroundColor = .systemBlue
         view.setImage(UIImage(named: "filter"), for: .normal)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -34,7 +34,9 @@ class GrammarViewController: UIViewController {
     
     //MARK: - Setup
     private func initialSetup() {
-        view.backgroundColor = UIColor(hex: "1F1F24")
+        addTabBarSeparator()
+        //view.backgroundColor = UIColor(hex: "1F1F24")
+        view.backgroundColor = UIColor.black
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(LessonCell.self)
@@ -53,9 +55,9 @@ class GrammarViewController: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
-            filterButton.heightAnchor.constraint(equalToConstant: 50),
-            filterButton.widthAnchor.constraint(equalToConstant: 50),
-            filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            filterButton.heightAnchor.constraint(equalToConstant: 40),
+            filterButton.widthAnchor.constraint(equalToConstant: 40),
+            filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -14),
             filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
         ])
     }
@@ -73,6 +75,7 @@ extension GrammarViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: LessonCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
         cell.configure()
+        cell.makeNotDone()
         return cell
     }
     

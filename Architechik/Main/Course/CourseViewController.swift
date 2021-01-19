@@ -17,12 +17,13 @@ class CourseViewController: ViewController {
         //view.backgroundColor = UIColor(hex: "1F1F24")
         view.image = UIImage(named: "backImage")
         view.contentMode = .scaleAspectFill
+        view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     private let titleLabel: UILabel = {
         let view = UILabel()
-        view.font = UIFont(name: "Arial", size: 18)
+        view.font = UIFont(name: "Arial-BoldMT", size: 22)
         view.textColor = .white
         view.text = "History of architecture"
         view.textAlignment = .left
@@ -31,18 +32,7 @@ class CourseViewController: ViewController {
     }()
     private let titleView: UIView = {
         let view = UIView()
-        view.backgroundColor = .blue
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    private let descriptionLabel: UILabel = {
-        let view = UILabel()
-        view.font = UIFont(name: "Arial", size: 17)
-        view.textColor = .white
-        view.text = "Этот курс - большой сборник архитектурных терминов и упражнений, чтобы легко ориентироваться в англоязычных текстах про любой стиль и эпоху."
-        view.textAlignment = .left
-        view.numberOfLines = 0
-        view.lineBreakMode = .byWordWrapping
+        view.backgroundColor = .clear
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -51,17 +41,7 @@ class CourseViewController: ViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let unlockButton: UIButton = {
-        let view = UIButton()
-        view.layer.cornerRadius = 25
-        let font = UIFont(name: "Arial-BoldMT", size: 17) ?? UIFont.systemFont(ofSize: 17)
-        let attributedString = NSAttributedString(string: "Разблокировать", attributes: [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.white])
-        view.setAttributedTitle(attributedString, for: .normal)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .blue
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    
     
     //MARK: - Properties
     lazy var pan = UIPanGestureRecognizer(target: self, action: #selector(viewDragged))
@@ -75,16 +55,18 @@ class CourseViewController: ViewController {
     
     //MARK: - Setup
     private func initialSetup() {
-        view.backgroundColor = UIColor(hex: "1F1F24")
+        //view.backgroundColor = UIColor(hex: "1F1F24")
+        view.backgroundColor = UIColor.black
         getProducts()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(LessonCell.self)
+        tableView.register(DescriptionCell.self)
+        tableView.register(UnlockCell.self)
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.isUserInteractionEnabled = true
         view.addGestureRecognizer(pan)
-        unlockButton.addTarget(self, action: #selector(unlockButtonTapped), for: .touchUpInside)
     }
     
     private func getProducts() {
@@ -95,9 +77,7 @@ class CourseViewController: ViewController {
         view.addSubview(imageView)
         view.addSubview(titleView)
         view.addSubview(titleLabel)
-        view.addSubview(descriptionLabel)
         view.addSubview(tableView)
-        view.addSubview(unlockButton)
         
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -116,33 +96,14 @@ class CourseViewController: ViewController {
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             
-            descriptionLabel.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: 14),
-            descriptionLabel.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: -4),
-            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            
-            tableView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 4),
-            tableView.bottomAnchor.constraint(equalTo: unlockButton.topAnchor, constant: -10),
+            tableView.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: 14),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
-            unlockButton.heightAnchor.constraint(equalToConstant: 50),
-            unlockButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -4),
-            unlockButton.widthAnchor.constraint(equalToConstant: 160),
-            unlockButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
     }
     
     //MARK: - Handle user events
-    @objc
-    private func unlockButtonTapped() {
-        let vc = PurchaseViewController()
-        vc.modalPresentationStyle = .overCurrentContext
-        vc.modalTransitionStyle = .coverVertical
-        vc.product = products.first
-        present(vc, animated: true)
-    }
-    
     @objc
     private func viewDragged() {
         switch pan.state {
@@ -169,7 +130,7 @@ class CourseViewController: ViewController {
     
     private func handlePanEndedState() {
         let translationX = pan.translation(in: view).x
-        if translationX > UIScreen.main.bounds.width / 3 {
+        if translationX > UIScreen.main.bounds.width * 0.22 {
             animateDismiss()
         } else {
             animateReturnToNormalState()
@@ -192,20 +153,64 @@ class CourseViewController: ViewController {
     }
 }
 
+//MARK: - UnlockDelegate
+extension CourseViewController: UnlockDelegate {
+    func unlock() {
+        let vc = PurchaseViewController()
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.modalTransitionStyle = .coverVertical
+        vc.product = products.first
+        present(vc, animated: true)
+    }
+}
+
 //MARK: - UITableViewDelegate, UITableViewDataSource
 extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 160
+        switch indexPath.row {
+        case 0:
+            return calculateDescriptionHeight()
+        case 4:
+            return 60
+        default:
+            return 160
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 6
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: LessonCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
+        switch indexPath.row {
+        case 0:
+            return configureDescription()
+        case 4:
+            return configureUnlock()
+        default:
+            let cell: LessonCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
+            cell.configure()
+            return cell
+        }
+    }
+    
+    private func configureDescription() -> DescriptionCell {
+        let cell: DescriptionCell = tableView.dequeueReusableCell(forIndexPath: IndexPath(row: 0, section: 0))
         cell.configure()
         return cell
+    }
+    
+    private func configureUnlock() -> UnlockCell {
+        let cell: UnlockCell = tableView.dequeueReusableCell(forIndexPath: IndexPath(row: 4, section: 0))
+        cell.configure(withDelegate: self)
+        return cell
+    }
+    
+    private func calculateDescriptionHeight() -> CGFloat {
+        let string = "Этот курс - большой сборник архитектурных терминов и упражнений, чтобы легко ориентироваться в англоязычных текстах про любой стиль и эпоху."
+        let font = UIFont(name: "Arial", size: 17) ?? UIFont.systemFont(ofSize: 17)
+        let height = string.height(width: UIScreen.main.bounds.width - 20, font: font)
+        return height
     }
 }

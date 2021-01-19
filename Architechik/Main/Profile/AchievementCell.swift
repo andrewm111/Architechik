@@ -14,17 +14,33 @@ class AchievementCell: TableViewCell {
     private let achievementImageView: UIImageView = {
         let view = UIImageView()
         view.layer.cornerRadius = 50
-        view.backgroundColor = .systemBlue
+        view.backgroundColor = UIColor(hex: "613191")
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let achievementLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let view = UILabel()
-        view.font = UIFont(name: "Arial", size: 18)
-        view.textColor = .systemBlue
-        view.text = "Достижение 1"
+        view.font = UIFont(name: "Arial-BoldMT", size: 17)
+        view.textColor = UIColor(hex: "613191")
+        view.text = "How to tell about your project"
         view.textAlignment = .left
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    private let descriptionLabel: UILabel = {
+        let view = UILabel()
+        view.font = UIFont(name: "Arial", size: 16)
+        view.numberOfLines = 0
+        view.textColor = UIColor(hex: "613191")
+        view.text = "Ты получил ачивку.Ты получил ачивку.Ты получил ачивку.Ты получил ачивку.Ты получил ачивку."
+        view.textAlignment = .left
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    private let separatorView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(hex: "222222")
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -41,18 +57,30 @@ class AchievementCell: TableViewCell {
 
     private func setupSubviews() {
         addSubview(achievementImageView)
-        addSubview(achievementLabel)
+        addSubview(titleLabel)
+        addSubview(descriptionLabel)
+        addSubview(separatorView)
         
         NSLayoutConstraint.activate([
             achievementImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 14),
-            achievementImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            achievementImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 30),
             achievementImageView.heightAnchor.constraint(equalToConstant: 100),
             achievementImageView.widthAnchor.constraint(equalToConstant: 100),
             
-            achievementLabel.centerYAnchor.constraint(equalTo: achievementImageView.centerYAnchor),
-            achievementLabel.heightAnchor.constraint(equalToConstant: 24),
-            achievementLabel.leadingAnchor.constraint(equalTo: achievementImageView.trailingAnchor, constant: 20),
-            achievementLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -14),
+            titleLabel.topAnchor.constraint(equalTo: achievementImageView.topAnchor),
+            titleLabel.heightAnchor.constraint(equalToConstant: 24),
+            titleLabel.leadingAnchor.constraint(equalTo: achievementImageView.trailingAnchor, constant: 10),
+            titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -11),
+            
+            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
+            descriptionLabel.bottomAnchor.constraint(lessThanOrEqualTo: self.bottomAnchor, constant: -4),
+            descriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            descriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -11),
+            
+            separatorView.heightAnchor.constraint(equalToConstant: 1),
+            separatorView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            separatorView.leadingAnchor.constraint(equalTo: achievementImageView.trailingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
         ])
     }
 }

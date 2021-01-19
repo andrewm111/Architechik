@@ -19,6 +19,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.backgroundColor = .white
         self.window?.rootViewController = TabBarController()
         self.window?.makeKeyAndVisible()
+        NetworkService.shared.getUserInfo(courseId: "1") { result in
+            switch result {
+            case .success(_):
+                break
+            case .failure(let error):
+                print("Error in app delegate --- \(error)")
+            }
+        }
 //        let appleIDProvider = ASAuthorizationAppleIDProvider()
 //        appleIDProvider.getCredentialState(forUserID: KeychainItem.currentUserIdentifier) { (credentialState, error) in
 //            switch credentialState {

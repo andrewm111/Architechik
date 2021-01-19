@@ -9,12 +9,12 @@
 import Foundation
 
 struct Course: Hashable, Codable {
-    var id: Int
+    var id: String
     var title: String
     var description: String
     var fullDescription: String
-    var category: String
-    var price: Int
+    var idCategory: String
+    var price: String
     var courseNumber: String
     var img: String
 }

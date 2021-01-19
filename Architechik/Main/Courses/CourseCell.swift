@@ -16,7 +16,7 @@ class CourseCell: TableViewCell {
         view.image = UIImage(named: "backImage")
         view.contentMode = .scaleAspectFill
         let coverLayer = CALayer()
-        let rect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 200)
+        let rect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 179)
         coverLayer.frame = rect
         coverLayer.backgroundColor = UIColor.black.cgColor
         view.layer.addSublayer(coverLayer)
@@ -72,7 +72,9 @@ class CourseCell: TableViewCell {
     }()
     private let progressView: UIProgressView = {
         let view = UIProgressView()
-        view.layer.cornerRadius = 6
+        view.layer.cornerRadius = 3
+        view.backgroundColor = .black
+        view.progressTintColor = .systemBlue
         view.progress = 0.75
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -101,7 +103,6 @@ class CourseCell: TableViewCell {
         backImageView.addSubview(numberOfLessonsLabel)
         backImageView.addSubview(lessonIcon)
         backImageView.addSubview(priceLabel)
-        
         addSubview(titleLabel)
         addSubview(descriptionLabel)
         backImageView.addSubview(progressView)
@@ -135,12 +136,12 @@ class CourseCell: TableViewCell {
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 6),
             descriptionLabel.leadingAnchor.constraint(equalTo: backImageView.leadingAnchor, constant: 12),
             descriptionLabel.trailingAnchor.constraint(equalTo: backImageView.trailingAnchor, constant: -12),
-            descriptionLabel.bottomAnchor.constraint(equalTo: progressView.topAnchor, constant: -10),
+            descriptionLabel.bottomAnchor.constraint(lessThanOrEqualTo: progressView.topAnchor, constant: -4),
             
             progressView.heightAnchor.constraint(equalToConstant: 6),
             progressView.leadingAnchor.constraint(equalTo: backImageView.leadingAnchor, constant: 12),
             progressView.trailingAnchor.constraint(equalTo: backImageView.trailingAnchor, constant: -12),
-            progressView.bottomAnchor.constraint(equalTo: backImageView.bottomAnchor, constant: -12),
+            progressView.bottomAnchor.constraint(equalTo: backImageView.bottomAnchor, constant: -38),
         ])
     }
 }

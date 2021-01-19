@@ -9,10 +9,9 @@
 import Foundation
 
 struct CourseStructure: Hashable, Codable {
-    var id: Int64?
-    var courseId: Int
-    var title: String
+    var id: String
+    var idCourses: String
+    var idType: String
     var description: String
-    var category: String
     var file: String
 }

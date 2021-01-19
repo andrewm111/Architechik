@@ -17,9 +17,9 @@ class CoursesViewController: ViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let testButton: UIButton = {
+    private lazy var testButton: UIButton = {
         let view = UIButton(type: .custom)
-        view.layer.cornerRadius = 25
+        view.layer.cornerRadius = 20
         let font = UIFont(name: "Arial", size: 17) ?? UIFont.systemFont(ofSize: 17)
         let attributedString = NSAttributedString(string: "Пройти вводный тест", attributes: [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.black])
         view.setAttributedTitle(attributedString, for: .normal)
@@ -29,9 +29,15 @@ class CoursesViewController: ViewController {
     }()
     private let filterButton: UIButton = {
         let view = UIButton(type: .custom)
-        view.layer.cornerRadius = 25
+        view.layer.cornerRadius = 20
         view.backgroundColor = .systemBlue
         view.setImage(UIImage(named: "filter"), for: .normal)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    private let filterView: FilterView = {
+        let view = FilterView()
+        view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -40,6 +46,7 @@ class CoursesViewController: ViewController {
     lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
     lazy var jsonPath = Bundle.main.path(forResource: "courses", ofType: "json")
     var models: Array<Course> = []
+    var filteredModels: Array<Course> = []
     var cellHeights: Array<CGFloat> = []
 
     //MARK: - View lifecycle
@@ -49,20 +56,18 @@ class CoursesViewController: ViewController {
         setupSubviews()
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        self.tabBarController?.tabBar.isHidden = false
-//    }
-//
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        self.tabBarController?.tabBar.isHidden = true
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(categoryChanged), name: NSNotification.Name("CategoryChanged"), object: nil)
+    }
     
     //MARK: - Setup
     private func initialSetup() {
-        view.backgroundColor = UIColor(hex: "1F1F24")
-        
+        //view.backgroundColor = UIColor(hex: "1F1F24")
+        edgesForExtendedLayout = .bottom
+        extendedLayoutIncludesOpaqueBars = true
+        view.backgroundColor = UIColor.black
+        NotificationCenter.default.post(name: NSNotification.Name("CategoryChanged"), object: nil, userInfo: ["category": -1])
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(CourseCell.self)
@@ -70,30 +75,37 @@ class CoursesViewController: ViewController {
         tableView.backgroundColor = .clear
         tableView.isUserInteractionEnabled = true
         tableView.addGestureRecognizer(tap)
+        filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
         fetchJSON()
     }
 
     private func setupSubviews() {
+        addTabBarSeparator()
         view.addSubview(tableView)
-        view.addSubview(testButton)
+        //view.addSubview(testButton)
         view.addSubview(filterButton)
+        view.addSubview(filterView)
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: filterButton.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
-            filterButton.heightAnchor.constraint(equalToConstant: 50),
-            filterButton.widthAnchor.constraint(equalToConstant: 50),
-            filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            filterButton.heightAnchor.constraint(equalToConstant: 40),
+            filterButton.widthAnchor.constraint(equalToConstant: 40),
+            filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -14),
             filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
             
-            testButton.centerYAnchor.constraint(equalTo: filterButton.centerYAnchor),
-            testButton.heightAnchor.constraint(equalToConstant: 50),
-            testButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-            testButton.trailingAnchor.constraint(equalTo: filterButton.leadingAnchor, constant: -6),
+            filterView.heightAnchor.constraint(equalToConstant: 250),
+            filterView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 90),
+            filterView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            filterView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
+//        testButton.centerYAnchor.constraint(equalTo: filterButton.centerYAnchor),
+//        testButton.heightAnchor.constraint(equalToConstant: 30),
+//        testButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+//        testButton.trailingAnchor.constraint(equalTo: filterButton.leadingAnchor, constant: -6),
     }
     
     //MARK: - Supporting methods
@@ -117,18 +129,32 @@ class CoursesViewController: ViewController {
 //        let tappedCell = tableView.cellForRow(at: tapIndexPath) as? CourseCell
     }
     
-    private func fetchJSON() {
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        guard let path = jsonPath else { return }
-        let jsonURL = URL(fileURLWithPath: path)
-        do {
-            let data = try Data(contentsOf: jsonURL)
-            let models = try decoder.decode([Course].self, from: data)
-            self.models = models
-        } catch {
-            print("Error with converting json file to model")
+    @objc
+    private func categoryChanged(_ notification: Notification) {
+        guard let category = notification.userInfo?["category"] as? Int else { return }
+        if category == -1 {
+            filteredModels = models
+        } else {
+            filteredModels = models.filter { model -> Bool in
+                return model.idCategory == "\(category)"
+            }
         }
+        tableView.reloadData()
+        self.tabBarController?.tabBar.isHidden = false
+        self.tabBarController?.tabBar.isTranslucent = false
+        filterView.isHidden = true
+    }
+    
+    @objc
+    private func filterButtonTapped() {
+        //self.tabBarController?.tabBar.isTranslucent = true
+        self.tabBarController?.tabBar.isHidden = true
+        filterView.isHidden = false
+        //filterView.frame = CGRect(x: 0, y: 629, width: 375, height: 200)
+    }
+    
+    private func fetchJSON() {
+        
     }
 
 }
@@ -137,20 +163,21 @@ class CoursesViewController: ViewController {
 extension CoursesViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let font = UIFont(name: "Arial", size: 15) ?? UIFont.systemFont(ofSize: 15)
-        let width = UIScreen.main.bounds.width - 16
-        let string = models[indexPath.row].description
-        let height = string.height(width: width, font: font) + 129
-        return height
+//        let font = UIFont(name: "Arial", size: 15) ?? UIFont.systemFont(ofSize: 15)
+//        let width = UIScreen.main.bounds.width - 16
+//        let string = models[indexPath.row].description
+//        let height = string.height(width: width, font: font) + 129
+//        return height
+        return 230
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return models.count
+        return filteredModels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: CourseCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
-        cell.configure(withModel: models[indexPath.row])
+        cell.configure(withModel: filteredModels[indexPath.row])
         return cell
     }
 }
