@@ -154,7 +154,17 @@ class CoursesViewController: ViewController {
     }
     
     private func fetchJSON() {
-        
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        guard let path = jsonPath else { return }
+        let jsonURL = URL(fileURLWithPath: path)
+        do {
+            let data = try Data(contentsOf: jsonURL)
+            let models = try decoder.decode([Course].self, from: data)
+            self.models = models
+        } catch {
+            print("Error with converting json file to model")
+        }
     }
 
 }

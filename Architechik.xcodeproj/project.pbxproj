@@ -22,6 +22,8 @@
 		1F3CB71A25B092BC000B6922 /* UIViewController + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3CB71925B092BC000B6922 /* UIViewController + Extension.swift */; };
 		1F41C9DE25B1D741005F7EBF /* PurchaseError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F41C9DD25B1D741005F7EBF /* PurchaseError.swift */; };
 		1F45852725A8F0B0007E46F2 /* CourseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F45852625A8F0B0007E46F2 /* CourseCell.swift */; };
+		1F4A4A1B25BB06D3005EA447 /* IndexableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4A4A1A25BB06D3005EA447 /* IndexableViewController.swift */; };
+		1F4A4A1E25BB347F005EA447 /* FeatureCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4A4A1D25BB347F005EA447 /* FeatureCell.swift */; };
 		1F503CBE25B6D08C00E62291 /* RequestType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F503CBD25B6D08C00E62291 /* RequestType.swift */; };
 		1F503CC025B6D0AF00E62291 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F503CBF25B6D0AF00E62291 /* API.swift */; };
 		1F503CC225B6D25600E62291 /* StringConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F503CC125B6D25600E62291 /* StringConversion.swift */; };
@@ -45,6 +47,7 @@
 		1FA1A13D25ACC880008621FB /* GrammarArticleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA1A13C25ACC880008621FB /* GrammarArticleModel.swift */; };
 		1FA1A13F25ACCBF0008621FB /* StudentsProgressModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA1A13E25ACCBF0008621FB /* StudentsProgressModel.swift */; };
 		1FA1A14125ACCD70008621FB /* CourseStructureModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA1A14025ACCD70008621FB /* CourseStructureModel.swift */; };
+		1FCF656C25B7943F00624C61 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCF656B25B7943F00624C61 /* PageViewController.swift */; };
 		1FDE177525B4EB1B0059E7FC /* LayoutAnchorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FDE177425B4EB1B0059E7FC /* LayoutAnchorHelper.swift */; };
 		1FED14B225AB9818009A6B0C /* AchievementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED14B125AB9818009A6B0C /* AchievementCell.swift */; };
 		1FF0A80B25B75C8700A9666B /* HelloViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF0A80A25B75C8700A9666B /* HelloViewController.swift */; };
@@ -80,6 +83,8 @@
 		1F3CB71925B092BC000B6922 /* UIViewController + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Extension.swift"; sourceTree = "<group>"; };
 		1F41C9DD25B1D741005F7EBF /* PurchaseError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseError.swift; sourceTree = "<group>"; };
 		1F45852625A8F0B0007E46F2 /* CourseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCell.swift; sourceTree = "<group>"; };
+		1F4A4A1A25BB06D3005EA447 /* IndexableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexableViewController.swift; sourceTree = "<group>"; };
+		1F4A4A1D25BB347F005EA447 /* FeatureCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureCell.swift; sourceTree = "<group>"; };
 		1F503CBD25B6D08C00E62291 /* RequestType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestType.swift; sourceTree = "<group>"; };
 		1F503CBF25B6D0AF00E62291 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		1F503CC125B6D25600E62291 /* StringConversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringConversion.swift; sourceTree = "<group>"; };
@@ -103,6 +108,7 @@
 		1FA1A13C25ACC880008621FB /* GrammarArticleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrammarArticleModel.swift; sourceTree = "<group>"; };
 		1FA1A13E25ACCBF0008621FB /* StudentsProgressModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentsProgressModel.swift; sourceTree = "<group>"; };
 		1FA1A14025ACCD70008621FB /* CourseStructureModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseStructureModel.swift; sourceTree = "<group>"; };
+		1FCF656B25B7943F00624C61 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		1FDE177425B4EB1B0059E7FC /* LayoutAnchorHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutAnchorHelper.swift; sourceTree = "<group>"; };
 		1FED14B125AB9818009A6B0C /* AchievementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementCell.swift; sourceTree = "<group>"; };
 		1FF0A80A25B75C8700A9666B /* HelloViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloViewController.swift; sourceTree = "<group>"; };
@@ -193,6 +199,15 @@
 			path = Courses;
 			sourceTree = "<group>";
 		};
+		1F4A4A1C25BB346A005EA447 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				1FF0A80E25B75DE800A9666B /* FeaturesViewController.swift */,
+				1F4A4A1D25BB347F005EA447 /* FeatureCell.swift */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
 		1F6E92E425A8A03A00DF974F /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -258,11 +273,21 @@
 			isa = PBXGroup;
 			children = (
 				1F11590C25A0D2DB00682A69 /* LoginViewController.swift */,
-				1FF0A80A25B75C8700A9666B /* HelloViewController.swift */,
-				1FF0A80C25B75DD600A9666B /* AppDescriptionViewController.swift */,
-				1FF0A80E25B75DE800A9666B /* FeaturesViewController.swift */,
+				1FF13F4E25B7880D007BD245 /* Intro */,
 			);
 			path = Entrance;
+			sourceTree = "<group>";
+		};
+		1FF13F4E25B7880D007BD245 /* Intro */ = {
+			isa = PBXGroup;
+			children = (
+				1FCF656B25B7943F00624C61 /* PageViewController.swift */,
+				1FF0A80A25B75C8700A9666B /* HelloViewController.swift */,
+				1FF0A80C25B75DD600A9666B /* AppDescriptionViewController.swift */,
+				1F4A4A1C25BB346A005EA447 /* Features */,
+				1F4A4A1A25BB06D3005EA447 /* IndexableViewController.swift */,
+			);
+			path = Intro;
 			sourceTree = "<group>";
 		};
 		1FF6706C25A9B2AB006D4EEE /* Helpers */ = {
@@ -465,12 +490,15 @@
 				1FF0A80D25B75DD600A9666B /* AppDescriptionViewController.swift in Sources */,
 				1F83355D25A756BC00BCEDE8 /* ProfileViewController.swift in Sources */,
 				1F3B0E5B25B1CFB1005CF0BC /* IAPHelper.swift in Sources */,
+				1F4A4A1B25BB06D3005EA447 /* IndexableViewController.swift in Sources */,
 				1F11590D25A0D2DB00682A69 /* LoginViewController.swift in Sources */,
 				1F517F4B25ADF71400F121D4 /* WebImageView.swift in Sources */,
 				1F83355925A756A500BCEDE8 /* ArticlesViewController.swift in Sources */,
 				1FF4706925AA4156001E427F /* UIColor + HexValue.swift in Sources */,
+				1FCF656C25B7943F00624C61 /* PageViewController.swift in Sources */,
 				1FF8AA1825B6CFF60095663A /* NetworkError.swift in Sources */,
 				1F3CB71825AF122B000B6922 /* String + Height.swift in Sources */,
+				1F4A4A1E25BB347F005EA447 /* FeatureCell.swift in Sources */,
 				1FF6707625A9F44E006D4EEE /* LessonCell.swift in Sources */,
 				1F503CC425B6F72B00E62291 /* AchievementModel.swift in Sources */,
 				1FA1A13D25ACC880008621FB /* GrammarArticleModel.swift in Sources */,

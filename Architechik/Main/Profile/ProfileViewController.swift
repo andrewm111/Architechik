@@ -77,7 +77,7 @@ class ProfileViewController: UIViewController {
             avatarView.widthAnchor.constraint(equalToConstant: 150),
             avatarView.heightAnchor.constraint(equalToConstant: 150),
             
-            progressLabel.topAnchor.constraint(equalTo: avatarView.bottomAnchor, constant: 30),
+            progressLabel.topAnchor.constraint(equalTo: avatarView.bottomAnchor, constant: 20),
             progressLabel.heightAnchor.constraint(equalToConstant: 24),
             progressLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
             progressLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
@@ -108,9 +108,14 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: AchievementCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
-        cell.configure()
+        cell.configure(withDelegate: self)
         return cell
     }
-    
-    
+}
+
+//MARK: - SharingDelegate
+extension ProfileViewController: SharingDelegate {
+    func share(with activityVC: UIActivityViewController) {
+        present(activityVC, animated: true)
+    }
 }

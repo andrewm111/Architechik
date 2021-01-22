@@ -18,15 +18,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = .white
         self.window?.rootViewController = TabBarController()
+        //self.window?.rootViewController = PageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         self.window?.makeKeyAndVisible()
-        NetworkService.shared.getUserInfo(courseId: "1") { result in
-            switch result {
-            case .success(_):
-                break
-            case .failure(let error):
-                print("Error in app delegate --- \(error)")
-            }
-        }
+//        NetworkService.shared.buyCourse(courseId: "1") { result in
+//            switch result {
+//            case .success(_):
+//                break
+//            case .failure(let error):
+//                print("Error in app delegate --- \(error)")
+//            }
+//        }
 //        let appleIDProvider = ASAuthorizationAppleIDProvider()
 //        appleIDProvider.getCredentialState(forUserID: KeychainItem.currentUserIdentifier) { (credentialState, error) in
 //            switch credentialState {

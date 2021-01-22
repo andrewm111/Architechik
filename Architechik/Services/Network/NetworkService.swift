@@ -118,30 +118,24 @@ class NetworkService {
     }
     
     private func generateHttpBody(type: RequestType, courseId: String?, values: String?) -> Data? {
-        //let token = UserDefaults.standard.string(forKey: "userIdentifier") ?? "123"
-        let token = "321"
-        var typeString = ""
+        var string = "password=abc_132-A-b"
         switch type {
         case .post(let type):
-            typeString = type
+            string += "&type=\(type)"
         default:
-            break
+            return nil
         }
-        var parametersArray: Array<(String, String, Bool)> = [
-            ("password", "abc_132-A-b", false),
-            ("token", token, false),
-            ("type", typeString, false)
-        ]
+        let token = "123"
+        string += "&token=\(token)"
         if let id = courseId {
-            parametersArray.append(("course_id", id, false))
+            string += "&course_id=\(id)"
         }
         if let values = values {
-            parametersArray.append(("values", values, false))
+            string += "&values=\(values)"
         }
-        var parameters = ""
-        parameters.makeFields(rows: parametersArray)
-        print(parameters)
-        return parameters.data(using: .utf8)
+        print(string)
+        let data = string.data(using: .utf8)
+        return data
     }
     
     private func cutUnnecessaryData(_ data: Data, completion: @escaping SessionResult) {

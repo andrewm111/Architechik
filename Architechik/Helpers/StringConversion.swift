@@ -15,7 +15,7 @@ extension String {
             if row.2 || row.1 == "null" {
                 strings.append("\n    \"\(row.0)\": \(row.1)")
             } else {
-                strings.append("\n    \"\(row.0)\": \"\(row.1)\"")
+                strings.append("\n    \"\(row.0)\":\"\(row.1)\"")
             }
         }
         let string = "{" + strings.joined(separator: ",") + "\n}"

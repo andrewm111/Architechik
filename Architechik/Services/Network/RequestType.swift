@@ -20,6 +20,7 @@ enum RequestType {
         case .getCourseStructure(let id):
             return "?table=course_structure&id=\(id)"
         case .post(_):
+            //return "?token=123&type=get&course_id=1&password=abc_132-A-b"
             return ""
         }
     }

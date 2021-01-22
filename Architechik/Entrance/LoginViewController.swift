@@ -9,7 +9,7 @@
 import UIKit
 import AuthenticationServices
 
-class LoginViewController: UIViewController {
+class LoginViewController: IndexableViewController {
     
     //MARK: - Subviews
     private let loginButton: ASAuthorizationAppleIDButton = {
@@ -26,8 +26,9 @@ class LoginViewController: UIViewController {
     private let imageView: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "logo")
+        view.clipsToBounds = true
         //view.backgroundColor = UIColor(displayP3Red: 106 / 255, green: 25 / 255, blue: 164 / 255, alpha: 1)
-        view.contentMode = .scaleAspectFill
+        view.contentMode = .scaleAspectFit
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -40,12 +41,21 @@ class LoginViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let subtitleLabel: UILabel = {
+    private let welcomeLabel: UILabel = {
         let view = UILabel()
         view.textAlignment = .center
-        view.text = "курсы для архитекторов"
-        view.textColor = .purple
-        view.font = UIFont(name: "Arial", size: 30)
+        view.text = "Добро пожаловать!"
+        view.textColor = .white
+        view.font = UIFont(name: "Arial", size: 32)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    private let cardView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(hex: "613191")
+        view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        view.layer.cornerRadius = 20
+        view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -64,36 +74,42 @@ class LoginViewController: UIViewController {
     
     //MARK: - Supporting methods
     private func initialSetup() {
-        view.backgroundColor = .white
+        view.backgroundColor = .black
         loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
     }
     
     private func setupSubviews() {
+        view.addSubview(cardView)
         view.addSubview(loginButton)
         view.addSubview(imageView)
         view.addSubview(titleLabel)
-        view.addSubview(subtitleLabel)
+        view.addSubview(welcomeLabel)
         
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: view.topAnchor),
-            imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.62),
-            imageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -20),
+            imageView.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 5),
+            imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.52),
+            imageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -10),
             imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
             titleLabel.heightAnchor.constraint(equalToConstant: 40),
-            titleLabel.bottomAnchor.constraint(equalTo: subtitleLabel.topAnchor, constant: -20),
+            titleLabel.bottomAnchor.constraint(equalTo: cardView.topAnchor, constant: -50),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
             
-            subtitleLabel.heightAnchor.constraint(equalToConstant: 32),
-            subtitleLabel.bottomAnchor.constraint(equalTo: loginButton.topAnchor, constant: -20),
-            subtitleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            subtitleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            welcomeLabel.heightAnchor.constraint(equalToConstant: 34),
+            welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
+            welcomeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            welcomeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
+            loginButton.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 25),
             loginButton.heightAnchor.constraint(equalToConstant: 58),
-            loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 6),
-            loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -6),
+            loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            
+            cardView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            cardView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            cardView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
     
