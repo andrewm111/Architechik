@@ -12,7 +12,7 @@ struct Achievement: Hashable, Codable {
     var id: String
     var title: String
     var description: String
-    var idCourses: String
+    var idCourses: String?
     var imgGood: String
     var imgBad: String
 }

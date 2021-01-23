@@ -44,6 +44,7 @@
 		1F942B5325AEDEB800EFD60E /* grammar.json in Resources */ = {isa = PBXBuildFile; fileRef = 1F942B4D25AEDEB800EFD60E /* grammar.json */; };
 		1F942B5425AEDEB800EFD60E /* achievements.json in Resources */ = {isa = PBXBuildFile; fileRef = 1F942B4E25AEDEB800EFD60E /* achievements.json */; };
 		1F942B5525AEDEB800EFD60E /* articles.json in Resources */ = {isa = PBXBuildFile; fileRef = 1F942B4F25AEDEB800EFD60E /* articles.json */; };
+		1FA10A8425BC234D00D2FBC5 /* LessonCellDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA10A8325BC234D00D2FBC5 /* LessonCellDataSource.swift */; };
 		1FA1A13D25ACC880008621FB /* GrammarArticleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA1A13C25ACC880008621FB /* GrammarArticleModel.swift */; };
 		1FA1A13F25ACCBF0008621FB /* StudentsProgressModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA1A13E25ACCBF0008621FB /* StudentsProgressModel.swift */; };
 		1FA1A14125ACCD70008621FB /* CourseStructureModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA1A14025ACCD70008621FB /* CourseStructureModel.swift */; };
@@ -105,6 +106,7 @@
 		1F942B4D25AEDEB800EFD60E /* grammar.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = grammar.json; sourceTree = "<group>"; };
 		1F942B4E25AEDEB800EFD60E /* achievements.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = achievements.json; sourceTree = "<group>"; };
 		1F942B4F25AEDEB800EFD60E /* articles.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = articles.json; sourceTree = "<group>"; };
+		1FA10A8325BC234D00D2FBC5 /* LessonCellDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonCellDataSource.swift; sourceTree = "<group>"; };
 		1FA1A13C25ACC880008621FB /* GrammarArticleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrammarArticleModel.swift; sourceTree = "<group>"; };
 		1FA1A13E25ACCBF0008621FB /* StudentsProgressModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentsProgressModel.swift; sourceTree = "<group>"; };
 		1FA1A14025ACCD70008621FB /* CourseStructureModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseStructureModel.swift; sourceTree = "<group>"; };
@@ -217,6 +219,7 @@
 				1FA1A13E25ACCBF0008621FB /* StudentsProgressModel.swift */,
 				1FA1A14025ACCD70008621FB /* CourseStructureModel.swift */,
 				1F503CC325B6F72B00E62291 /* AchievementModel.swift */,
+				1FA10A8325BC234D00D2FBC5 /* LessonCellDataSource.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -369,6 +372,7 @@
 				1F11590325A0D2DB00682A69 /* Sources */,
 				1F11590425A0D2DB00682A69 /* Frameworks */,
 				1F11590525A0D2DB00682A69 /* Resources */,
+				DC28314E67CC9653BE355DC5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -431,6 +435,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		DC28314E67CC9653BE355DC5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Architechik/Pods-Architechik-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Architechik/Pods-Architechik-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Architechik/Pods-Architechik-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		ED7285ED7E03E2A73AC682F5 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -489,6 +510,7 @@
 				1FF8AA1625B6CFD80095663A /* NetworkService.swift in Sources */,
 				1FF0A80D25B75DD600A9666B /* AppDescriptionViewController.swift in Sources */,
 				1F83355D25A756BC00BCEDE8 /* ProfileViewController.swift in Sources */,
+				1FA10A8425BC234D00D2FBC5 /* LessonCellDataSource.swift in Sources */,
 				1F3B0E5B25B1CFB1005CF0BC /* IAPHelper.swift in Sources */,
 				1F4A4A1B25BB06D3005EA447 /* IndexableViewController.swift in Sources */,
 				1F11590D25A0D2DB00682A69 /* LoginViewController.swift in Sources */,
@@ -653,6 +675,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = mikel.Shmonov.Architechik;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -676,6 +699,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = mikel.Shmonov.Architechik;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

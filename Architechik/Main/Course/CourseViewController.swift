@@ -160,7 +160,10 @@ extension CourseViewController: UnlockDelegate {
         vc.modalPresentationStyle = .overCurrentContext
         vc.modalTransitionStyle = .coverVertical
         vc.product = products.first
-        present(vc, animated: true)
+        view.addSubview(vc.view)
+        self.addChild(vc)
+        vc.didMove(toParent: self)
+        //present(vc, animated: true)
     }
 }
 
@@ -190,7 +193,8 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
             return configureUnlock()
         default:
             let cell: LessonCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
-            cell.configure()
+            let article = Article(id: "", title: "", description: "", img: "", file: "")
+            cell.configure(withDataSource: article)
             return cell
         }
     }

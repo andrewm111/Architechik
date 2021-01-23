@@ -62,27 +62,38 @@ class LessonCell: TableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
+    //MARK: - Properties
+    private var model: LessonCellDataSource?
 
     //MARK: - Config
-    override func  configure() {
-        super.configure()
-        initialSetup()
+    func configure(withDataSource dataSource: LessonCellDataSource) {
+        self.model = dataSource
+        selectionStyle = .none
+        backgroundColor = .clear
+        initialSetup(withDataSource: dataSource)
         setupSubviews()
     }
     
     func makeDone() {
         doneLabel.isHidden = false
         doneIcon.isHidden = false
+        model?.isDone = true
     }
     
     func makeNotDone() {
         doneLabel.isHidden = true
         doneIcon.isHidden = true
+        model?.isDone = false
     }
     
     //MARK: - Setup
-    private func initialSetup() {
+    private func initialSetup(withDataSource dataSource: LessonCellDataSource) {
         isUserInteractionEnabled = true
+        if dataSource.id != "" {
+            titleLabel.text = dataSource.title
+            descriptionLabel.text = dataSource.description
+        }
     }
     
     private func setupSubviews() {

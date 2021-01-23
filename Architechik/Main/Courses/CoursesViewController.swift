@@ -36,7 +36,7 @@ class CoursesViewController: ViewController {
         return view
     }()
     private let filterView: FilterView = {
-        let view = FilterView()
+        let view = FilterView(withCategoryName: "course")
         view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -47,7 +47,7 @@ class CoursesViewController: ViewController {
     lazy var jsonPath = Bundle.main.path(forResource: "courses", ofType: "json")
     var models: Array<Course> = []
     var filteredModels: Array<Course> = []
-    var cellHeights: Array<CGFloat> = []
+    private var cellHeights: Array<CGFloat> = []
 
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -58,7 +58,6 @@ class CoursesViewController: ViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(categoryChanged), name: NSNotification.Name("CategoryChanged"), object: nil)
     }
     
     //MARK: - Setup
@@ -67,7 +66,8 @@ class CoursesViewController: ViewController {
         edgesForExtendedLayout = .bottom
         extendedLayoutIncludesOpaqueBars = true
         view.backgroundColor = UIColor.black
-        NotificationCenter.default.post(name: NSNotification.Name("CategoryChanged"), object: nil, userInfo: ["category": -1])
+        NotificationCenter.default.addObserver(self, selector: #selector(categoryChanged), name: NSNotification.Name("CategoryChanged"), object: nil)
+        fetchJSON()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(CourseCell.self)
@@ -76,7 +76,7 @@ class CoursesViewController: ViewController {
         tableView.isUserInteractionEnabled = true
         tableView.addGestureRecognizer(tap)
         filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
-        fetchJSON()
+        NotificationCenter.default.post(name: NSNotification.Name("CategoryChanged"), object: nil, userInfo: ["category": -1])
     }
 
     private func setupSubviews() {
@@ -121,12 +121,16 @@ class CoursesViewController: ViewController {
 //        transition.type = CATransitionType.push
 //        transition.subtype = CATransitionSubtype.fromRight
 //        self.view.window!.layer.add(transition, forKey: nil)
+         let tapLocation = tap.location(in: tableView)
+        guard
+            let tapIndexPath = self.tableView.indexPathForRow(at: tapLocation),
+            let _ = tableView.cellForRow(at: tapIndexPath) as? CourseCell
+            else { return }
         present(vc, animated: true) {
             //self.tabBarController?.tabBar.isHidden = true
         }
-//        let tapLocation = tap.location(in: tableView)
-//        guard let tapIndexPath = self.tableView.indexPathForRow(at: tapLocation) else { return }
-//        let tappedCell = tableView.cellForRow(at: tapIndexPath) as? CourseCell
+       
+        
     }
     
     @objc
@@ -136,7 +140,7 @@ class CoursesViewController: ViewController {
             filteredModels = models
         } else {
             filteredModels = models.filter { model -> Bool in
-                return model.idCategory == "\(category)"
+                return model.category == "\(category)"
             }
         }
         tableView.reloadData()

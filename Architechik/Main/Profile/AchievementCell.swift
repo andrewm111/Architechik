@@ -15,6 +15,7 @@ class AchievementCell: TableViewCell {
         let view = UIImageView()
         view.layer.cornerRadius = 40
         view.backgroundColor = UIColor(hex: "613191")
+        view.image = UIImage(named: "bumagaFull")
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -106,15 +107,15 @@ class AchievementCell: TableViewCell {
     @objc
     private func shareTapped() {
         // Setting description
-        let firstActivityItem = "Description you want.."
+        let firstActivityItem = "Я получил достижение в Architechik"
 
         // Setting url
-        let secondActivityItem: NSURL = NSURL(string: "http://google.com/")!
+        //let secondActivityItem: NSURL = NSURL(string: "http://google.com/")!
 
         // If you want to use an image
-        let image: UIImage = UIImage(named: "share")!
+        let image: UIImage = UIImage(named: "bumagaFull")!
         let activityViewController: UIActivityViewController = UIActivityViewController(
-            activityItems: [firstActivityItem, secondActivityItem, image], applicationActivities: nil)
+            activityItems: [firstActivityItem, image], applicationActivities: nil)
 
         // This lines is for the popover you need to show in iPad
         activityViewController.popoverPresentationController?.sourceView = shareButton

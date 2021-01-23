@@ -18,7 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = .white
         self.window?.rootViewController = TabBarController()
-        //self.window?.rootViewController = PageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         self.window?.makeKeyAndVisible()
 //        NetworkService.shared.buyCourse(courseId: "1") { result in
 //            switch result {
@@ -34,19 +33,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            case .authorized:
 //                DispatchQueue.main.async {
 //                    self.window?.rootViewController = TabBarController()
-//                    self.window?.makeKeyAndVisible()
 //                }
 //            case .revoked, .notFound:
 //                // The Apple ID credential is either revoked or was not found, so show the sign-in UI.
 //                DispatchQueue.main.async {
-//                    self.window?.rootViewController = LoginViewController()
-//                    self.window?.makeKeyAndVisible()
+//                    if UserDefaults.standard.bool(forKey: "introShowed") {
+//                        self.window?.rootViewController = LoginViewController()
+//                    } else {
+//                        self.window?.rootViewController = PageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+//                    }
 //                }
 //            default:
-//                break
+//                DispatchQueue.main.async {
+//                    self.window?.rootViewController = PageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+//                }
+//            }
+//            DispatchQueue.main.async {
+//                self.window?.makeKeyAndVisible()
 //            }
 //        }
-        
         return true
     }
 

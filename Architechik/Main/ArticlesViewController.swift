@@ -24,6 +24,17 @@ class ArticlesViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    private let filterView: FilterView = {
+        let view = FilterView(withCategoryName: "article")
+        view.isHidden = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    //MARK: - Properties
+    lazy var jsonPath = Bundle.main.path(forResource: "articles", ofType: "json")
+    var models: Array<Article> = []
+    var filteredModels: Array<Article> = []
 
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -36,18 +47,25 @@ class ArticlesViewController: UIViewController {
     private func initialSetup() {
         //view.backgroundColor = UIColor(hex: "1F1F24")
         view.backgroundColor = UIColor.black
+        edgesForExtendedLayout = .bottom
+        extendedLayoutIncludesOpaqueBars = true
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(LessonCell.self)
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.isUserInteractionEnabled = true
+        fetchJSON()
+        filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
+        NotificationCenter.default.addObserver(self, selector: #selector(categoryChanged), name: NSNotification.Name("CategoryChanged"), object: nil)
+        NotificationCenter.default.post(name: NSNotification.Name("CategoryChanged"), object: nil, userInfo: ["category": -1, "categoryName": "article"])
     }
 
     private func setupSubviews() {
         addTabBarSeparator()
         view.addSubview(tableView)
         view.addSubview(filterButton)
+        view.addSubview(filterView)
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -59,11 +77,57 @@ class ArticlesViewController: UIViewController {
             filterButton.widthAnchor.constraint(equalToConstant: 40),
             filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -14),
             filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
+            
+            filterView.heightAnchor.constraint(equalToConstant: 250),
+            filterView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 90),
+            filterView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            filterView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
     
-    //MARK: - Supporting methods
+    //MARK: - Events handling
+    @objc
+    private func categoryChanged(_ notification: Notification) {
+        guard
+            let category = notification.userInfo?["category"] as? Int,
+            let name = notification.userInfo?["categoryName"] as? String,
+            name == "article"
+            else { return }
+        if category == -1 {
+            filteredModels = models
+        } else {
+            filteredModels = models.filter { model -> Bool in
+                return model.category == "\(category)"
+            }
+        }
+        tableView.reloadData()
+        self.tabBarController?.tabBar.isHidden = false
+        self.tabBarController?.tabBar.isTranslucent = false
+        filterView.isHidden = true
+    }
     
+    @objc
+    private func filterButtonTapped() {
+        //self.tabBarController?.tabBar.isTranslucent = true
+        self.tabBarController?.tabBar.isHidden = true
+        filterView.isHidden = false
+        //filterView.frame = CGRect(x: 0, y: 629, width: 375, height: 200)
+    }
+    
+    //MARK: - Supporting methods
+    private func fetchJSON() {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        guard let path = jsonPath else { return }
+        let jsonURL = URL(fileURLWithPath: path)
+        do {
+            let data = try Data(contentsOf: jsonURL)
+            let models = try decoder.decode([Article].self, from: data)
+            self.models = models
+        } catch {
+            print("Error with converting json file to model")
+        }
+    }
 
 }
 
@@ -71,12 +135,12 @@ class ArticlesViewController: UIViewController {
 extension ArticlesViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return filteredModels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: LessonCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
-        cell.configure()
+        cell.configure(withDataSource: filteredModels[indexPath.row])
         cell.makeNotDone()
         return cell
     }

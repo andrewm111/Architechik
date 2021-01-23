@@ -69,6 +69,7 @@ class LoginViewController: IndexableViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        UserDefaults.standard.set(true, forKey: "introShowed")
         //performExistingAccountSetupFlows()
     }
     

@@ -13,7 +13,8 @@ class FilterView: UIView {
     private lazy var stackView: UIStackView = {
         var views: Array<UIView> = []
         for i in -1...2 {
-            let categoryView = CategoryView(ofType: Category.init(rawValue: i))
+            let categoryView = CategoryView(ofType: Category.init(rawValue: i), categoryName: categoryName)
+            if i == -1 { categoryView.select()}
             views.append(categoryView)
         }
         let view = UIStackView(arrangedSubviews: views)
@@ -24,16 +25,12 @@ class FilterView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    private var categoryName: String = ""
     
     //MARK: - View lifecycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        initialSetup()
-        setupSubviews()
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
+    convenience init(withCategoryName categoryName: String) {
+        self.init(frame: .zero)
+        self.categoryName = categoryName
         initialSetup()
         setupSubviews()
     }

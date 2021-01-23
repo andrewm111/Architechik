@@ -13,7 +13,8 @@ struct Course: Hashable, Codable {
     var title: String
     var description: String
     var fullDescription: String
-    var idCategory: String
+    var idCategory: String?
+    var category: String?
     var price: String
     var courseNumber: String
     var img: String

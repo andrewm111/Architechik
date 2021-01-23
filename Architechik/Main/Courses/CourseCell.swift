@@ -16,7 +16,7 @@ class CourseCell: TableViewCell {
         view.image = UIImage(named: "backImage")
         view.contentMode = .scaleAspectFill
         let coverLayer = CALayer()
-        let rect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 179)
+        let rect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 210)
         coverLayer.frame = rect
         coverLayer.backgroundColor = UIColor.black.cgColor
         view.layer.addSublayer(coverLayer)

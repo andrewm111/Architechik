@@ -29,10 +29,12 @@ class CategoryView: UIView {
     
     //MARK: - Properties
     private var category: Category = .intermediate
+    private var categoryName: String = ""
     
     //MARK: - View lifecycle
-    convenience init(ofType type: Category?) {
+    convenience init(ofType type: Category?, categoryName: String) {
         self.init(frame: .zero)
+        self.categoryName = categoryName
         setupSubviews()
         if let type = type { self.category = type }
         initialSetup(withType: category)
@@ -80,7 +82,7 @@ class CategoryView: UIView {
     }
     
     //MARK: - External methods
-    private func select() {
+    func select() {
         checkmarkIcon.isHidden = false
         label.textColor = .blue
     }
@@ -92,14 +94,18 @@ class CategoryView: UIView {
 
     @objc
     private func categoryTapped() {
-        let info = ["category": category.rawValue]
+        let info: [String: Any] = ["category": category.rawValue, "categoryName": categoryName]
         NotificationCenter.default.post(name: NSNotification.Name("CategoryChanged"), object: nil, userInfo: info)
         select()
     }
     
     @objc private func categoryChanged(_ notification: Notification) {
-        guard let categoryInfo = notification.userInfo?["category"] as? Int else { return }
-        if Int(categoryInfo) == category.rawValue { select() } else { unselect() }
+        guard
+            let categoryInfo = notification.userInfo?["category"] as? Int,
+            let name = notification.userInfo?["categoryName"] as? String,
+            name == categoryName
+            else { return }
+        if categoryInfo == category.rawValue { select() } else { unselect() }
     }
 }
 

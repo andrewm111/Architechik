@@ -8,11 +8,13 @@
 
 import Foundation
 
-struct Grammar: Hashable, Codable {
+struct Grammar: Hashable, Codable, LessonCellDataSource {
     var id: String
     var title: String
     var description: String
-    var idCategory: String
+    var idCategory: String?
+    var category: String?
     var img: String
     var file: String
+    var isDone: Bool? = false
 }
