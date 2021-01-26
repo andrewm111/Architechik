@@ -19,7 +19,8 @@ class LoginViewController: IndexableViewController {
         //view.imageView?.contentMode = .scaleToFill
         view.contentVerticalAlignment = .fill
         view.contentHorizontalAlignment = .fill
-        view.layer.cornerRadius = 10
+        view.layer.cornerRadius = 15
+        view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -32,12 +33,20 @@ class LoginViewController: IndexableViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let titleLabel: UILabel = {
-        let view = UILabel()
-        view.textAlignment = .center
-        view.text = "Architechik"
-        view.textColor = .purple
-        view.font = UIFont(name: "Arial-BoldMT", size: 44)
+//    private let titleLabel: UILabel = {
+//        let view = UILabel()
+//        view.textAlignment = .center
+//        view.text = "Architechik"
+//        view.textColor = .purple
+//        view.font = UIFont(name: "Arial-BoldMT", size: 44)
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        return view
+//    }()
+    private let titleImageView: UIImageView = {
+        let view = UIImageView()
+        view.clipsToBounds = true
+        view.contentMode = .scaleAspectFit
+        view.image = UIImage(named: "gradientTitle")
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -46,16 +55,24 @@ class LoginViewController: IndexableViewController {
         view.textAlignment = .center
         view.text = "Добро пожаловать!"
         view.textColor = .white
-        view.font = UIFont(name: "Arial", size: 32)
+        view.font = UIFont(name: "Arial-BoldMT", size: 32)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let cardView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor(hex: "613191")
-        view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        view.layer.cornerRadius = 20
+//    private let cardView: UIView = {
+//        let view = UIView()
+//        view.backgroundColor = UIColor(hex: "613191")
+//        view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+//        view.layer.cornerRadius = 20
+//        view.clipsToBounds = true
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        return view
+//    }()
+    private let cardView: UIImageView = {
+        let view = UIImageView()
         view.clipsToBounds = true
+        view.image = UIImage(named: "gradientCard")
+        view.contentMode = .scaleToFill
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -83,32 +100,37 @@ class LoginViewController: IndexableViewController {
         view.addSubview(cardView)
         view.addSubview(loginButton)
         view.addSubview(imageView)
-        view.addSubview(titleLabel)
+        view.addSubview(titleImageView)
         view.addSubview(welcomeLabel)
+        loginButton.removeConstraints(loginButton.constraints)
+        
+        if let width = titleImageView.image?.size.width, let height = titleImageView.image?.size.height {
+            let ratio = height / width
+            titleImageView.heightAnchor.constraint(equalTo: titleImageView.widthAnchor, multiplier: ratio).isActive = true
+        }
         
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 5),
             imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.52),
-            imageView.bottomAnchor.constraint(equalTo: titleLabel.topAnchor, constant: -10),
+            imageView.bottomAnchor.constraint(equalTo: titleImageView.topAnchor, constant: -10),
             imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
-            titleLabel.heightAnchor.constraint(equalToConstant: 40),
-            titleLabel.bottomAnchor.constraint(equalTo: cardView.topAnchor, constant: -50),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
             
             welcomeLabel.heightAnchor.constraint(equalToConstant: 34),
             welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
             welcomeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             welcomeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
-            loginButton.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 25),
+            titleImageView.bottomAnchor.constraint(equalTo: cardView.topAnchor, constant: -50),
+            titleImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 45),
+            titleImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -45),
+            
+            loginButton.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 10),
             loginButton.heightAnchor.constraint(equalToConstant: 58),
             loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             
-            cardView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            cardView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 10),
             cardView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             cardView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
@@ -116,15 +138,15 @@ class LoginViewController: IndexableViewController {
     
     //MARK: - User events handling
     @objc private func loginButtonTapped() {
-        let appleIDProvider = ASAuthorizationAppleIDProvider()
-        let request = appleIDProvider.createRequest()
-        request.requestedScopes = [.fullName, .email]
-        
-        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-        authorizationController.delegate = self
-        authorizationController.presentationContextProvider = self
-        authorizationController.performRequests()
-        
+//        let appleIDProvider = ASAuthorizationAppleIDProvider()
+//        let request = appleIDProvider.createRequest()
+//        request.requestedScopes = [.fullName, .email]
+//
+//        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+//        authorizationController.delegate = self
+//        authorizationController.presentationContextProvider = self
+//        authorizationController.performRequests()
+        showTabBarController()
     }
     
     func performExistingAccountSetupFlows() {

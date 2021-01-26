@@ -11,39 +11,20 @@ import UIKit
 class ProfileViewController: UIViewController {
     
     //MARK: - Subviews
-    private let avatarView: UIImageView = {
-        let view = UIImageView()
-        //view.backgroundColor = .systemBlue
-        view.image = UIImage(named: "avatar")
-        view.contentMode = .scaleAspectFill
-        view.layer.cornerRadius = 75
-        view.clipsToBounds = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    private let progressLabel: UILabel = {
-        let view = UILabel()
-        view.font = UIFont(name: "Arial", size: 18)
-        view.textColor = UIColor(hex: "613191")
-        view.text = "Кол-во пройденных курсов"
-        view.textAlignment = .center
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    private let progressView: UIProgressView = {
-        let view = UIProgressView()
-        view.layer.cornerRadius = 3
-        view.progressTintColor = UIColor(hex: "613191")
-        view.progress = 0.75
-        view.clipsToBounds = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
     private let tableView: UITableView = {
         let view = UITableView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    private lazy var achievementView: AchievementView = {
+        let view = AchievementView(withModel: nil, delegate: self)
+        view.isHidden = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    //MARK: - Properties
+    private lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
 
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -58,40 +39,90 @@ class ProfileViewController: UIViewController {
         view.backgroundColor = UIColor.black
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.register(ProfileHeaderCell.self)
         tableView.register(AchievementCell.self)
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.isUserInteractionEnabled = true
+        
+        tableView.addGestureRecognizer(tap)
     }
     
     private func setupSubviews() {
         addTabBarSeparator()
-        view.addSubview(avatarView)
-        view.addSubview(progressLabel)
-        view.addSubview(progressView)
         view.addSubview(tableView)
+        view.addSubview(achievementView)
         
         NSLayoutConstraint.activate([
-            avatarView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            avatarView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            avatarView.widthAnchor.constraint(equalToConstant: 150),
-            avatarView.heightAnchor.constraint(equalToConstant: 150),
-            
-            progressLabel.topAnchor.constraint(equalTo: avatarView.bottomAnchor, constant: 20),
-            progressLabel.heightAnchor.constraint(equalToConstant: 24),
-            progressLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-            progressLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
-            
-            progressView.topAnchor.constraint(equalTo: progressLabel.bottomAnchor, constant: 8),
-            progressView.heightAnchor.constraint(equalToConstant: 7),
-            progressView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-            progressView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
-            
-            tableView.topAnchor.constraint(equalTo: progressView.bottomAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -2),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            achievementView.heightAnchor.constraint(equalToConstant: 200),
+            achievementView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            achievementView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            achievementView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
+    }
+    
+    @objc
+    private func cellTapped() {
+        if achievementView.isHidden == false {
+            achievementView.isHidden = true
+            return
+        }
+        let tapLocation = tap.location(in: tableView)
+        guard
+            let tapIndexPath = self.tableView.indexPathForRow(at: tapLocation),
+            let _ = tableView.cellForRow(at: tapIndexPath)
+            else { return }
+        if tapIndexPath.row != 0 {
+            achievementView.isHidden = false
+        }
+    }
+    
+    private func share() {
+        // Setting description
+        let firstActivityItem = "Я получил достижение в Architechik"
+
+        // Setting url
+        //let secondActivityItem: NSURL = NSURL(string: "http://google.com/")!
+
+        // If you want to use an image
+        let image = UIImage(named: "bumagaFull")
+        var items: Array<Any> = [firstActivityItem]
+        if let image = image { items.append(image) }
+        let activityViewController: UIActivityViewController = UIActivityViewController(
+            activityItems: items, applicationActivities: nil)
+
+        // This lines is for the popover you need to show in iPad
+        activityViewController.popoverPresentationController?.sourceView = achievementView
+
+        // This line remove the arrow of the popover to show in iPad
+        activityViewController.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.down
+        activityViewController.popoverPresentationController?.sourceRect = CGRect(x: 150, y: 150, width: 0, height: 0)
+
+        // Pre-configuring activity items
+        activityViewController.activityItemsConfiguration = [
+        UIActivity.ActivityType.message
+        ] as? UIActivityItemsConfigurationReading
+
+        // Anything you want to exclude
+        activityViewController.excludedActivityTypes = [
+            UIActivity.ActivityType.postToWeibo,
+            UIActivity.ActivityType.print,
+            UIActivity.ActivityType.assignToContact,
+            UIActivity.ActivityType.saveToCameraRoll,
+            UIActivity.ActivityType.addToReadingList,
+            UIActivity.ActivityType.postToFlickr,
+            UIActivity.ActivityType.postToVimeo,
+            UIActivity.ActivityType.postToTencentWeibo,
+            UIActivity.ActivityType.postToFacebook
+        ]
+
+        activityViewController.isModalInPresentation = true
+        present(activityViewController, animated: true)
     }
 }
 
@@ -99,23 +130,37 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 160
+        switch indexPath.row {
+        case 0:
+            return 208
+        default:
+            return 160
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 4
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: AchievementCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
-        cell.configure(withDelegate: self)
-        return cell
+        switch indexPath.row {
+        case 0:
+            let cell: ProfileHeaderCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
+            cell.configure(withProgress: 0.75)
+            return cell
+        default:
+            let cell: AchievementCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
+            cell.configure(withModel: Achievement(id: "", title: "", description: "", idCourses: "", imgGood: "", imgBad: ""))
+            return cell
+        }
     }
 }
 
 //MARK: - SharingDelegate
 extension ProfileViewController: SharingDelegate {
-    func share(with activityVC: UIActivityViewController) {
-        present(activityVC, animated: true)
+    
+    func shareTapped() {
+        self.share()
     }
+    
 }

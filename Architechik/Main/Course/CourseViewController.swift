@@ -8,44 +8,28 @@
 
 import UIKit
 import StoreKit
+import SwiftyStoreKit
 
 class CourseViewController: ViewController {
     
     //MARK: - Subviews
-    private let imageView: UIImageView = {
-        let view = UIImageView()
-        //view.backgroundColor = UIColor(hex: "1F1F24")
-        view.image = UIImage(named: "backImage")
-        view.contentMode = .scaleAspectFill
-        view.clipsToBounds = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    private let titleLabel: UILabel = {
-        let view = UILabel()
-        view.font = UIFont(name: "Arial-BoldMT", size: 22)
-        view.textColor = .white
-        view.text = "History of architecture"
-        view.textAlignment = .left
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    private let titleView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .clear
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
     private let tableView: UITableView = {
         let view = UITableView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+    private lazy var purchaseView: PurchaseView = {
+        let view = PurchaseView(withDelegate: self)
+        view.isHidden = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     //MARK: - Properties
+    private lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
     lazy var pan = UIPanGestureRecognizer(target: self, action: #selector(viewDragged))
-    var products: Array<SKProduct> = []
+    var product: SKProduct?
+    var helper: IAPHelper = IAPHelper(productIds: ["FirstInArchitectureCourseTest"])
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,53 +41,57 @@ class CourseViewController: ViewController {
     private func initialSetup() {
         //view.backgroundColor = UIColor(hex: "1F1F24")
         view.backgroundColor = UIColor.black
-        getProducts()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(LessonCell.self)
         tableView.register(DescriptionCell.self)
         tableView.register(UnlockCell.self)
+        tableView.register(CourseTitleCell.self)
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.isUserInteractionEnabled = true
+        tableView.addGestureRecognizer(tap)
         view.addGestureRecognizer(pan)
-    }
-    
-    private func getProducts() {
-        
+        guard
+        let product = product,
+        let price = product.localizedPrice
+        else { return }
+        let attributedString = NSAttributedString(string: product.localizedTitle + " за " + price, attributes: purchaseView.attributes)
+        purchaseView.purchaseButton.setAttributedTitle(attributedString, for: .normal)
     }
 
     private func setupSubviews() {
-        view.addSubview(imageView)
-        view.addSubview(titleView)
-        view.addSubview(titleLabel)
         view.addSubview(tableView)
+        view.addSubview(purchaseView)
         
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            imageView.heightAnchor.constraint(equalToConstant: 200),
-            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
-            titleView.topAnchor.constraint(equalTo: imageView.bottomAnchor),
-            titleView.heightAnchor.constraint(equalToConstant: 30),
-            titleView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            titleView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
-            titleLabel.centerYAnchor.constraint(equalTo: titleView.centerYAnchor),
-            titleLabel.topAnchor.constraint(greaterThanOrEqualTo: titleView.topAnchor, constant: 4),
-            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: titleView.bottomAnchor, constant: -4),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            
-            tableView.topAnchor.constraint(equalTo: titleView.bottomAnchor, constant: 14),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            purchaseView.heightAnchor.constraint(equalToConstant: 180),
+            purchaseView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            purchaseView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            purchaseView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
     
     //MARK: - Handle user events
+    @objc
+    private func cellTapped() {
+        guard purchaseView.isHidden else {
+            purchaseView.isHidden = true
+            return
+        }
+        let tapLocation = tap.location(in: tableView)
+        guard
+            let tapIndexPath = self.tableView.indexPathForRow(at: tapLocation),
+            let _ = tableView.cellForRow(at: tapIndexPath) as? CourseCell
+            else { return }
+        
+    }
+    
     @objc
     private func viewDragged() {
         switch pan.state {
@@ -156,14 +144,14 @@ class CourseViewController: ViewController {
 //MARK: - UnlockDelegate
 extension CourseViewController: UnlockDelegate {
     func unlock() {
-        let vc = PurchaseViewController()
-        vc.modalPresentationStyle = .overCurrentContext
-        vc.modalTransitionStyle = .coverVertical
-        vc.product = products.first
-        view.addSubview(vc.view)
-        self.addChild(vc)
-        vc.didMove(toParent: self)
-        //present(vc, animated: true)
+        purchaseView.isHidden = false
+    }
+}
+
+//MARK: - PurchaseDelegate
+extension CourseViewController: PurchaseDelegate {
+    func purchase() {
+        
     }
 }
 
@@ -173,40 +161,51 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.row {
         case 0:
+            return 244
+        case 1:
             return calculateDescriptionHeight()
-        case 4:
-            return 60
+        case 3:
+            return 75
         default:
-            return 160
+            return 140
         }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+        return 7
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.row {
         case 0:
+            return configureCourseTitleCell()
+        case 1:
             return configureDescription()
-        case 4:
+        case 3:
             return configureUnlock()
         default:
             let cell: LessonCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
             let article = Article(id: "", title: "", description: "", img: "", file: "")
             cell.configure(withDataSource: article)
+            if indexPath.row >= 4 { cell.lock() }
             return cell
         }
     }
     
+    private func configureCourseTitleCell() -> CourseTitleCell {
+        let cell: CourseTitleCell = tableView.dequeueReusableCell(forIndexPath: IndexPath(row: 0, section: 0))
+        cell.configure(withTitle: "", image: UIImage())
+        return cell
+    }
+    
     private func configureDescription() -> DescriptionCell {
-        let cell: DescriptionCell = tableView.dequeueReusableCell(forIndexPath: IndexPath(row: 0, section: 0))
+        let cell: DescriptionCell = tableView.dequeueReusableCell(forIndexPath: IndexPath(row: 1, section: 0))
         cell.configure()
         return cell
     }
     
     private func configureUnlock() -> UnlockCell {
-        let cell: UnlockCell = tableView.dequeueReusableCell(forIndexPath: IndexPath(row: 4, section: 0))
+        let cell: UnlockCell = tableView.dequeueReusableCell(forIndexPath: IndexPath(row: 3, section: 0))
         cell.configure(withDelegate: self)
         return cell
     }

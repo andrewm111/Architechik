@@ -47,11 +47,10 @@ class FilterView: UIView {
         addSubview(stackView)
         
         NSLayoutConstraint.activate([
-            stackView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            stackView.leadingAnchor.constraint(greaterThanOrEqualTo: self.leadingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: -20),
-            stackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 40),
-            stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -40),
+            stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
+            stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+            stackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+            stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -50),
         ])
     }
     

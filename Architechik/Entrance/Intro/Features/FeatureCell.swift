@@ -19,7 +19,7 @@ class FeatureCell: TableViewCell {
     }()
     private let featureLabel: UILabel = {
         let view = UILabel()
-        view.font = UIFont(name: "Arial-BoldMT", size: 26)
+        view.font = UIFont(name: "Arial-BoldMT", size: 24)
         view.textAlignment = .left
         view.textColor = .white
         view.numberOfLines = 0
@@ -44,16 +44,16 @@ class FeatureCell: TableViewCell {
     private func initialSetup(forType type: FeatureType) {
         switch type {
         case .course:
-            featureLabel.text = "Пройти курс по\nнужной для\nтебя теме"
+            featureLabel.text = "Пройти курс по\nнужной для тебя теме"
             featureImageView.image = UIImage(named: "courseIcon")
         case .article:
-            featureLabel.text = "Прочитать\nразобранные\nстатьи"
+            featureLabel.text = "Прочитать\nстатьи"
             featureImageView.image = UIImage(named: "articleIcon")
         case .grammar:
-            featureLabel.text = "Вспомнить\nграмматику\nЕсли нужно"
+            featureLabel.text = "Вспомнить\nграмматику"
             featureImageView.image = UIImage(named: "grammarIcon")
         case .achievement:
-            featureLabel.text = "Получить\nприятную\nачивку"
+            featureLabel.text = "Получить\nдостижение"
             featureImageView.image = UIImage(named: "achievementIcon")
         }
     }
@@ -99,7 +99,7 @@ class FeatureCell: TableViewCell {
             
             featureLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 22),
             featureLabel.bottomAnchor.constraint(lessThanOrEqualTo: self.bottomAnchor),
-            featureLabel.trailingAnchor.constraint(equalTo: featureImageView.leadingAnchor, constant: -18),
+            featureLabel.trailingAnchor.constraint(equalTo: featureImageView.leadingAnchor, constant: -38),
             featureLabel.leadingAnchor.constraint(greaterThanOrEqualTo: self.leadingAnchor),
         ])
     }

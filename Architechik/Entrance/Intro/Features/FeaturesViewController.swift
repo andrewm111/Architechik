@@ -44,9 +44,13 @@ class FeaturesViewController: IndexableViewController {
         view.addSubview(featuresImageView)
         view.addSubview(tableView)
         
+        if let width = featuresImageView.image?.size.width, let height = featuresImageView.image?.size.height {
+            let ratio = height / width
+            featuresImageView.heightAnchor.constraint(equalTo: featuresImageView.widthAnchor, multiplier: ratio).isActive = true
+        }
+        
         NSLayoutConstraint.activate([
-            featuresImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 18),
-            featuresImageView.heightAnchor.constraint(equalTo: featuresImageView.widthAnchor, multiplier: 0.271939328277356),
+            featuresImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 14),
             featuresImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
             featuresImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
             

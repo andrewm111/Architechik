@@ -30,7 +30,7 @@ extension UIViewController {
         view.addSubview(separatorView)
         
         NSLayoutConstraint.activate([
-            separatorView.heightAnchor.constraint(equalToConstant: 2),
+            separatorView.heightAnchor.constraint(equalToConstant: 1),
             separatorView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             separatorView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             separatorView.trailingAnchor.constraint(equalTo: view.trailingAnchor),

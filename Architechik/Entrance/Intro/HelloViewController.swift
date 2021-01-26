@@ -66,27 +66,28 @@ class HelloViewController: IndexableViewController {
         view.addSubview(imageView)
         
         NSLayoutConstraint.activate([
-            imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
-            imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: 0.788920056100982),
-            imageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            helloImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            helloImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
             
             topLabel.topAnchor.constraint(equalTo: helloImageView.bottomAnchor, constant: 30),
             topLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 45),
             topLabel.bottomAnchor.constraint(equalTo: bottomLabel.topAnchor, constant: -30),
-            topLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
-            topLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
+            topLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
+            topLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             
             bottomLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 45),
             bottomLabel.bottomAnchor.constraint(lessThanOrEqualTo: imageView.topAnchor, constant: -6),
-            bottomLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 18),
-            bottomLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
+            bottomLabel.leadingAnchor.constraint(equalTo: topLabel.leadingAnchor),
+            bottomLabel.trailingAnchor.constraint(equalTo: topLabel.trailingAnchor),
             
-            helloImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-            helloImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
-            helloImageView.heightAnchor.constraint(equalToConstant: 50),
-            helloImageView.widthAnchor.constraint(equalTo: helloImageView.heightAnchor, multiplier: 4.276923076923077),
+            imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5),
+            imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: 0.788920056100982),
+            imageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
+        
+        //helloImageView.heightAnchor.constraint(equalToConstant: 50),
+        //helloImageView.widthAnchor.constraint(equalTo: helloImageView.heightAnchor, multiplier: 4.276923076923077),
     }
 }
 

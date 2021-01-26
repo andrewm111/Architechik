@@ -18,7 +18,7 @@ class GrammarViewController: UIViewController {
     }()
     private let filterButton: UIButton = {
         let view = UIButton(type: .custom)
-        view.layer.cornerRadius = 20
+        view.layer.cornerRadius = 30
         view.backgroundColor = .systemBlue
         view.setImage(UIImage(named: "filter"), for: .normal)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -35,6 +35,7 @@ class GrammarViewController: UIViewController {
     lazy var jsonPath = Bundle.main.path(forResource: "grammar", ofType: "json")
     var models: Array<Grammar> = []
     var filteredModels: Array<Grammar> = []
+    private lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
 
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -52,6 +53,8 @@ class GrammarViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(LessonCell.self)
+        tableView.register(TitleCell.self)
+        tableView.addGestureRecognizer(tap)
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.isUserInteractionEnabled = true
@@ -69,16 +72,16 @@ class GrammarViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -2),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
-            filterButton.heightAnchor.constraint(equalToConstant: 40),
-            filterButton.widthAnchor.constraint(equalToConstant: 40),
-            filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -14),
+            filterButton.heightAnchor.constraint(equalToConstant: 60),
+            filterButton.widthAnchor.constraint(equalToConstant: 60),
+            filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
             filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
             
-            filterView.heightAnchor.constraint(equalToConstant: 250),
+            filterView.heightAnchor.constraint(equalToConstant: 280),
             filterView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 90),
             filterView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             filterView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -101,9 +104,8 @@ class GrammarViewController: UIViewController {
             }
         }
         tableView.reloadData()
-        self.tabBarController?.tabBar.isHidden = false
-        self.tabBarController?.tabBar.isTranslucent = false
-        filterView.isHidden = true
+        
+        //filterView.isHidden = true
     }
     
     @objc
@@ -112,6 +114,21 @@ class GrammarViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = true
         filterView.isHidden = false
         //filterView.frame = CGRect(x: 0, y: 629, width: 375, height: 200)
+    }
+    
+    @objc
+    private func cellTapped() {
+        guard filterView.isHidden else {
+            self.tabBarController?.tabBar.isHidden = false
+            self.tabBarController?.tabBar.isTranslucent = false
+            filterView.isHidden = true
+            return
+        }
+        let tapLocation = tap.location(in: tableView)
+        guard
+            let tapIndexPath = self.tableView.indexPathForRow(at: tapLocation),
+            let _ = tableView.cellForRow(at: tapIndexPath) as? CourseCell
+            else { return }
     }
     
     //MARK: - Supporting methods
@@ -134,17 +151,25 @@ class GrammarViewController: UIViewController {
 extension GrammarViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filteredModels.count
+        return filteredModels.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: LessonCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
-        cell.configure(withDataSource: filteredModels[indexPath.row])
-        cell.makeNotDone()
-        return cell
+        switch indexPath.row {
+        case 0:
+            let cell: TitleCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
+            cell.configure(withTitle: "Grammar")
+            return cell
+        default:
+            let cell: LessonCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
+            cell.configure(withDataSource: filteredModels[indexPath.row - 1])
+            cell.makeNotDone()
+            return cell
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 160
+        guard indexPath.row != 0 else { return 60 }
+        return 130
     }
 }

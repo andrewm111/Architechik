@@ -11,16 +11,16 @@ import UIKit
 class CategoryView: UIView {
 
     //MARK: - Subviews
-    private let checkmarkIcon: UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(named: "checkmark")
-        view.isHidden = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+//    private let checkmarkIcon: UIImageView = {
+//        let view = UIImageView()
+//        view.image = UIImage(named: "checkmark")
+//        view.isHidden = true
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        return view
+//    }()
     private let label: UILabel = {
         let view = UILabel()
-        view.font = UIFont(name: "Arial", size: 17)
+        view.font = UIFont(name: "Arial-BoldMT", size: 20)
         view.textColor = .white
         view.textAlignment = .left
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -51,45 +51,47 @@ class CategoryView: UIView {
         NotificationCenter.default.addObserver(self, selector: #selector(categoryChanged), name: NSNotification.Name("CategoryChanged"), object: nil)
         switch type {
         case .all:
-            label.text = "All"
+            label.text = "All courses"
         case .elementary:
-            label.text = "Elementary"
+            label.text = "Elementary courses"
         case .intermediate:
-            label.text = "Intermediate"
+            label.text = "Intermediate courses"
         case .advance:
-            label.text = "Advance"
+            label.text = "Advance courses"
         }
     }
     
     private func setupSubviews() {
-        addSubview(checkmarkIcon)
+        //addSubview(checkmarkIcon)
         addSubview(label)
         
+//        checkmarkIcon.heightAnchor.constraint(equalToConstant: 14),
+//        checkmarkIcon.widthAnchor.constraint(equalToConstant: 14),
+//        checkmarkIcon.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+//        checkmarkIcon.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
+        
         NSLayoutConstraint.activate([
-            self.widthAnchor.constraint(equalToConstant: 150),
             
-            checkmarkIcon.heightAnchor.constraint(equalToConstant: 14),
-            checkmarkIcon.widthAnchor.constraint(equalToConstant: 14),
-            checkmarkIcon.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            checkmarkIcon.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            
-            label.topAnchor.constraint(equalTo: self.topAnchor),
-            label.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            label.topAnchor.constraint(greaterThanOrEqualTo: self.topAnchor, constant: 4),
+            label.bottomAnchor.constraint(lessThanOrEqualTo: self.bottomAnchor, constant: -4),
             label.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            label.leadingAnchor.constraint(equalTo: checkmarkIcon.trailingAnchor, constant: 10),
-            label.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+            label.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            label.leadingAnchor.constraint(greaterThanOrEqualTo: self.leadingAnchor, constant: 10),
+            label.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: -10),
         ])
     }
     
     //MARK: - External methods
     func select() {
-        checkmarkIcon.isHidden = false
-        label.textColor = .blue
+        //checkmarkIcon.isHidden = false
+        label.textColor = .black
+        self.backgroundColor = UIColor(hex: "613191")
     }
     
     private func unselect() {
-        checkmarkIcon.isHidden = true
+        //checkmarkIcon.isHidden = true
         label.textColor = .white
+        self.backgroundColor = .black
     }
 
     @objc
