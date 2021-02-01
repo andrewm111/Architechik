@@ -31,8 +31,8 @@ class NetworkService {
         makeGetRequest(ofType: .getTable("achievements"), queryPart: "", completion: completion)
     }
     
-    func getCourseStructure(id: String, completion: @escaping SessionResult) {
-        makeGetRequest(ofType: .getCourseStructure(id), queryPart: "&course_id=\(id)", completion: completion)
+    func getCourseStructure(completion: @escaping SessionResult) {
+        makeGetRequest(ofType: .getCourseStructure, queryPart: "", completion: completion)
     }
     
     //MARK: - POST requests
@@ -96,7 +96,7 @@ class NetworkService {
                 completion(.failure(NetworkError.responseIsNil))
                 return
             }
-            print("Status code: \(response.statusCode)")
+            //print("Status code: \(response.statusCode)")
             guard (200...299).contains(response.statusCode) else {
                 print("Status code is wrong: \(response.statusCode) in \(#function) of type \(type)")
                 completion(.failure(NetworkError.wrongStatusCode))
@@ -107,9 +107,9 @@ class NetworkService {
                 completion(.failure(NetworkError.dataIsNil))
                 return
             }
-            let dataString = String(data: data, encoding: .utf8)
-            print(dataString ?? "Failed to convert original data to string")
-            if type == .getTable("") || type == .getCourseStructure("") {
+//            let dataString = String(data: data, encoding: .utf8)
+//            print(dataString ?? "Failed to convert original data to string")
+            if type == .getTable("") || type == .getCourseStructure {
                 self.cutUnnecessaryData(data, completion: completion)
             } else {
                 completion(.success(data))
@@ -125,7 +125,7 @@ class NetworkService {
         default:
             return nil
         }
-        let token = "111"
+        let token = "1113"
         string += "&token=\(token)"
         if let id = courseId {
             string += "&course_id=\(id)"

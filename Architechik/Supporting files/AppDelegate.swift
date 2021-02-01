@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 import AuthenticationServices
 import SwiftyStoreKit
 
@@ -14,6 +15,30 @@ import SwiftyStoreKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    lazy var persistentContainer: NSPersistentContainer = {
+        /*
+         The persistent container for the application. This implementation
+         creates and returns a container, having loaded the store for the
+         application to it. This property is optional since there are legitimate
+         error conditions that could cause the creation of the store to fail.
+         */
+        let container = NSPersistentContainer(name: "DataModel")
+        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+            if let error = error as NSError? {
+                print("Persistent container error: \(error)")
+                /*
+                 Typical reasons for an error here include:
+                 * The parent directory does not exist, cannot be created, or disallows writing.
+                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
+                 * The device is out of space.
+                 * The store could not be migrated to the current model version.
+                 Check the error message to determine what the actual problem was.
+                 */
+                
+            }
+        })
+        return container
+    }()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -32,7 +57,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //checkNetworkService()
         addTransactionObserver()
         //loginUser()
+        
         return true
+    }
+    
+    private func fetchData() {
+        DataFetcher.shared.fetchCourses { courses in
+//            let managedContext = self.persistentContainer.viewContext
+//            guard let entity = NSEntityDescription.entity(forEntityName: "Course", in: managedContext) else {
+//                print("Fetch data error")
+//                return
+//            }
+//            let courses = NSManagedObject(entity: entity, insertInto: managedContext)
+//
+        }
+    }
+    
+    // MARK: - Core Data Saving support
+    
+    func saveContext () {
+        let context = persistentContainer.viewContext
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                print("Failed to save to Core Data: \(error)")
+            }
+        }
     }
     
     private func addTransactionObserver() {

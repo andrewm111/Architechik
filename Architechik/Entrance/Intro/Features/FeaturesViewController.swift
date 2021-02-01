@@ -37,6 +37,7 @@ class FeaturesViewController: IndexableViewController {
         view.backgroundColor = .black
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.isScrollEnabled = false
         tableView.register(FeatureCell.self)
     }
     

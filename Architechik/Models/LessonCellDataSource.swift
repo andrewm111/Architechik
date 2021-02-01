@@ -13,5 +13,5 @@ protocol LessonCellDataSource {
     var title: String { get set }
     var description: String { get set }
     var isDone: Bool? { get set }
-    var category: String? { get set }
+    var category: String? { get }
 }

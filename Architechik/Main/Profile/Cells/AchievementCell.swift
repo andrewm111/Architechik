@@ -11,8 +11,8 @@ import UIKit
 class AchievementCell: TableViewCell {
     
     //MARK: - Subviews
-    private let achievementImageView: UIImageView = {
-        let view = UIImageView()
+    private let achievementImageView: WebImageView = {
+        let view = WebImageView()
         view.layer.cornerRadius = 40
         view.backgroundColor = UIColor(hex: "613191")
         view.image = UIImage(named: "bumagaFull")
@@ -49,7 +49,9 @@ class AchievementCell: TableViewCell {
     }()
 
     func configure(withModel model: Achievement) {
-        
+        titleLabel.text = model.title
+        descriptionLabel.text = model.description
+        achievementImageView.set(imageURL: model.imgGood)
         selectionStyle = .none
         backgroundColor = .clear
         initialSetup()
@@ -87,5 +89,9 @@ class AchievementCell: TableViewCell {
             separatorView.leadingAnchor.constraint(equalTo: achievementImageView.trailingAnchor),
             separatorView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
         ])
+    }
+    
+    func getImage() -> UIImage? {
+        return imageView?.image
     }
 }

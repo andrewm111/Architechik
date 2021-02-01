@@ -10,7 +10,7 @@ import UIKit
 import StoreKit
 import SwiftyStoreKit
 
-class CourseViewController: ViewController {
+class CourseViewController: ViewController, SwipeToDismissDelegate {
     
     //MARK: - Subviews
     private let tableView: UITableView = {
@@ -18,19 +18,29 @@ class CourseViewController: ViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private lazy var purchaseView: PurchaseView = {
-        let view = PurchaseView(withDelegate: self)
-        view.isHidden = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+//    private lazy var purchaseView: PurchaseView = {
+//        let view = PurchaseView(withDelegate: self)
+//        view.isHidden = true
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        return view
+//    }()
     
     //MARK: - Properties
+    var models: Array<Lesson> = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     private lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
     lazy var pan = UIPanGestureRecognizer(target: self, action: #selector(viewDragged))
     var product: SKProduct?
     var helper: IAPHelper = IAPHelper(productIds: ["FirstInArchitectureCourseTest"])
+    var descriptionText: String = ""
+    var courseTitle: String = ""
+    var courseImageUrl: String = ""
+    var courseId: String = ""
 
+    //MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         initialSetup()
@@ -47,49 +57,74 @@ class CourseViewController: ViewController {
         tableView.register(DescriptionCell.self)
         tableView.register(UnlockCell.self)
         tableView.register(CourseTitleCell.self)
+        tableView.register(IntroCell.self)
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.isUserInteractionEnabled = true
         tableView.addGestureRecognizer(tap)
         view.addGestureRecognizer(pan)
-        guard
-        let product = product,
-        let price = product.localizedPrice
-        else { return }
-        let attributedString = NSAttributedString(string: product.localizedTitle + " за " + price, attributes: purchaseView.attributes)
-        purchaseView.purchaseButton.setAttributedTitle(attributedString, for: .normal)
+//        guard
+//        let product = product,
+//        let price = product.localizedPrice
+//        else { return }
+        //let attributedString = NSAttributedString(string: product.localizedTitle + " за " + price, attributes: purchaseView.attributes)
+        //purchaseView.purchaseButton.setAttributedTitle(attributedString, for: .normal)
     }
 
     private func setupSubviews() {
         view.addSubview(tableView)
-        view.addSubview(purchaseView)
+        //view.addSubview(purchaseView)
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
-            purchaseView.heightAnchor.constraint(equalToConstant: 180),
-            purchaseView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            purchaseView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            purchaseView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
+//        purchaseView.heightAnchor.constraint(equalToConstant: 180),
+//        purchaseView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 180),
+//        purchaseView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//        purchaseView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
     }
     
     //MARK: - Handle user events
     @objc
     private func cellTapped() {
-        guard purchaseView.isHidden else {
-            purchaseView.isHidden = true
-            return
-        }
+//        guard purchaseView.isHidden else {
+//            purchaseView.hide { _ in
+//                self.tabBarController?.tabBar.isHidden = false
+//                self.tabBarController?.tabBar.isTranslucent = false
+//                self.purchaseView.isHidden = true
+//            }
+//            return
+//        }
         let tapLocation = tap.location(in: tableView)
         guard
             let tapIndexPath = self.tableView.indexPathForRow(at: tapLocation),
-            let _ = tableView.cellForRow(at: tapIndexPath) as? CourseCell
+            let _ = tableView.cellForRow(at: tapIndexPath) as? LessonCell
             else { return }
-        
+        var model: Lesson?
+        if tapIndexPath.row == 2, !models.isEmpty {
+            model = models[0]
+        } else if models.count >= tapIndexPath.row - 4 {
+            model = models[tapIndexPath.row - 3]
+        }
+        let vc = WebViewController()
+        if let string = model?.file {
+            vc.urlString = string
+        }
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.modalTransitionStyle = .coverVertical
+        present(vc, animated: true)
+        NetworkService.shared.updateInfo(courseId: courseId, values: model?.id ?? "") { result in
+            switch result {
+            case .success(let result):
+                guard let string = String(data: result, encoding: .utf8) else { return }
+                print(string)
+            case .failure(let error):
+                print("Error on clicking on lesson: \(error)")
+            }
+        }
     }
     
     @objc
@@ -103,55 +138,70 @@ class CourseViewController: ViewController {
             break
         }
     }
-    
-    //MARK: - Handle swipe to dismiss gesture
-    private func handlePanChangedState() {
-        let translationX = pan.translation(in: view).x
-        guard translationX > 0 else { return }
-        guard translationX < UIScreen.main.bounds.width / 3 else {
-            pan.isEnabled = false
-            animateDismiss()
-            return
-        }
-        view.transform = CGAffineTransform(translationX: translationX, y: 0)
-    }
-    
-    private func handlePanEndedState() {
-        let translationX = pan.translation(in: view).x
-        if translationX > UIScreen.main.bounds.width * 0.22 {
-            animateDismiss()
-        } else {
-            animateReturnToNormalState()
-        }
-    }
-    
-    private func animateDismiss() {
-        UIView.animate(withDuration: 0.2, animations: {
-            self.view.transform = CGAffineTransform(translationX: UIScreen.main.bounds.width, y: 0)
-        }) { _ in
-            self.pan.isEnabled = true
-            self.dismiss(animated: false)
-        }
-    }
-    
-    private func animateReturnToNormalState() {
-        UIView.animate(withDuration: 0.2) {
-            self.view.transform = .identity
-        }
-    }
 }
 
 //MARK: - UnlockDelegate
 extension CourseViewController: UnlockDelegate {
     func unlock() {
-        purchaseView.isHidden = false
+//        if !purchaseView.isHidden {
+//            purchaseView.hide { _ in
+//                self.tabBarController?.tabBar.isHidden = false
+//                self.tabBarController?.tabBar.isTranslucent = false
+//                self.purchaseView.isHidden = true
+//            }
+//        } else {
+//            purchaseView.show()
+//        }
     }
 }
 
-//MARK: - PurchaseDelegate
-extension CourseViewController: PurchaseDelegate {
-    func purchase() {
-        
+//MARK: - Purchasing
+extension CourseViewController {
+    private func purchase() {
+        SwiftyStoreKit.purchaseProduct("FirstInArchitectureCourseTest", quantity: 1, atomically: true) { result in
+            switch result {
+            case .success(purchase: let purchase):
+                print(purchase)
+                self.verifyPurchase()
+            case .error(error: let error):
+                print(error)
+            }
+        }
+    }
+    
+    private func verifyPurchase() {
+        let appleValidator = AppleReceiptValidator(service: .production, sharedSecret: "999")
+        SwiftyStoreKit.verifyReceipt(using: appleValidator, forceRefresh: false) { result in
+            switch result {
+            case .success(let receipt):
+                let productId = "FirstInArchitectureCourseTest"
+                // Verify the purchase of Consumable or NonConsumable
+                let purchaseResult = SwiftyStoreKit.verifyPurchase(
+                    productId: productId,
+                    inReceipt: receipt)
+                    
+                switch purchaseResult {
+                case .purchased(let receiptItem):
+                    print("\(productId) is purchased: \(receiptItem)")
+                case .notPurchased:
+                    print("The user has never purchased \(productId)")
+                }
+            case .error(let error):
+                print("Verify receipt failed: \(error)")
+            }
+        }
+    }
+
+}
+
+//MARK: - IntroDelegate
+extension CourseViewController: IntroDelegate {
+    func showIntro() {
+        let vc = WebViewController()
+        vc.urlString = models[0].file
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.modalTransitionStyle = .coverVertical
+        present(vc, animated: true)
     }
 }
 
@@ -161,18 +211,32 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.row {
         case 0:
-            return 244
+            return 230
         case 1:
             return calculateDescriptionHeight()
+        case 2:
+            let screenWidth = UIScreen.main.bounds.width
+            let buttonHeight = (screenWidth - (2 * IntroButton.spacing.rawValue)) * IntroButton.getHeightOnWidthRatio()
+            return buttonHeight + 50
         case 3:
-            return 75
+            let mainViewWidth = UIScreen.main.bounds.width - UnlockButton.spacing.rawValue * 2
+            let mainViewHeight = mainViewWidth * UnlockButton.getHeightOnWidthRatio()
+            //let mainViewTotalHeight = mainViewHeight + (UnlockButton.getVerticalShadow() * mainViewHeight)
+            return mainViewHeight + 80
         default:
-            return 140
+            switch models[indexPath.row - 3].category {
+            case "2":
+                return 140
+            case "3", "4":
+                return 75
+            default:
+                return 140
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 7
+        return models.count + 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -184,23 +248,30 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
         case 3:
             return configureUnlock()
         default:
-            let cell: LessonCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
-            let article = Article(id: "", title: "", description: "", img: "", file: "")
-            cell.configure(withDataSource: article)
-            if indexPath.row >= 4 { cell.lock() }
-            return cell
+            if indexPath.row == 2, !models.isEmpty {
+                let cell: IntroCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
+                cell.configure(withDelegate: self)
+                return cell
+            } else if models.count >= indexPath.row - 4 {
+                let cell: LessonCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
+                let model = models[indexPath.row - 3]
+                cell.configure(withDataSource: model)
+                if indexPath.row >= 4 { cell.lock() }
+                return cell
+            }
+            return UITableViewCell()
         }
     }
     
     private func configureCourseTitleCell() -> CourseTitleCell {
         let cell: CourseTitleCell = tableView.dequeueReusableCell(forIndexPath: IndexPath(row: 0, section: 0))
-        cell.configure(withTitle: "", image: UIImage())
+        cell.configure(withTitle: courseTitle, imageUrl: courseImageUrl)
         return cell
     }
     
     private func configureDescription() -> DescriptionCell {
         let cell: DescriptionCell = tableView.dequeueReusableCell(forIndexPath: IndexPath(row: 1, section: 0))
-        cell.configure()
+        cell.configure(withText: descriptionText)
         return cell
     }
     
@@ -211,7 +282,7 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     private func calculateDescriptionHeight() -> CGFloat {
-        let string = "Этот курс - большой сборник архитектурных терминов и упражнений, чтобы легко ориентироваться в англоязычных текстах про любой стиль и эпоху."
+        let string = descriptionText
         let font = UIFont(name: "Arial", size: 17) ?? UIFont.systemFont(ofSize: 17)
         let height = string.height(width: UIScreen.main.bounds.width - 20, font: font)
         return height

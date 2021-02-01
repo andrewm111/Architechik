@@ -13,17 +13,38 @@ class TabBarController: UITabBarController {
     //MARK: - Init
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        
 //        let coursesVC: UINavigationController = generateViewController(vcType: UINavigationController.self, title: "Courses", imageName: "menuIcon")
 //        coursesVC.navigationBar.isHidden = true
 //        coursesVC.viewControllers = [CoursesViewController()]
         let coursesVC = generateViewController(vcType: ListCourseViewController.self, title: "Courses", imageName: "courses")
+        DataFetcher.shared.fetchCourses { courses in
+            coursesVC.models = courses
+        }
         let articlesVC = generateViewController(vcType: ArticlesViewController.self, title: "Articles", imageName: "articles")
+        DataFetcher.shared.fetchArticles { articles in
+            articlesVC.models = articles
+        }
         let grammarVC = generateViewController(vcType: GrammarViewController.self, title: "Grammar", imageName: "grammar")
+        DataFetcher.shared.fetchGrammar { grammar in
+            grammarVC.models = grammar
+        }
         let profileVC = generateViewController(vcType: ProfileViewController.self, title: "Profile", imageName: "achievements")
+        DataFetcher.shared.fetchAchievments { achievements in
+            profileVC.models = achievements
+        }
+//        NetworkService.shared.createUser(courseId: "3") { result in
+//            switch result {
+//            case .success(let data):
+//                let dataString = String(data: data, encoding: .utf8)
+//                print(dataString ?? "Failed to convert original data to string")
+//            case .failure(let error):
+//                print("Failed to create user: \(error)")
+//            }
+//        }
+        
         setViewControllers([coursesVC, articlesVC, grammarVC, profileVC], animated: false)
         selectedViewController = coursesVC
-        tabBar.tintColor = UIColor.systemBlue
+        tabBar.tintColor = UIColor(hex: "613191")
         tabBar.unselectedItemTintColor = UIColor.white
         //tabBar.barTintColor = UIColor(hex: "1F1F24")
         tabBar.barTintColor = UIColor.black
@@ -59,5 +80,4 @@ class TabBarController: UITabBarController {
         vc.tabBarItem = tabBarItem
         return vc
     }
-
 }

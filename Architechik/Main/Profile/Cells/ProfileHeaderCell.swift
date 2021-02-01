@@ -12,7 +12,6 @@ class ProfileHeaderCell: TableViewCell {
     
     private let avatarView: UIImageView = {
         let view = UIImageView()
-        //view.backgroundColor = .systemBlue
         view.image = UIImage(named: "avatar")
         view.contentMode = .scaleAspectFill
         view.layer.cornerRadius = 75
@@ -23,24 +22,29 @@ class ProfileHeaderCell: TableViewCell {
     private let progressLabel: UILabel = {
         let view = UILabel()
         view.font = UIFont(name: "Arial", size: 18)
-        view.textColor = UIColor(hex: "613191")
+        view.textColor = .white
         view.text = "Кол-во пройденных курсов"
         view.textAlignment = .center
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let progressView: UIProgressView = {
-        let view = UIProgressView()
-        view.layer.cornerRadius = 3
-        view.progressTintColor = UIColor(hex: "613191")
-        view.progress = 0.75
-        view.clipsToBounds = true
+    private let tapLabel: UILabel = {
+        let view = UILabel()
+        view.textColor = UIColor(hex: "613191")
+        view.text = "Нажми достижение чтобы поделиться им"
+        view.font = UIFont(name: "Arial", size: 18)
+        view.textAlignment = .center
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    let progressView: ProgressView = {
+        let view = ProgressView(withProgress: 0.75)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
     func configure(withProgress progress: Float) {
-        progressView.progress = progress
+        //progressView.progress = progress
         initialSetup()
         setupSubviews()
     }
@@ -55,6 +59,7 @@ class ProfileHeaderCell: TableViewCell {
         addSubview(avatarView)
         addSubview(progressLabel)
         addSubview(progressView)
+        addSubview(tapLabel)
         
         NSLayoutConstraint.activate([
             avatarView.topAnchor.constraint(equalTo: self.topAnchor),
@@ -71,6 +76,11 @@ class ProfileHeaderCell: TableViewCell {
             progressView.heightAnchor.constraint(equalToConstant: 6),
             progressView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
             progressView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -8),
+            
+            tapLabel.topAnchor.constraint(equalTo: progressView.bottomAnchor, constant: 4),
+            tapLabel.heightAnchor.constraint(equalToConstant: 24),
+            tapLabel.leadingAnchor.constraint(equalTo: progressView.leadingAnchor),
+            tapLabel.trailingAnchor.constraint(equalTo: progressView.trailingAnchor),
         ])
     }
 }

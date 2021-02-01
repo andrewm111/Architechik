@@ -28,7 +28,6 @@ class LoginViewController: IndexableViewController {
         let view = UIImageView()
         view.image = UIImage(named: "logo")
         view.clipsToBounds = true
-        //view.backgroundColor = UIColor(displayP3Red: 106 / 255, green: 25 / 255, blue: 164 / 255, alpha: 1)
         view.contentMode = .scaleAspectFit
         view.translatesAutoresizingMaskIntoConstraints = false
         return view

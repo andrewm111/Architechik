@@ -37,11 +37,11 @@ class CategoryView: UIView {
         self.categoryName = categoryName
         setupSubviews()
         if let type = type { self.category = type }
-        initialSetup(withType: category)
+        initialSetup(withType: category, categoryName: categoryName)
     }
     
     //MARK: - Setup
-    private func initialSetup(withType type: Category) {
+    private func initialSetup(withType type: Category, categoryName: String) {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .black
         
@@ -49,15 +49,16 @@ class CategoryView: UIView {
         let tap = UITapGestureRecognizer(target: self, action: #selector(categoryTapped))
         self.addGestureRecognizer(tap)
         NotificationCenter.default.addObserver(self, selector: #selector(categoryChanged), name: NSNotification.Name("CategoryChanged"), object: nil)
+        let name = categoryName == "grammar" ? categoryName : categoryName + "s"
         switch type {
         case .all:
-            label.text = "All courses"
+            label.text = "All \(name)"
         case .elementary:
-            label.text = "Elementary courses"
+            label.text = "Elementary \(name)"
         case .intermediate:
-            label.text = "Intermediate courses"
+            label.text = "Intermediate \(name)"
         case .advance:
-            label.text = "Advance courses"
+            label.text = "Advanced \(name)"
         }
     }
     
@@ -113,7 +114,7 @@ class CategoryView: UIView {
 
 enum Category: Int {
     case all = -1
-    case elementary = 0
-    case intermediate = 1
-    case advance = 2
+    case elementary = 1
+    case intermediate = 2
+    case advance = 3
 }

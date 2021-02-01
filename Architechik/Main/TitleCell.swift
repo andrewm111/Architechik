@@ -15,7 +15,7 @@ class TitleCell: TableViewCell {
         view.numberOfLines = 1
         view.textColor = .white
         view.font = UIFont(name: "Arial-BoldMT", size: 44)
-        view.textAlignment = .center
+        view.textAlignment = .left
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -38,8 +38,8 @@ class TitleCell: TableViewCell {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
             titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
-            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
+            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: 8),
         ])
     }
 }

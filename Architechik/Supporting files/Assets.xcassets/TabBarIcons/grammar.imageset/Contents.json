@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "grammar-4.png",
+      "filename" : "grammar-2.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "grammar-3.png",
+      "filename" : "grammar-1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "grammar-2.png",
+      "filename" : "grammar.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

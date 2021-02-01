@@ -10,15 +10,25 @@ import UIKit
 
 class LessonCell: TableViewCell {
     
-    private let backImageView: UIImageView = {
-        let view = UIImageView()
-        //view.backgroundColor = .systemBlue
+    private lazy var backImageView: WebImageView = {
+        let view = WebImageView()
         let randomNumber = Int.random(in: 1...3)
         view.image = UIImage(named: "articleBack\(randomNumber)")
         view.contentMode = .scaleAspectFill
         view.layer.cornerRadius = 10
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
+        let layer = CALayer()
+        let rect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 140)
+        layer.frame = rect
+        layer.backgroundColor = UIColor.black.cgColor
+        layer.opacity = 0.6
+        backLayer = layer
+        view.layer.addSublayer(layer)
+        return view
+    }()
+    private var backLayer: CALayer = {
+        let view = CALayer()
         return view
     }()
     private lazy var coverLayer: CALayer = {
@@ -26,7 +36,7 @@ class LessonCell: TableViewCell {
         let rect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 140)
         view.frame = rect
         view.backgroundColor = UIColor.black.cgColor
-        view.opacity = 0.6
+        view.opacity = 0.8
         view.isHidden = true
         return view
     }()
@@ -68,7 +78,7 @@ class LessonCell: TableViewCell {
     
     //MARK: - Properties
     private var model: LessonCellDataSource?
-
+    
     //MARK: - Config
     func configure(withDataSource dataSource: LessonCellDataSource) {
         self.model = dataSource
@@ -76,6 +86,10 @@ class LessonCell: TableViewCell {
         backgroundColor = .clear
         initialSetup(withDataSource: dataSource)
         setupSubviews()
+    }
+    
+    func setImage(imageString: String) {
+        backImageView.set(imageURL: imageString)
     }
     
     func makeDone() {
@@ -92,18 +106,22 @@ class LessonCell: TableViewCell {
     
     func lock() {
         coverLayer.isHidden = false
+        backLayer.isHidden = true
     }
     
     func unlock() {
         coverLayer.isHidden = true
+        backLayer.isHidden = false
     }
     
     //MARK: - Setup
     private func initialSetup(withDataSource dataSource: LessonCellDataSource) {
         isUserInteractionEnabled = true
-        if dataSource.id != "" {
-            titleLabel.text = dataSource.title
-            descriptionLabel.text = dataSource.description
+        guard dataSource.id != "" else { return }
+        titleLabel.text = dataSource.title
+        descriptionLabel.text = dataSource.description
+        if let isDone = dataSource.isDone {
+            if isDone { makeDone() } else { makeNotDone() }
         }
     }
     
@@ -142,5 +160,5 @@ class LessonCell: TableViewCell {
             descriptionLabel.trailingAnchor.constraint(equalTo: backImageView.trailingAnchor, constant: -10),
         ])
     }
-
+    
 }

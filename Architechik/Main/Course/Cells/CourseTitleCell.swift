@@ -10,8 +10,8 @@ import UIKit
 
 class CourseTitleCell: TableViewCell {
     
-    private let titleImageView: UIImageView = {
-        let view = UIImageView()
+    private let titleImageView: WebImageView = {
+        let view = WebImageView()
         //view.backgroundColor = UIColor(hex: "1F1F24")
         view.image = UIImage(named: "backImage")
         view.contentMode = .scaleAspectFill
@@ -29,7 +29,13 @@ class CourseTitleCell: TableViewCell {
         return view
     }()
 
-    func configure(withTitle: String, image: UIImage) {
+    func configure(withTitle courseTitle: String, imageUrl: String) {
+        if imageUrl != "" {
+            titleImageView.set(imageURL: imageUrl)
+        }
+        if courseTitle != "" {
+            titleLabel.text = courseTitle
+        }
         initialSetup()
         setupSubviews()
     }

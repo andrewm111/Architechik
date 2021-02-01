@@ -8,8 +8,8 @@
 
 import UIKit
 
-class FilterView: UIView {
-    
+class FilterView: UIView, CardViewProtocol {
+
     private lazy var stackView: UIStackView = {
         var views: Array<UIView> = []
         for i in -1...2 {
@@ -25,7 +25,10 @@ class FilterView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
+    //MARK: - Properties
     private var categoryName: String = ""
+    var height: CGFloat = 280
     
     //MARK: - View lifecycle
     convenience init(withCategoryName categoryName: String) {
@@ -53,5 +56,27 @@ class FilterView: UIView {
             stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -50),
         ])
     }
+}
+
+protocol CardViewProtocol: UIView {
+    var height: CGFloat { get set }
+}
+
+extension CardViewProtocol {
+    func show(completion: ((Bool) -> Void)? = nil) {
+        DispatchQueue.main.async {
+            self.isHidden = false
+            UIView.animate(withDuration: 0.2, animations: {
+                self.transform = CGAffineTransform(translationX: 0, y: -self.height)
+            }, completion: completion)
+        }
+    }
     
+    func hide(completion: ((Bool) -> Void)? = nil) {
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.2, animations: {
+                self.transform = .identity
+            }, completion: completion)
+        }
+    }
 }

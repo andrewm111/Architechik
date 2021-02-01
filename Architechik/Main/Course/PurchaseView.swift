@@ -10,7 +10,7 @@ import UIKit
 import StoreKit
 import SwiftyStoreKit
 
-class PurchaseView: UIView {
+class PurchaseView: UIView, CardViewProtocol {
 
     //MARK: - Subviews
     lazy var purchaseButton: UIButton = {
@@ -39,6 +39,7 @@ class PurchaseView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    var height: CGFloat = 180
     let attributes = [NSAttributedString.Key.font: UIFont(name: "Arial-BoldMT", size: 18) ?? UIFont.systemFont(ofSize: 18), NSAttributedString.Key.foregroundColor: UIColor.white]
     
     //MARK: - Properties
@@ -86,6 +87,7 @@ class PurchaseView: UIView {
     @objc
     private func purchasePressed(_ sender: UIButton) {
         //helper.buyProduct(product!)
+        /*
         SwiftyStoreKit.purchaseProduct("FirstInArchitectureCourseTest", quantity: 1, atomically: true) { result in
             switch result {
             case .success(purchase: let purchase):
@@ -95,11 +97,13 @@ class PurchaseView: UIView {
                 print(error)
             }
         }
+        */
     }
     
     @objc
     private func restorePressed(_ sender: UIButton) {
         //helper.restorePurchases()
+        /*
         SwiftyStoreKit.restorePurchases(atomically: true) { results in
             if results.restoreFailedPurchases.count > 0 {
                 print("Restore Failed: \(results.restoreFailedPurchases)")
@@ -109,6 +113,7 @@ class PurchaseView: UIView {
                 print("Nothing to Restore")
             }
         }
+         */
     }
     
     private func verifyPurchase() {

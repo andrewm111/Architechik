@@ -22,14 +22,16 @@ class DescriptionCell: TableViewCell {
         return view
     }()
 
-    override func configure() {
-        super.configure()
+    func configure(withText text: String) {
+        if text != "" { descriptionLabel.text = text }
         initialSetup()
         setupSubviews()
     }
     
     //MARK: - Setup
     private func initialSetup() {
+        selectionStyle = .none
+        backgroundColor = .clear
         isUserInteractionEnabled = true
     }
     

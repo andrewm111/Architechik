@@ -8,10 +8,15 @@
 
 import Foundation
 
-struct CourseStructure: Hashable, Codable {
+struct Lesson: Hashable, Codable, LessonCellDataSource {
     var id: String
+    var title: String
     var idCourses: String
     var idType: String
     var description: String
     var file: String
+    var category: String? {
+        return idType
+    }
+    var isDone: Bool?
 }

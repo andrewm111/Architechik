@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="20C69" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CourseModel" representedClassName="CourseModel" syncable="YES">
+        <attribute name="category" optional="YES" attributeType="String"/>
+        <attribute name="courseNumber" attributeType="String"/>
+        <attribute name="descriptionFull" attributeType="String"/>
+        <attribute name="descriptionShort" attributeType="String"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="idCategory" optional="YES" attributeType="String"/>
+        <attribute name="image" attributeType="String"/>
+        <attribute name="price" attributeType="String"/>
+        <attribute name="title" attributeType="String"/>
+    </entity>
+    <elements>
+        <element name="CourseModel" positionX="-63" positionY="-18" width="128" height="164"/>
+    </elements>
+</model>

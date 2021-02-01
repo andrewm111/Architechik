@@ -25,14 +25,16 @@ class ListCourseViewController: ViewController {
         let attributedString = NSAttributedString(string: "Пройти вводный тест", attributes: [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.black])
         view.setAttributedTitle(attributedString, for: .normal)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .systemBlue
+        view.backgroundColor = UIColor(hex: "613191")
         return view
     }()
-    private let filterButton: UIButton = {
+    private lazy var filterButton: UIButton = {
         let view = UIButton(type: .custom)
-        view.layer.cornerRadius = 30
-        view.backgroundColor = .systemBlue
-        view.setImage(UIImage(named: "filter"), for: .normal)
+        let radius: CGFloat = smallScreen ? 20 : 30
+        view.layer.cornerRadius = radius
+        view.backgroundColor = UIColor(hex: "613191")
+        let image = smallScreen ? UIImage(named: "filterSmall") : UIImage(named: "filter")
+        view.setImage(image, for: .normal)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -46,16 +48,37 @@ class ListCourseViewController: ViewController {
     //MARK: - Properties
     lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
     lazy var jsonPath = Bundle.main.path(forResource: "courses", ofType: "json")
-    var models: Array<Course> = []
+    var models: Array<Course> = [] {
+        didSet {
+            if currentCategory == -1 {
+                filteredModels = models
+            } else {
+                filteredModels = models.filter { model -> Bool in
+                    return model.idCategory == "\(currentCategory)"
+                }
+            }
+            tableView.reloadData()
+        }
+    }
     var filteredModels: Array<Course> = []
     private var cellHeights: Array<CGFloat> = []
     var products: Set<SKProduct> = []
+    private var currentCategory: Int = -1
 
     //MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         initialSetup()
         setupSubviews()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        for i in 0...filteredModels.count {
+            if let cell = tableView.cellForRow(at: IndexPath(row: i, section: 0)) as? CourseCell {
+                cell.progressView.progress = 0.75
+            }
+        }
     }
     
     //MARK: - Setup
@@ -65,7 +88,6 @@ class ListCourseViewController: ViewController {
         extendedLayoutIncludesOpaqueBars = true
         view.backgroundColor = UIColor.black
         NotificationCenter.default.addObserver(self, selector: #selector(categoryChanged), name: NSNotification.Name("CategoryChanged"), object: nil)
-        fetchJSON()
         retrieveProducts()
         configureTableView()
         filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
@@ -104,19 +126,21 @@ class ListCourseViewController: ViewController {
         view.addSubview(filterButton)
         view.addSubview(filterView)
         
+        let filterSize: CGFloat = smallScreen ? 40 : 60
+        
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -2),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
-            filterButton.heightAnchor.constraint(equalToConstant: 60),
-            filterButton.widthAnchor.constraint(equalToConstant: 60),
+            filterButton.heightAnchor.constraint(equalToConstant: filterSize),
+            filterButton.widthAnchor.constraint(equalToConstant: filterSize),
             filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
-            filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
+            filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
             
             filterView.heightAnchor.constraint(equalToConstant: 280),
-            filterView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 90),
+            filterView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 370),
             filterView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             filterView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
@@ -132,40 +156,53 @@ class ListCourseViewController: ViewController {
         guard filterView.isHidden else {
             self.tabBarController?.tabBar.isHidden = false
             self.tabBarController?.tabBar.isTranslucent = false
-            filterView.isHidden = true
+            filterView.hide { _ in
+                self.tableView.isScrollEnabled = true
+                self.filterView.isHidden = true
+            }
             return
         }
         let vc = CourseViewController()
         vc.product = products.first
-        //vc.isModalInPopover = true
         vc.modalPresentationStyle = .overCurrentContext
         vc.modalTransitionStyle = .coverVertical
-//        let transition = CATransition()
-//        transition.duration = 0.5
-//        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
-//        transition.type = CATransitionType.push
-//        transition.subtype = CATransitionSubtype.fromRight
-//        self.view.window!.layer.add(transition, forKey: nil)
          let tapLocation = tap.location(in: tableView)
         guard
             let tapIndexPath = self.tableView.indexPathForRow(at: tapLocation),
-            let _ = tableView.cellForRow(at: tapIndexPath) as? CourseCell
+            let cell = tableView.cellForRow(at: tapIndexPath) as? CourseCell
             else { return }
-        present(vc, animated: true) {
-            //self.tabBarController?.tabBar.isHidden = true
+        let model = models[tapIndexPath.row - 1]
+        DataFetcher.shared.fetchCourseStructure { lessons in
+            vc.models = lessons.filter({ lesson in
+                return lesson.idCourses == cell.model?.id
+            })
+            vc.courseTitle = model.title
+            vc.descriptionText = model.description
+            vc.courseImageUrl = model.img
+            vc.courseId = model.id
+            self.present(vc, animated: true)
         }
-       
-        
     }
     
     @objc
     private func categoryChanged(_ notification: Notification) {
-        guard let category = notification.userInfo?["category"] as? Int else { return }
+        guard
+            let category = notification.userInfo?["category"] as? Int,
+            let name = notification.userInfo?["categoryName"] as? String,
+            name == "course"
+            else { return }
+        currentCategory = category
+        self.tabBarController?.tabBar.isHidden = false
+        self.tabBarController?.tabBar.isTranslucent = false
+        filterView.hide { _ in
+            self.tableView.isScrollEnabled = true
+            self.filterView.isHidden = true
+        }
         if category == -1 {
             filteredModels = models
         } else {
             filteredModels = models.filter { model -> Bool in
-                return model.category == "\(category)"
+                return model.idCategory == "\(category)"
             }
         }
         tableView.reloadData()
@@ -178,22 +215,12 @@ class ListCourseViewController: ViewController {
     private func filterButtonTapped() {
         //self.tabBarController?.tabBar.isTranslucent = true
         self.tabBarController?.tabBar.isHidden = true
-        filterView.isHidden = false
-        //filterView.frame = CGRect(x: 0, y: 629, width: 375, height: 200)
-    }
-    
-    private func fetchJSON() {
-        let decoder = JSONDecoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        guard let path = jsonPath else { return }
-        let jsonURL = URL(fileURLWithPath: path)
-        do {
-            let data = try Data(contentsOf: jsonURL)
-            let models = try decoder.decode([Course].self, from: data)
-            self.models = models
-        } catch {
-            print("Error with converting json file to model")
+        self.tableView.isScrollEnabled = false
+        //filterView.isHidden = false
+        filterView.show { _ in
+            
         }
+        //filterView.frame = CGRect(x: 0, y: 629, width: 375, height: 200)
     }
 
 }
@@ -223,7 +250,9 @@ extension ListCourseViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         default:
             let cell: CourseCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
-            cell.configure(withModel: filteredModels[indexPath.row - 1])
+            if filteredModels.count >= indexPath.row - 2 {
+                cell.configure(withModel: filteredModels[indexPath.row - 1])
+            }
             return cell
         }
     }

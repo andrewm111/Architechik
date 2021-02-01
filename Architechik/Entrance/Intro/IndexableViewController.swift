@@ -8,7 +8,7 @@
 
 import UIKit
 
-class IndexableViewController: UIViewController {
+class IndexableViewController: ViewController {
 
     var index: Int = 0
 

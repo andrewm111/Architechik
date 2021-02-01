@@ -10,15 +10,15 @@ import Foundation
 
 enum RequestType {
     case getTable(String)
-    case getCourseStructure(String)
+    case getCourseStructure
     case post(String)
     
     func getPath() -> String {
         switch self {
         case .getTable(let tableName):
             return "?table=\(tableName)"
-        case .getCourseStructure(let id):
-            return "?table=course_structure&id=\(id)"
+        case .getCourseStructure:
+            return "?table=course_structure"
         case .post(_):
             //return "?token=123&type=get&course_id=1&password=abc_132-A-b"
             return ""

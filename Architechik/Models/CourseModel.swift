@@ -18,4 +18,5 @@ struct Course: Hashable, Codable {
     var price: String
     var courseNumber: String
     var img: String
+    var courseStructure: Array<Lesson>? = []
 }

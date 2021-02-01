@@ -10,10 +10,9 @@ import UIKit
 
 class CourseCell: TableViewCell {
 
-    private lazy var backImageView: UIImageView = {
-        let view = UIImageView()
-        //view.backgroundColor = #colorLiteral(red: 0.3419600844, green: 0.5, blue: 0.4824177847, alpha: 1)
-        view.image = UIImage(named: "backImage")
+    private lazy var backImageView: WebImageView = {
+        let view = WebImageView()
+        //view.image = UIImage(named: "backImage")
         view.contentMode = .scaleAspectFill
         let coverLayer = CALayer()
         let rect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 210)
@@ -89,13 +88,8 @@ class CourseCell: TableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let progressView: UIProgressView = {
-        let view = UIProgressView()
-        view.layer.cornerRadius = 3
-        view.backgroundColor = .black
-        view.progressTintColor = .systemBlue
-        view.progress = 0.75
-        view.clipsToBounds = true
+    let progressView: ProgressView = {
+        let view = ProgressView(withProgress: 0.75)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -103,9 +97,11 @@ class CourseCell: TableViewCell {
 
     func configure(withModel model: Course) {
         self.model = model
+        numberOfLessonsLabel.text = "\(model.courseNumber) уроков"
         titleLabel.text = model.title
         descriptionLabel.text = model.description
         priceLabel.text = "  =  \(model.price) ₽"
+        backImageView.set(imageURL: model.img)
         initialSetup()
         setupSubviews()
     }

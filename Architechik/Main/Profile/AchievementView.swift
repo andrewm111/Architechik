@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AchievementView: UIView {
+class AchievementView: UIView, CardViewProtocol {
     
     //MARK: - Subviews
     private let backView: UIView = {
@@ -19,9 +19,9 @@ class AchievementView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let imageView: UIImageView = {
-        let view = UIImageView()
-        view.layer.cornerRadius = (((200 - 45) / 4) * 3 - 20) / 2
+    private let imageView: WebImageView = {
+        let view = WebImageView()
+        //view.layer.cornerRadius = 66.875
         view.backgroundColor = UIColor(hex: "613191")
         view.contentMode = .scaleAspectFit
         view.clipsToBounds = true
@@ -78,6 +78,7 @@ class AchievementView: UIView {
     //MARK: - Properties
     private var delegate: SharingDelegate?
     private var model: Achievement?
+    var height: CGFloat = 200
     
     convenience init(withModel model: Achievement?, delegate: SharingDelegate) {
         self.init(frame: .zero)
@@ -132,6 +133,7 @@ class AchievementView: UIView {
             descriptionLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
             
             buttonView.topAnchor.constraint(equalTo: backView.bottomAnchor, constant: 15),
+            buttonView.heightAnchor.constraint(equalToConstant: 205 / 4),
             buttonView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20),
             buttonView.leadingAnchor.constraint(equalTo: backView.leadingAnchor),
             buttonView.trailingAnchor.constraint(equalTo: backView.trailingAnchor),
@@ -148,12 +150,22 @@ class AchievementView: UIView {
         ])
     }
     
+    func configure(withModel model: Achievement, image: UIImage?) {
+        titleLabel.text = model.title
+        descriptionLabel.text = model.description
+        imageView.image = image
+    }
+    
+    func roundImageView() {
+        imageView.layer.cornerRadius = imageView.frame.height / 2
+    }
+    
     @objc
     private func shareTapped() {
-        delegate?.shareTapped()
+        delegate?.shareTapped(image: imageView.image, text: descriptionLabel.text ?? "Я получил достижение в Architechik")
     }
 }
 
 protocol SharingDelegate {
-    func shareTapped()
+    func shareTapped(image: UIImage?, text: String)
 }
