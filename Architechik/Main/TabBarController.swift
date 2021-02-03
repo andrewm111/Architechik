@@ -7,41 +7,60 @@
 //
 
 import UIKit
+import CoreData
 
 class TabBarController: UITabBarController {
-
+    
     //MARK: - Init
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-//        let coursesVC: UINavigationController = generateViewController(vcType: UINavigationController.self, title: "Courses", imageName: "menuIcon")
-//        coursesVC.navigationBar.isHidden = true
-//        coursesVC.viewControllers = [CoursesViewController()]
+        //        let coursesVC: UINavigationController = generateViewController(vcType: UINavigationController.self, title: "Courses", imageName: "menuIcon")
+        //        coursesVC.navigationBar.isHidden = true
+        //        coursesVC.viewControllers = [CoursesViewController()]
         let coursesVC = generateViewController(vcType: ListCourseViewController.self, title: "Courses", imageName: "courses")
-        DataFetcher.shared.fetchCourses { courses in
+        NetworkDataFetcher.shared.fetchCourses { courses in
             coursesVC.models = courses
+            guard let appDelegate =
+                UIApplication.shared.delegate as? AppDelegate else {
+                    return
+            }
+            let managedContext = appDelegate.persistentContainer.viewContext
+//                        guard let entity = NSEntityDescription.entity(forEntityName: "CourseModel", in: managedContext) else { return }
+//                        coursesVC.models = courses
+//                        for course in courses {
+//                            let model = CourseModel(entity: entity, insertInto: managedContext)
+//                            model.configure(withModel: course)
+//                        }
+//
+            let fetchRequest = NSFetchRequest<CourseModel>(entityName: "CourseModel")
+            do {
+                let courses = try managedContext.fetch(fetchRequest)
+                print(courses.count)
+                _ = courses.map { course in
+                    //managedContext.delete(course)
+                    print(course.descriptionShort)
+                }
+                do {
+                    try managedContext.save()
+                } catch let error as NSError {
+                    print("Could not save. \(error), \(error.userInfo)")
+                }
+            } catch let error as NSError {
+                print("Could not fetch. \(error), \(error.userInfo)")
+            }
         }
         let articlesVC = generateViewController(vcType: ArticlesViewController.self, title: "Articles", imageName: "articles")
-        DataFetcher.shared.fetchArticles { articles in
+        NetworkDataFetcher.shared.fetchArticles { articles in
             articlesVC.models = articles
         }
         let grammarVC = generateViewController(vcType: GrammarViewController.self, title: "Grammar", imageName: "grammar")
-        DataFetcher.shared.fetchGrammar { grammar in
+        NetworkDataFetcher.shared.fetchGrammar { grammar in
             grammarVC.models = grammar
         }
         let profileVC = generateViewController(vcType: ProfileViewController.self, title: "Profile", imageName: "achievements")
-        DataFetcher.shared.fetchAchievments { achievements in
+        NetworkDataFetcher.shared.fetchAchievments { achievements in
             profileVC.models = achievements
         }
-//        NetworkService.shared.createUser(courseId: "3") { result in
-//            switch result {
-//            case .success(let data):
-//                let dataString = String(data: data, encoding: .utf8)
-//                print(dataString ?? "Failed to convert original data to string")
-//            case .failure(let error):
-//                print("Failed to create user: \(error)")
-//            }
-//        }
-        
         setViewControllers([coursesVC, articlesVC, grammarVC, profileVC], animated: false)
         selectedViewController = coursesVC
         tabBar.tintColor = UIColor(hex: "613191")

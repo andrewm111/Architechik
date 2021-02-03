@@ -18,5 +18,6 @@ struct Lesson: Hashable, Codable, LessonCellDataSource {
     var category: String? {
         return idType
     }
+    var img: String?
     var isDone: Bool?
 }

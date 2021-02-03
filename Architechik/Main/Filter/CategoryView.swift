@@ -20,7 +20,7 @@ class CategoryView: UIView {
 //    }()
     private let label: UILabel = {
         let view = UILabel()
-        view.font = UIFont(name: "Arial-BoldMT", size: 20)
+        view.font = UIFont(name: "Arial-BoldMT", size: 17)
         view.textColor = .white
         view.textAlignment = .left
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -49,16 +49,16 @@ class CategoryView: UIView {
         let tap = UITapGestureRecognizer(target: self, action: #selector(categoryTapped))
         self.addGestureRecognizer(tap)
         NotificationCenter.default.addObserver(self, selector: #selector(categoryChanged), name: NSNotification.Name("CategoryChanged"), object: nil)
-        let name = categoryName == "grammar" ? categoryName : categoryName + "s"
+        //let name = categoryName == "grammar" ? categoryName : categoryName + "s"
         switch type {
         case .all:
-            label.text = "All \(name)"
+            label.text = "All"
         case .elementary:
-            label.text = "Elementary \(name)"
+            label.text = "Elementary"
         case .intermediate:
-            label.text = "Intermediate \(name)"
+            label.text = "Intermediate"
         case .advance:
-            label.text = "Advanced \(name)"
+            label.text = "Advanced"
         }
     }
     

@@ -24,7 +24,7 @@ class IntroCell: TableViewCell {
     }()
     private let introLabel: UILabel = {
         let view = UILabel()
-        view.font = UIFont(name: "Arial-BoldMT", size: 21)
+        view.font = UIFont(name: "Arial-BoldMT", size: 17)
         view.textAlignment = .center
         view.text = "Узнать больше о курсе"
         view.textColor = .white

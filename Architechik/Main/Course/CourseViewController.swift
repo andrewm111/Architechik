@@ -34,7 +34,7 @@ class CourseViewController: ViewController, SwipeToDismissDelegate {
     private lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
     lazy var pan = UIPanGestureRecognizer(target: self, action: #selector(viewDragged))
     var product: SKProduct?
-    var helper: IAPHelper = IAPHelper(productIds: ["FirstInArchitectureCourseTest"])
+    //var helper: IAPHelper = IAPHelper(productIds: ["FirstInArchitectureCourseTest"])
     var descriptionText: String = ""
     var courseTitle: String = ""
     var courseImageUrl: String = ""
@@ -116,15 +116,15 @@ class CourseViewController: ViewController, SwipeToDismissDelegate {
         vc.modalPresentationStyle = .overCurrentContext
         vc.modalTransitionStyle = .coverVertical
         present(vc, animated: true)
-        NetworkService.shared.updateInfo(courseId: courseId, values: model?.id ?? "") { result in
-            switch result {
-            case .success(let result):
-                guard let string = String(data: result, encoding: .utf8) else { return }
-                print(string)
-            case .failure(let error):
-                print("Error on clicking on lesson: \(error)")
-            }
-        }
+//        NetworkService.shared.updateInfo(courseId: courseId, values: model?.id ?? "") { result in
+//            switch result {
+//            case .success(let result):
+//                guard let string = String(data: result, encoding: .utf8) else { return }
+//                print(string)
+//            case .failure(let error):
+//                print("Error on clicking on lesson: \(error)")
+//            }
+//        }
     }
     
     @objc
@@ -152,6 +152,7 @@ extension CourseViewController: UnlockDelegate {
 //        } else {
 //            purchaseView.show()
 //        }
+        self.purchase()
     }
 }
 
@@ -211,7 +212,7 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.row {
         case 0:
-            return 230
+            return 238
         case 1:
             return calculateDescriptionHeight()
         case 2:
@@ -228,7 +229,7 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
             case "2":
                 return 140
             case "3", "4":
-                return 75
+                return 80
             default:
                 return 140
             }
@@ -257,6 +258,9 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
                 let model = models[indexPath.row - 3]
                 cell.configure(withDataSource: model)
                 if indexPath.row >= 4 { cell.lock() }
+                if model.idType == "2" {
+                    cell.setImage(imageString: model.img ?? "")
+                }
                 return cell
             }
             return UITableViewCell()
@@ -285,6 +289,6 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
         let string = descriptionText
         let font = UIFont(name: "Arial", size: 17) ?? UIFont.systemFont(ofSize: 17)
         let height = string.height(width: UIScreen.main.bounds.width - 20, font: font)
-        return height
+        return height + 4
     }
 }

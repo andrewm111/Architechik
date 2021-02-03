@@ -11,7 +11,7 @@ import UIKit
 extension UIViewController {
     
     var smallScreen: Bool {
-        return UIScreen.main.bounds.height < 740
+        return UIScreen.main.bounds.height < 600
     }
     
     func addDismissKeyboardByTap() {
@@ -41,7 +41,7 @@ extension UIViewController {
 extension UIView {
     
     var smallScreen: Bool {
-        return UIScreen.main.bounds.height < 740
+        return UIScreen.main.bounds.height < 600
     }
     
     func addDismissKeyboardByTap() {

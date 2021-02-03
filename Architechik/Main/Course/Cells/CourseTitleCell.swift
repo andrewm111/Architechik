@@ -24,7 +24,7 @@ class CourseTitleCell: TableViewCell {
         view.font = UIFont(name: "Arial-BoldMT", size: 22)
         view.textColor = .white
         view.text = "History of architecture"
-        view.textAlignment = .center
+        view.textAlignment = .left
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -56,10 +56,10 @@ class CourseTitleCell: TableViewCell {
             titleImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             titleImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             
-            titleLabel.topAnchor.constraint(equalTo: titleImageView.bottomAnchor, constant: 2),
-            titleLabel.heightAnchor.constraint(equalToConstant: 30),
-            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+            titleLabel.topAnchor.constraint(equalTo: titleImageView.bottomAnchor, constant: 15),
+            titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
         ])
     }
 }

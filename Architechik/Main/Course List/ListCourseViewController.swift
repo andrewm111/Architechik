@@ -112,9 +112,9 @@ class ListCourseViewController: ViewController {
                 let priceString = product.localizedPrice
                 print("Product: \(product.localizedDescription), price: \(String(describing: priceString))")
             } else if let invalidProductId = result.invalidProductIDs.first {
-                print("Invalid product identifier: \(invalidProductId)")
+                print("Invalid product identifier: \(invalidProductId) in \(#function)")
             } else {
-                print("Error: \(String(describing: result.error))")
+                print("Error: \(String(describing: result.error)) in \(#function)")
             }
         }
     }
@@ -172,12 +172,12 @@ class ListCourseViewController: ViewController {
             let cell = tableView.cellForRow(at: tapIndexPath) as? CourseCell
             else { return }
         let model = models[tapIndexPath.row - 1]
-        DataFetcher.shared.fetchCourseStructure { lessons in
+        NetworkDataFetcher.shared.fetchCourseStructure { lessons in
             vc.models = lessons.filter({ lesson in
                 return lesson.idCourses == cell.model?.id
             })
             vc.courseTitle = model.title
-            vc.descriptionText = model.description
+            vc.descriptionText = model.fullDescription
             vc.courseImageUrl = model.img
             vc.courseId = model.id
             self.present(vc, animated: true)

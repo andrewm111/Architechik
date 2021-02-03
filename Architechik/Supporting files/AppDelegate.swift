@@ -57,12 +57,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //checkNetworkService()
         addTransactionObserver()
         //loginUser()
-        
         return true
     }
     
     private func fetchData() {
-        DataFetcher.shared.fetchCourses { courses in
+        NetworkDataFetcher.shared.fetchCourses { courses in
 //            let managedContext = self.persistentContainer.viewContext
 //            guard let entity = NSEntityDescription.entity(forEntityName: "Course", in: managedContext) else {
 //                print("Fetch data error")

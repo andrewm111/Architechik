@@ -29,10 +29,10 @@ class UnlockCell: TableViewCell {
     }()
     private let titleLabel: UILabel = {
         let view = UILabel()
-        let font = UIFont(name: "Arial-BoldMT", size: 21) ?? UIFont.systemFont(ofSize: 21)
+        let font = UIFont(name: "Arial-BoldMT", size: 17) ?? UIFont.systemFont(ofSize: 17)
         let attributedString = NSAttributedString(string: "Оплатить курс", attributes: [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.white])
         view.attributedText = attributedString
-        view.textAlignment = .center
+        //view.textAlignment = .left
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -62,8 +62,8 @@ class UnlockCell: TableViewCell {
     private func setupSubviews() {
         addSubview(mainView)
         mainView.addSubview(buttonView)
-        mainView.addSubview(unlockIcon)
-        mainView.addSubview(titleLabel)
+        //mainView.addSubview(unlockIcon)
+        //mainView.addSubview(titleLabel)
         
         
         let mainViewWidth = UIScreen.main.bounds.width - UnlockButton.spacing.rawValue * 2
@@ -73,7 +73,14 @@ class UnlockCell: TableViewCell {
         let topSpacing = 30 - (UnlockButton.getVerticalTopShadow() * mainViewHeight)
         let mainViewTotalHeight = mainViewHeight + (UnlockButton.getVerticalShadow() * mainViewHeight)
         mainView.frame = CGRect(x: leftSpacing, y: topSpacing, width: mainViewTotalWidth, height: mainViewTotalHeight)
-        let iconWidth: CGFloat = smallScreen ? 22 : 30
+        
+        let stackView = UIStackView(arrangedSubviews: [unlockIcon, titleLabel])
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.spacing = 12
+        stackView.distribution = .fillProportionally
+        addSubview(stackView)
+        let stackViewWidth = titleLabel.intrinsicContentSize.width + 12 + 20
         
         NSLayoutConstraint.activate([
             buttonView.topAnchor.constraint(equalTo: self.topAnchor, constant: 30),
@@ -81,18 +88,21 @@ class UnlockCell: TableViewCell {
             buttonView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: UnlockButton.spacing.rawValue),
             buttonView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -UnlockButton.spacing.rawValue),
             
+            stackView.centerYAnchor.constraint(equalTo: buttonView.centerYAnchor),
+            stackView.centerXAnchor.constraint(equalTo: buttonView.centerXAnchor),
+            stackView.widthAnchor.constraint(equalToConstant: stackViewWidth),
+            
             unlockIcon.heightAnchor.constraint(equalTo: unlockIcon.widthAnchor, multiplier: 1.25),
-            unlockIcon.widthAnchor.constraint(equalToConstant: iconWidth),
-            unlockIcon.centerYAnchor.constraint(equalTo: buttonView.centerYAnchor),
+            unlockIcon.widthAnchor.constraint(equalToConstant: 20),
+            //unlockIcon.centerYAnchor.constraint(equalTo: buttonView.centerYAnchor),
             //unlockIcon.leadingAnchor.constraint(equalTo: buttonView.leadingAnchor, constant: 14),
-            unlockIcon.trailingAnchor.constraint(equalTo: titleLabel.leadingAnchor, constant: -12),
+            //unlockIcon.trailingAnchor.constraint(equalTo: titleLabel.leadingAnchor, constant: -12),
 
-            titleLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonView.topAnchor, constant: 4),
-            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: buttonView.bottomAnchor, constant: -4),
-            titleLabel.centerYAnchor.constraint(equalTo: buttonView.centerYAnchor),
-            titleLabel.centerXAnchor.constraint(equalTo: buttonView.centerXAnchor),
-            titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: buttonView.leadingAnchor, constant: 56),
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: buttonView.trailingAnchor, constant: -14),
+//            titleLabel.topAnchor.constraint(greaterThanOrEqualTo: buttonView.topAnchor, constant: 4),
+//            titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: buttonView.bottomAnchor, constant: -4),
+//            titleLabel.centerYAnchor.constraint(equalTo: buttonView.centerYAnchor),
+//            titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: buttonView.leadingAnchor, constant: 56),
+//            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: buttonView.trailingAnchor, constant: -14),
         ])
         
     }

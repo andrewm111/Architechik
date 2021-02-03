@@ -38,8 +38,7 @@ class TitleCell: TableViewCell {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
             titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
-            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 8),
-            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: self.trailingAnchor, constant: 8),
+            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
         ])
     }
 }

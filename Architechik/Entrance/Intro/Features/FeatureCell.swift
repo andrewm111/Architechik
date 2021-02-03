@@ -44,7 +44,7 @@ class FeatureCell: TableViewCell {
     private func initialSetup(forType type: FeatureType) {
         switch type {
         case .course:
-            featureLabel.text = "Пройти курс по\nнужной для тебя теме"
+            featureLabel.text = "Пройти курс по\nнужной тебе теме"
             featureImageView.image = UIImage(named: "courseIcon")
         case .article:
             featureLabel.text = "Прочитать\nстатьи"
@@ -78,10 +78,10 @@ class FeatureCell: TableViewCell {
     
     private func createLeftLayout(ratio: CGFloat) {
         NSLayoutConstraint.activate([
-            featureImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 14),
-            featureImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -14),
+            featureImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
+            featureImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20),
             featureImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            featureImageView.widthAnchor.constraint(equalToConstant: 122 * ratio),
+            featureImageView.widthAnchor.constraint(equalTo: featureImageView.heightAnchor, multiplier: ratio),
             
             featureLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 22),
             featureLabel.bottomAnchor.constraint(lessThanOrEqualTo: self.bottomAnchor),
@@ -92,10 +92,10 @@ class FeatureCell: TableViewCell {
     
     private func createRightLayout(ratio: CGFloat) {
         NSLayoutConstraint.activate([
-            featureImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 14),
-            featureImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -14),
+            featureImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
+            featureImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20),
             featureImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            featureImageView.widthAnchor.constraint(equalToConstant: 122 * ratio),
+            featureImageView.widthAnchor.constraint(equalTo: featureImageView.heightAnchor, multiplier: ratio),
             
             featureLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 22),
             featureLabel.bottomAnchor.constraint(lessThanOrEqualTo: self.bottomAnchor),

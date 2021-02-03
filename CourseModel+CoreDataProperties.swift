@@ -20,7 +20,7 @@ extension CourseModel {
     @NSManaged public var title: String
     @NSManaged public var descriptionShort: String
     @NSManaged public var descriptionFull: String
-    @NSManaged public var idCategory: String
+    @NSManaged public var idCategory: String?
     @NSManaged public var category: String?
     @NSManaged public var price: String
     @NSManaged public var courseNumber: String

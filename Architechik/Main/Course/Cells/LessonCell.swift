@@ -12,8 +12,8 @@ class LessonCell: TableViewCell {
     
     private lazy var backImageView: WebImageView = {
         let view = WebImageView()
-        let randomNumber = Int.random(in: 1...3)
-        view.image = UIImage(named: "articleBack\(randomNumber)")
+        //let randomNumber = Int.random(in: 1...3)
+        //view.image = UIImage(named: "articleBack\(randomNumber)")
         view.contentMode = .scaleAspectFill
         view.layer.cornerRadius = 10
         view.clipsToBounds = true
@@ -85,7 +85,7 @@ class LessonCell: TableViewCell {
         selectionStyle = .none
         backgroundColor = .clear
         initialSetup(withDataSource: dataSource)
-        setupSubviews()
+        setupSubviews(withDataSource: dataSource)
     }
     
     func setImage(imageString: String) {
@@ -118,20 +118,35 @@ class LessonCell: TableViewCell {
     private func initialSetup(withDataSource dataSource: LessonCellDataSource) {
         isUserInteractionEnabled = true
         guard dataSource.id != "" else { return }
+        switch dataSource.category {
+        case "2":
+            break
+        case "3":
+            backImageView.image = UIImage(named: "repeatBackground")
+        case "4":
+            backImageView.image = UIImage(named: "testBackground")
+        default:
+            break
+        }
         titleLabel.text = dataSource.title
         descriptionLabel.text = dataSource.description
         if let isDone = dataSource.isDone {
             if isDone { makeDone() } else { makeNotDone() }
+        } else {
+            makeNotDone()
         }
     }
     
-    private func setupSubviews() {
+    private func setupSubviews(withDataSource dataSource: LessonCellDataSource) {
         addSubview(backImageView)
         backImageView.addSubview(titleLabel)
         backImageView.addSubview(descriptionLabel)
         backImageView.addSubview(doneLabel)
         backImageView.addSubview(doneIcon)
         backImageView.layer.addSublayer(coverLayer)
+        
+        let needMoreSpace = dataSource.category == "3" || dataSource.category == "4"
+        let bottomSpacing: CGFloat = needMoreSpace ? -9 : -4
         
         NSLayoutConstraint.activate([
             backImageView.topAnchor.constraint(equalTo: self.topAnchor),
@@ -149,13 +164,13 @@ class LessonCell: TableViewCell {
             doneLabel.leadingAnchor.constraint(greaterThanOrEqualTo: backImageView.leadingAnchor, constant: 10),
             doneLabel.trailingAnchor.constraint(equalTo: doneIcon.leadingAnchor, constant: -5),
             
-            titleLabel.topAnchor.constraint(equalTo: doneLabel.bottomAnchor, constant: 4),
+            titleLabel.topAnchor.constraint(equalTo: doneLabel.bottomAnchor, constant: 2),
             titleLabel.heightAnchor.constraint(equalToConstant: 22),
             titleLabel.leadingAnchor.constraint(equalTo: backImageView.leadingAnchor, constant: 10),
             titleLabel.trailingAnchor.constraint(equalTo: backImageView.trailingAnchor, constant: -10),
             
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
-            descriptionLabel.bottomAnchor.constraint(lessThanOrEqualTo: backImageView.bottomAnchor, constant: -4),
+            descriptionLabel.bottomAnchor.constraint(lessThanOrEqualTo: backImageView.bottomAnchor, constant: bottomSpacing),
             descriptionLabel.leadingAnchor.constraint(equalTo: backImageView.leadingAnchor, constant: 10),
             descriptionLabel.trailingAnchor.constraint(equalTo: backImageView.trailingAnchor, constant: -10),
         ])

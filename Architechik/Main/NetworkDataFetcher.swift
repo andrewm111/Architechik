@@ -1,5 +1,5 @@
 //
-//  DataFetcher.swift
+//  NetworkDataFetcher.swift
 //  Architechik
 //
 //  Created by Александр Цветков on 27.01.2021.
@@ -8,10 +8,10 @@
 
 import UIKit
 
-class DataFetcher {
+class NetworkDataFetcher {
     
     fileprivate init() {}
-    static let shared = DataFetcher()
+    static let shared = NetworkDataFetcher()
     
     func fetchCourses(completion: @escaping (Array<Course>) -> Void ) {
         NetworkService.shared.getCourses { result in

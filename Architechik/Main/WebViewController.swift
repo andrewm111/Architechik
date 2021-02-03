@@ -14,6 +14,7 @@ class WebViewController: UIViewController, SwipeToDismissDelegate {
     //MARK: - Subviews
     private let webView: WKWebView = {
         let view = WKWebView()
+        view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -32,6 +33,13 @@ class WebViewController: UIViewController, SwipeToDismissDelegate {
         setupSubviews()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.webView.isMultipleTouchEnabled = false
+        self.webView.scrollView.minimumZoomScale = 1.0
+        webView.scrollView.pinchGestureRecognizer?.isEnabled = false
+    }
+    
     //MARK: - Setup
     private func initialSetup() {
         view.addGestureRecognizer(pan)
@@ -40,10 +48,9 @@ class WebViewController: UIViewController, SwipeToDismissDelegate {
         webView.uiDelegate = self
         webView.navigationDelegate = self
         webView.scrollView.delegate = self
-        
+        webView.scrollView.showsVerticalScrollIndicator = false
         //guard let url = URL(string: "https://architechick.ru/courses/course2/lesson1.html") else { return }
         guard let url = URL(string: urlString) else { return }
-        print(url.absoluteString)
         let urlRequest = URLRequest(url: url)
         webView.load(urlRequest)
     }
@@ -75,7 +82,9 @@ class WebViewController: UIViewController, SwipeToDismissDelegate {
 
 //MARK: - WKUIDelegate, WKNavigationDelegate
 extension WebViewController: WKUIDelegate, WKNavigationDelegate {
-    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        webView.isHidden = false
+    }
 }
 
 //MARK: - UIScrollViewDelegate
@@ -94,6 +103,8 @@ extension WebViewController: UIScrollViewDelegate {
 //        print(scrollView.contentSize)
 //    }
     
-    
+    func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
+        scrollView.pinchGestureRecognizer?.isEnabled = false
+    }
 }
 

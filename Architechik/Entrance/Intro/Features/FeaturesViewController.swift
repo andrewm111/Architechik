@@ -25,6 +25,7 @@ class FeaturesViewController: IndexableViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    private var featureImageHeight: CGFloat = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,9 +46,12 @@ class FeaturesViewController: IndexableViewController {
         view.addSubview(featuresImageView)
         view.addSubview(tableView)
         
-        if let width = featuresImageView.image?.size.width, let height = featuresImageView.image?.size.height {
-            let ratio = height / width
-            featuresImageView.heightAnchor.constraint(equalTo: featuresImageView.widthAnchor, multiplier: ratio).isActive = true
+        if let imageWidth = featuresImageView.image?.size.width, let imageHeight = featuresImageView.image?.size.height {
+            let width = UIScreen.main.bounds.width - 28
+            let ratio = imageHeight / imageWidth
+            let height = width * ratio
+            featureImageHeight = height
+            featuresImageView.heightAnchor.constraint(equalToConstant: height).isActive = true
         }
         
         NSLayoutConstraint.activate([
@@ -56,7 +60,7 @@ class FeaturesViewController: IndexableViewController {
             featuresImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
             
             tableView.topAnchor.constraint(equalTo: featuresImageView.bottomAnchor, constant: 16),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -2),
             tableView.leadingAnchor.constraint(equalTo: featuresImageView.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: featuresImageView.trailingAnchor),
         ])
@@ -67,7 +71,9 @@ class FeaturesViewController: IndexableViewController {
 extension FeaturesViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 150
+        let rowHeight = (UIScreen.main.bounds.height - featureImageHeight - 32) / 4
+        return rowHeight
+        //return 150
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

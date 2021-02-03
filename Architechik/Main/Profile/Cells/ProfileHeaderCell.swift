@@ -31,7 +31,7 @@ class ProfileHeaderCell: TableViewCell {
     private let tapLabel: UILabel = {
         let view = UILabel()
         view.textColor = UIColor(hex: "613191")
-        view.text = "Нажми достижение чтобы поделиться им"
+        view.text = "Нажми на достижение чтобы поделиться"
         view.font = UIFont(name: "Arial", size: 18)
         view.textAlignment = .center
         view.translatesAutoresizingMaskIntoConstraints = false

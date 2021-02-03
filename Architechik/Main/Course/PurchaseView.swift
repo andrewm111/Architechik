@@ -87,17 +87,9 @@ class PurchaseView: UIView, CardViewProtocol {
     @objc
     private func purchasePressed(_ sender: UIButton) {
         //helper.buyProduct(product!)
-        /*
-        SwiftyStoreKit.purchaseProduct("FirstInArchitectureCourseTest", quantity: 1, atomically: true) { result in
-            switch result {
-            case .success(purchase: let purchase):
-                print(purchase)
-                self.verifyPurchase()
-            case .error(error: let error):
-                print(error)
-            }
-        }
-        */
+        
+        
+        
     }
     
     @objc
@@ -116,28 +108,7 @@ class PurchaseView: UIView, CardViewProtocol {
          */
     }
     
-    private func verifyPurchase() {
-        let appleValidator = AppleReceiptValidator(service: .production, sharedSecret: "999")
-        SwiftyStoreKit.verifyReceipt(using: appleValidator, forceRefresh: false) { result in
-            switch result {
-            case .success(let receipt):
-                let productId = "FirstInArchitectureCourseTest"
-                // Verify the purchase of Consumable or NonConsumable
-                let purchaseResult = SwiftyStoreKit.verifyPurchase(
-                    productId: productId,
-                    inReceipt: receipt)
-                    
-                switch purchaseResult {
-                case .purchased(let receiptItem):
-                    print("\(productId) is purchased: \(receiptItem)")
-                case .notPurchased:
-                    print("The user has never purchased \(productId)")
-                }
-            case .error(let error):
-                print("Verify receipt failed: \(error)")
-            }
-        }
-    }
+    
 }
 
 //MARK: - Supporting methods

@@ -16,11 +16,13 @@ class GrammarViewController: ViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let filterButton: UIButton = {
+    private lazy var filterButton: UIButton = {
         let view = UIButton(type: .custom)
+        let radius: CGFloat = smallScreen ? 20 : 30
         view.layer.cornerRadius = 30
         view.backgroundColor = UIColor(hex: "613191")
-        view.setImage(UIImage(named: "filter"), for: .normal)
+        let image = smallScreen ? UIImage(named: "filterSmall") : UIImage(named: "filter")
+        view.setImage(image, for: .normal)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -82,14 +84,16 @@ class GrammarViewController: ViewController {
         view.addSubview(filterButton)
         view.addSubview(filterView)
         
+        let filterSize: CGFloat = smallScreen ? 40 : 60
+        
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -2),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
-            filterButton.heightAnchor.constraint(equalToConstant: 60),
-            filterButton.widthAnchor.constraint(equalToConstant: 60),
+            filterButton.heightAnchor.constraint(equalToConstant: filterSize),
+            filterButton.widthAnchor.constraint(equalToConstant: filterSize),
             filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
             filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
             

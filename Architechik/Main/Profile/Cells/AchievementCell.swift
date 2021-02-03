@@ -92,6 +92,6 @@ class AchievementCell: TableViewCell {
     }
     
     func getImage() -> UIImage? {
-        return imageView?.image
+        return achievementImageView.image
     }
 }

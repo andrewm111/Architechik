@@ -12,5 +12,15 @@ import CoreData
 
 @objc(CourseModel)
 public class CourseModel: NSManagedObject {
-    
+    func configure(withModel model: Course) {
+        self.id = model.id
+        self.title = model.title
+        self.descriptionShort = model.description
+        self.descriptionFull = model.fullDescription
+        self.idCategory = model.idCategory
+        self.category = model.category
+        self.price = model.price
+        self.courseNumber = model.courseNumber
+        self.image = model.img
+    }
 }

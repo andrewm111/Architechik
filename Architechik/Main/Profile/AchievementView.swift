@@ -30,7 +30,7 @@ class AchievementView: UIView, CardViewProtocol {
     }()
     private let titleLabel: UILabel = {
         let view = UILabel()
-        view.font = UIFont(name: "Arial-BoldMT", size: 24)
+        view.font = UIFont(name: "Arial-BoldMT", size: 20)
         view.textColor = UIColor(hex: "613191")
         view.text = "Название"
         view.numberOfLines = 2
@@ -41,7 +41,7 @@ class AchievementView: UIView, CardViewProtocol {
     }()
     private let descriptionLabel: UILabel = {
         let view = UILabel()
-        view.font = UIFont(name: "Arial-BoldMT", size: 15)
+        view.font = UIFont(name: "Arial", size: 15)
         view.textColor = .white
         view.text = "Описание достижения"
         view.numberOfLines = 0
@@ -61,16 +61,16 @@ class AchievementView: UIView, CardViewProtocol {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
         view.clipsToBounds = true
-        view.image = UIImage(named: "share")
+        view.image = UIImage(named: "share")?.withTintColor(.black)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     private let buttonLabel: UILabel = {
         let view = UILabel()
         view.numberOfLines = 1
-        view.textColor = .white
+        view.textColor = .black
         view.text = "Отправить"
-        view.font = UIFont(name: "Arial-BoldMT", size: 22)
+        view.font = UIFont(name: "Arial-BoldMT", size: 17)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -123,7 +123,7 @@ class AchievementView: UIView, CardViewProtocol {
             imageView.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 10),
             imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
             
-            titleLabel.topAnchor.constraint(equalTo: imageView.topAnchor, constant: 5),
+            titleLabel.topAnchor.constraint(equalTo: imageView.topAnchor, constant: -2),
             titleLabel.bottomAnchor.constraint(equalTo: descriptionLabel.topAnchor, constant: -8),
             titleLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 10),
             titleLabel.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -10),

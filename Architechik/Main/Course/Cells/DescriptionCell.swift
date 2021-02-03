@@ -41,8 +41,8 @@ class DescriptionCell: TableViewCell {
         NSLayoutConstraint.activate([
             descriptionLabel.topAnchor.constraint(equalTo: self.topAnchor),
             descriptionLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4),
-            descriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            descriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+            descriptionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            descriptionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
         ])
     }
 }

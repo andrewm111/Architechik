@@ -131,7 +131,7 @@ class NetworkService {
             string += "&course_id=\(id)"
         }
         if let values = values {
-            string += "&values=\(values)"
+            string += "&value=\(values)"
         }
         print(string)
         let data = string.data(using: .utf8)

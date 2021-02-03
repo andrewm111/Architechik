@@ -12,9 +12,11 @@ class FilterView: UIView, CardViewProtocol {
 
     private lazy var stackView: UIStackView = {
         var views: Array<UIView> = []
-        for i in -1...2 {
+        let categoryAllView = CategoryView(ofType: Category.init(rawValue: -1), categoryName: categoryName)
+        categoryAllView.select()
+        views.append(categoryAllView)
+        for i in 1...3 {
             let categoryView = CategoryView(ofType: Category.init(rawValue: i), categoryName: categoryName)
-            if i == -1 { categoryView.select()}
             views.append(categoryView)
         }
         let view = UIStackView(arrangedSubviews: views)
