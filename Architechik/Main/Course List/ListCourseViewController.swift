@@ -57,10 +57,11 @@ class ListCourseViewController: ViewController {
                     return model.idCategory == "\(currentCategory)"
                 }
             }
-            tableView.reloadData()
+            if models.count != 0 { tableView.reloadData() }
         }
     }
     var filteredModels: Array<Course> = []
+    var lessons: Array<Lesson> = []
     private var cellHeights: Array<CGFloat> = []
     var products: Set<SKProduct> = []
     private var currentCategory: Int = -1
@@ -172,16 +173,14 @@ class ListCourseViewController: ViewController {
             let cell = tableView.cellForRow(at: tapIndexPath) as? CourseCell
             else { return }
         let model = models[tapIndexPath.row - 1]
-        NetworkDataFetcher.shared.fetchCourseStructure { lessons in
-            vc.models = lessons.filter({ lesson in
-                return lesson.idCourses == cell.model?.id
-            })
-            vc.courseTitle = model.title
-            vc.descriptionText = model.fullDescription
-            vc.courseImageUrl = model.img
-            vc.courseId = model.id
-            self.present(vc, animated: true)
-        }
+        vc.models = lessons.filter({ lesson -> Bool in
+            return lesson.idCourses == cell.model?.id
+        })
+        vc.courseTitle = model.title
+        vc.descriptionText = model.fullDescription
+        vc.courseImageUrl = model.img
+        vc.courseId = model.id
+        self.present(vc, animated: true)
     }
     
     @objc

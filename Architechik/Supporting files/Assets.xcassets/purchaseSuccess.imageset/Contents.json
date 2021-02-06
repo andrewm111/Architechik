@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "button (2)-2.png",
+      "filename" : "buy_course.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "button (2)-1.png",
+      "filename" : "buy_course-1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "button (2).png",
+      "filename" : "buy_course-2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

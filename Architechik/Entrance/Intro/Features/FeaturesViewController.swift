@@ -51,18 +51,21 @@ class FeaturesViewController: IndexableViewController {
             let ratio = imageHeight / imageWidth
             let height = width * ratio
             featureImageHeight = height
-            featuresImageView.heightAnchor.constraint(equalToConstant: height).isActive = true
+            NSLayoutConstraint.activate([
+                featuresImageView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.67),
+                featuresImageView.heightAnchor.constraint(equalTo: featuresImageView.widthAnchor, multiplier: ratio),
+            ])
+            
         }
         
         NSLayoutConstraint.activate([
             featuresImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 14),
             featuresImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 14),
-            featuresImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
             
             tableView.topAnchor.constraint(equalTo: featuresImageView.bottomAnchor, constant: 16),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -2),
             tableView.leadingAnchor.constraint(equalTo: featuresImageView.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: featuresImageView.trailingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -14),
         ])
     }
 }
@@ -71,7 +74,8 @@ class FeaturesViewController: IndexableViewController {
 extension FeaturesViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let rowHeight = (UIScreen.main.bounds.height - featureImageHeight - 32) / 4
+        let contentHeight = view.frame.height - UIApplication.shared.windows[0].safeAreaInsets.top - UIApplication.shared.windows[0].safeAreaInsets.bottom
+        let rowHeight = (contentHeight - featureImageHeight - 32) / 4
         return rowHeight
         //return 150
     }

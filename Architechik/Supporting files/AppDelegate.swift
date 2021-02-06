@@ -34,7 +34,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                  * The store could not be migrated to the current model version.
                  Check the error message to determine what the actual problem was.
                  */
-                
             }
         })
         return container
@@ -43,9 +42,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = .white
-        //self.window?.rootViewController = PageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        self.window?.rootViewController = PageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         //self.window?.rootViewController = LoginViewController()
-        self.window?.rootViewController = TabBarController()
+        //self.window?.rootViewController = TabBarController()
         self.window?.makeKeyAndVisible()
         SwiftyStoreKit.shouldAddStorePaymentHandler = { payment, product in
             print(payment)
@@ -54,26 +53,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // return false otherwise
             return true
         }
-        //checkNetworkService()
         addTransactionObserver()
         //loginUser()
         return true
     }
     
-    private func fetchData() {
-        NetworkDataFetcher.shared.fetchCourses { courses in
-//            let managedContext = self.persistentContainer.viewContext
-//            guard let entity = NSEntityDescription.entity(forEntityName: "Course", in: managedContext) else {
-//                print("Fetch data error")
-//                return
-//            }
-//            let courses = NSManagedObject(entity: entity, insertInto: managedContext)
-//
-        }
-    }
-    
     // MARK: - Core Data Saving support
-    
     func saveContext () {
         let context = persistentContainer.viewContext
         if context.hasChanges {
@@ -102,17 +87,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     }
                 }
             }
-    }
-    
-    private func checkNetworkService() {
-        NetworkService.shared.updateInfo(courseId: "1", values: "1") { result in
-            switch result {
-            case .success(_):
-                break
-            case .failure(let error):
-                print("Error in app delegate --- \(error)")
-            }
-        }
     }
     
     private func loginUser() {

@@ -53,13 +53,17 @@ class AppDescriptionViewController: IndexableViewController {
         view.addSubview(infoLabel)
         view.addSubview(imageView)
         
-        let width = UIScreen.main.bounds.width
-        let ratio: CGFloat = 0.497502497502498
-        let height = width * ratio
+        if let imageWidth = appDescriptionImageView.image?.size.width, let imageHeight = appDescriptionImageView.image?.size.height {
+            let width = UIScreen.main.bounds.width - 40
+            let ratio = imageHeight / imageWidth
+            let height = width * ratio
+            NSLayoutConstraint.activate([
+                appDescriptionImageView.heightAnchor.constraint(equalToConstant: height),
+            ])
+        }
         
         NSLayoutConstraint.activate([
-            appDescriptionImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            appDescriptionImageView.heightAnchor.constraint(equalToConstant: height),
+            appDescriptionImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 14),
             appDescriptionImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             appDescriptionImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             

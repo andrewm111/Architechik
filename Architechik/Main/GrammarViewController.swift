@@ -32,6 +32,11 @@ class GrammarViewController: ViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    private lazy var lessonView: LessonView = {
+        let view = LessonView(withDelegate: self)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     //MARK: - Properties
     lazy var jsonPath = Bundle.main.path(forResource: "grammar", ofType: "json")
@@ -44,7 +49,7 @@ class GrammarViewController: ViewController {
                     return model.idCategory == "\(currentCategory)"
                 }
             }
-            tableView.reloadData()
+            if models.count != 0 { tableView.reloadData() }
         }
     }
     var filteredModels: Array<Grammar> = []
@@ -73,6 +78,7 @@ class GrammarViewController: ViewController {
         tableView.backgroundColor = .clear
         tableView.isUserInteractionEnabled = true
         //fetchJSON()
+        lessonView.transform = CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.height)
         filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
         NotificationCenter.default.addObserver(self, selector: #selector(categoryChanged), name: NSNotification.Name("CategoryChanged"), object: nil)
         NotificationCenter.default.post(name: NSNotification.Name("CategoryChanged"), object: nil, userInfo: ["category": -1, "categoryName": "grammar"])
@@ -83,6 +89,7 @@ class GrammarViewController: ViewController {
         view.addSubview(tableView)
         view.addSubview(filterButton)
         view.addSubview(filterView)
+        view.addSubview(lessonView)
         
         let filterSize: CGFloat = smallScreen ? 40 : 60
         
@@ -101,6 +108,11 @@ class GrammarViewController: ViewController {
             filterView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 370),
             filterView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             filterView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            lessonView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            lessonView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            lessonView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            lessonView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
     
@@ -156,11 +168,12 @@ class GrammarViewController: ViewController {
             let tapIndexPath = self.tableView.indexPathForRow(at: tapLocation),
             let _ = tableView.cellForRow(at: tapIndexPath) as? LessonCell
             else { return }
-        let vc = WebViewController()
-        vc.urlString = filteredModels[tapIndexPath.row].file
-        vc.modalPresentationStyle = .overCurrentContext
-        vc.modalTransitionStyle = .coverVertical
-        present(vc, animated: true)
+//        let vc = WebViewController()
+//        vc.urlString = filteredModels[tapIndexPath.row].file
+//        vc.modalPresentationStyle = .overCurrentContext
+//        vc.modalTransitionStyle = .coverVertical
+//        present(vc, animated: true)
+        lessonView.urlString = filteredModels[tapIndexPath.row].file
     }
     
     //MARK: - Supporting methods
@@ -176,6 +189,13 @@ class GrammarViewController: ViewController {
         } catch {
             print("Error with converting json file to model")
         }
+    }
+}
+
+//MARK: - WebDelegate
+extension GrammarViewController: WebDelegate {
+    func enablePanGestureRecognizer() {
+        
     }
 }
 

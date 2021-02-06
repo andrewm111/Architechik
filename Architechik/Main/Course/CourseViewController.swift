@@ -10,7 +10,7 @@ import UIKit
 import StoreKit
 import SwiftyStoreKit
 
-class CourseViewController: ViewController, SwipeToDismissDelegate {
+class CourseViewController: ViewController, SwipeToDismissControllerDelegate {
     
     //MARK: - Subviews
     private let tableView: UITableView = {
@@ -18,17 +18,22 @@ class CourseViewController: ViewController, SwipeToDismissDelegate {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-//    private lazy var purchaseView: PurchaseView = {
-//        let view = PurchaseView(withDelegate: self)
-//        view.isHidden = true
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        return view
-//    }()
+    private lazy var purchaseView: PurchaseView = {
+        let view = PurchaseView(withDelegate: self)
+        view.isHidden = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    private lazy var lessonView: LessonView = {
+        let view = LessonView(withDelegate: self)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     //MARK: - Properties
     var models: Array<Lesson> = [] {
         didSet {
-            tableView.reloadData()
+            if models.count != 0 { tableView.reloadData() }
         }
     }
     private lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
@@ -39,6 +44,11 @@ class CourseViewController: ViewController, SwipeToDismissDelegate {
     var courseTitle: String = ""
     var courseImageUrl: String = ""
     var courseId: String = ""
+    var coursePurchased = false {
+        didSet {
+            tableView.reloadData()
+        }
+    }
 
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -63,6 +73,7 @@ class CourseViewController: ViewController, SwipeToDismissDelegate {
         tableView.isUserInteractionEnabled = true
         tableView.addGestureRecognizer(tap)
         view.addGestureRecognizer(pan)
+        lessonView.transform = CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.height)
 //        guard
 //        let product = product,
 //        let price = product.localizedPrice
@@ -73,18 +84,25 @@ class CourseViewController: ViewController, SwipeToDismissDelegate {
 
     private func setupSubviews() {
         view.addSubview(tableView)
-        //view.addSubview(purchaseView)
+        view.addSubview(purchaseView)
+        view.addSubview(lessonView)
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            purchaseView.heightAnchor.constraint(equalToConstant: 510),
+            purchaseView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            purchaseView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            purchaseView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            lessonView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            lessonView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            lessonView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            lessonView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
-//        purchaseView.heightAnchor.constraint(equalToConstant: 180),
-//        purchaseView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 180),
-//        purchaseView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//        purchaseView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
     }
     
     //MARK: - Handle user events
@@ -109,13 +127,16 @@ class CourseViewController: ViewController, SwipeToDismissDelegate {
         } else if models.count >= tapIndexPath.row - 4 {
             model = models[tapIndexPath.row - 3]
         }
-        let vc = WebViewController()
+        //let vc = WebViewController()
         if let string = model?.file {
-            vc.urlString = string
+            //vc.urlString = string
+            lessonView.urlString = string
+            pan.isEnabled = false
         }
-        vc.modalPresentationStyle = .overCurrentContext
-        vc.modalTransitionStyle = .coverVertical
-        present(vc, animated: true)
+        
+//        vc.modalPresentationStyle = .fullScreen
+//        vc.modalTransitionStyle = .coverVertical
+//        present(vc, animated: true)
 //        NetworkService.shared.updateInfo(courseId: courseId, values: model?.id ?? "") { result in
 //            switch result {
 //            case .success(let result):
@@ -152,7 +173,22 @@ extension CourseViewController: UnlockDelegate {
 //        } else {
 //            purchaseView.show()
 //        }
+        
         self.purchase()
+    }
+}
+
+//MARK: - PurchaseViewDelegate
+extension CourseViewController: PurchaseViewDelegate {
+    func close() {
+        purchaseView.isHidden = true
+    }
+}
+
+//MARK: - WebDelegate
+extension CourseViewController: WebDelegate {
+    func enablePanGestureRecognizer() {
+        pan.isEnabled = true
     }
 }
 
@@ -162,6 +198,8 @@ extension CourseViewController {
         SwiftyStoreKit.purchaseProduct("FirstInArchitectureCourseTest", quantity: 1, atomically: true) { result in
             switch result {
             case .success(purchase: let purchase):
+                self.purchaseView.isHidden = false
+                self.coursePurchased = true
                 print(purchase)
                 self.verifyPurchase()
             case .error(error: let error):
@@ -198,11 +236,13 @@ extension CourseViewController {
 //MARK: - IntroDelegate
 extension CourseViewController: IntroDelegate {
     func showIntro() {
-        let vc = WebViewController()
-        vc.urlString = models[0].file
-        vc.modalPresentationStyle = .overCurrentContext
-        vc.modalTransitionStyle = .coverVertical
-        present(vc, animated: true)
+//        let vc = WebViewController()
+//        vc.urlString = models[0].file
+//        vc.modalPresentationStyle = .overCurrentContext
+//        vc.modalTransitionStyle = .coverVertical
+//        present(vc, animated: true)
+        lessonView.urlString = models[0].file
+        pan.isEnabled = false
     }
 }
 
@@ -212,7 +252,7 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.row {
         case 0:
-            return 238
+            return 242
         case 1:
             return calculateDescriptionHeight()
         case 2:
@@ -237,10 +277,40 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return models.count + 3
+        let numberOfRows = coursePurchased ? models.count + 1 : models.count + 3
+        return numberOfRows
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if coursePurchased {
+            return configurePurchasedCourse(tableView, cellForRowAt: indexPath)
+        } else {
+            return configureNotPurchasedCourse(tableView, cellForRowAt: indexPath)
+        }
+    }
+    
+    private func configurePurchasedCourse(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch indexPath.row {
+        case 0:
+            return configureCourseTitleCell()
+        case 1:
+            return configureDescription()
+        default:
+            if models.count > indexPath.row - 2 {
+                let cell: LessonCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
+                let model = models[indexPath.row - 1]
+                cell.configure(withDataSource: model)
+                cell.unlock()
+                if model.idType == "2" {
+                    cell.setImage(imageString: model.img ?? "")
+                }
+                return cell
+            }
+            return UITableViewCell()
+        }
+    }
+    
+    private func configureNotPurchasedCourse(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.row {
         case 0:
             return configureCourseTitleCell()
@@ -253,7 +323,7 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
                 let cell: IntroCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
                 cell.configure(withDelegate: self)
                 return cell
-            } else if models.count >= indexPath.row - 4 {
+            } else if models.count > indexPath.row - 4 {
                 let cell: LessonCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
                 let model = models[indexPath.row - 3]
                 cell.configure(withDataSource: model)

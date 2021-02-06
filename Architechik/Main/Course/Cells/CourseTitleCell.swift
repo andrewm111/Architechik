@@ -57,7 +57,7 @@ class CourseTitleCell: TableViewCell {
             titleImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             
             titleLabel.topAnchor.constraint(equalTo: titleImageView.bottomAnchor, constant: 15),
-            titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4),
             titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
         ])

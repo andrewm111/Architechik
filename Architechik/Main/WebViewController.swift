@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 
-class WebViewController: UIViewController, SwipeToDismissDelegate {
+class WebViewController: UIViewController, SwipeToDismissControllerDelegate {
     
     //MARK: - Subviews
     private let webView: WKWebView = {

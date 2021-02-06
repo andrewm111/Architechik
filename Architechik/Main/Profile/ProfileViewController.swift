@@ -28,7 +28,7 @@ class ProfileViewController: ViewController {
     //MARK: - Properties
     var models: Array<Achievement> = [] {
         didSet {
-            tableView.reloadData()
+            if models.count != 0 { tableView.reloadData() }
         }
     }
     private lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
@@ -48,8 +48,8 @@ class ProfileViewController: ViewController {
     
     //MARK: - Setup
     private func initialSetup() {
+        view.backgroundColor = .black
         //view.backgroundColor = UIColor(hex: "1F1F24")
-        view.backgroundColor = UIColor.black
         edgesForExtendedLayout = .bottom
         extendedLayoutIncludesOpaqueBars = true
         tableView.delegate = self
@@ -57,7 +57,7 @@ class ProfileViewController: ViewController {
         tableView.register(ProfileHeaderCell.self)
         tableView.register(AchievementCell.self)
         tableView.separatorStyle = .none
-        tableView.backgroundColor = .clear
+        tableView.backgroundColor = .black
         tableView.isUserInteractionEnabled = true
         tableView.addGestureRecognizer(tap)
     }
@@ -73,8 +73,8 @@ class ProfileViewController: ViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
-            achievementView.heightAnchor.constraint(equalToConstant: 250),
-            achievementView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 300),
+            achievementView.heightAnchor.constraint(equalToConstant: 310),
+            achievementView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 360),
             achievementView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             achievementView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])

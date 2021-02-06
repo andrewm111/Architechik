@@ -10,27 +10,29 @@ import UIKit
 
 class UnlockCell: TableViewCell {
     
-    private let mainView: UIImageView = {
+//    private let mainView: UIImageView = {
+//        let view = UIImageView()
+//        view.image = UIImage(named: "buttonBuy")
+//        view.contentMode = .scaleAspectFill
+//        view.isUserInteractionEnabled = true
+//        view.clipsToBounds = true
+//        //view.layer.cornerRadius = 25
+//        //view.backgroundColor = UIColor(hex: "613191")
+//        //view.translatesAutoresizingMaskIntoConstraints = false
+//        return view
+//    }()
+    private let buttonView: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "buttonBuy")
-        view.contentMode = .scaleAspectFill
         view.isUserInteractionEnabled = true
-        view.clipsToBounds = true
-        //view.layer.cornerRadius = 25
-        //view.backgroundColor = UIColor(hex: "613191")
-        //view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    private let buttonView: UIView = {
-        let view = UIView()
+        view.image = UIImage(named: "buttonBuy")
         view.backgroundColor = .clear
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     private let titleLabel: UILabel = {
         let view = UILabel()
-        let font = UIFont(name: "Arial-BoldMT", size: 17) ?? UIFont.systemFont(ofSize: 17)
-        let attributedString = NSAttributedString(string: "Оплатить курс", attributes: [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.white])
+        let font = UIFont(name: "Arial", size: 17) ?? UIFont.systemFont(ofSize: 17)
+        let attributedString = NSAttributedString(string: "Оплатить курс", attributes: [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.black])
         view.attributedText = attributedString
         //view.textAlignment = .left
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -38,7 +40,12 @@ class UnlockCell: TableViewCell {
     }()
     private let unlockIcon: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "appleIcon")?.withTintColor(.white)
+        view.image = UIImage(named: "appleIcon")
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    private let unlockView: UIView = {
+        let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -56,30 +63,31 @@ class UnlockCell: TableViewCell {
         backgroundColor = .clear
         isUserInteractionEnabled = true
         let tap = UITapGestureRecognizer(target: self, action: #selector(unlockTapped))
-        mainView.addGestureRecognizer(tap)
+        buttonView.addGestureRecognizer(tap)
     }
     
     private func setupSubviews() {
-        addSubview(mainView)
-        mainView.addSubview(buttonView)
+        //addSubview(mainView)
+        addSubview(buttonView)
+        addSubview(unlockIcon)
         //mainView.addSubview(unlockIcon)
         //mainView.addSubview(titleLabel)
         
         
-        let mainViewWidth = UIScreen.main.bounds.width - UnlockButton.spacing.rawValue * 2
-        let leftSpacing = UnlockButton.spacing.rawValue - (UnlockButton.getHorizontalShadow() * mainViewWidth)
-        let mainViewTotalWidth = mainViewWidth + (UnlockButton.getHorizontalShadow() * 2 * mainViewWidth)
-        let mainViewHeight = mainViewWidth * UnlockButton.getHeightOnWidthRatio()
-        let topSpacing = 30 - (UnlockButton.getVerticalTopShadow() * mainViewHeight)
-        let mainViewTotalHeight = mainViewHeight + (UnlockButton.getVerticalShadow() * mainViewHeight)
-        mainView.frame = CGRect(x: leftSpacing, y: topSpacing, width: mainViewTotalWidth, height: mainViewTotalHeight)
+//        let mainViewWidth = UIScreen.main.bounds.width - UnlockButton.spacing.rawValue * 2
+//        let leftSpacing = UnlockButton.spacing.rawValue - (UnlockButton.getHorizontalShadow() * mainViewWidth)
+//        let mainViewTotalWidth = mainViewWidth + (UnlockButton.getHorizontalShadow() * 2 * mainViewWidth)
+//        let mainViewHeight = mainViewWidth * UnlockButton.getHeightOnWidthRatio()
+//        let topSpacing = 30 - (UnlockButton.getVerticalTopShadow() * mainViewHeight)
+//        let mainViewTotalHeight = mainViewHeight + (UnlockButton.getVerticalShadow() * mainViewHeight)
+//        mainView.frame = CGRect(x: leftSpacing, y: topSpacing, width: mainViewTotalWidth, height: mainViewTotalHeight)
         
-        let stackView = UIStackView(arrangedSubviews: [unlockIcon, titleLabel])
+        let stackView = UIStackView(arrangedSubviews: [unlockView, titleLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.spacing = 12
         stackView.distribution = .fillProportionally
-        addSubview(stackView)
+        buttonView.addSubview(stackView)
         let stackViewWidth = titleLabel.intrinsicContentSize.width + 12 + 20
         
         NSLayoutConstraint.activate([
@@ -94,6 +102,11 @@ class UnlockCell: TableViewCell {
             
             unlockIcon.heightAnchor.constraint(equalTo: unlockIcon.widthAnchor, multiplier: 1.25),
             unlockIcon.widthAnchor.constraint(equalToConstant: 20),
+            unlockIcon.centerXAnchor.constraint(equalTo: unlockView.centerXAnchor),
+            unlockIcon.centerYAnchor.constraint(equalTo: unlockView.centerYAnchor, constant: -3),
+            
+            unlockView.heightAnchor.constraint(equalTo: unlockView.widthAnchor, multiplier: 1.25),
+            unlockView.widthAnchor.constraint(equalToConstant: 20),
             //unlockIcon.centerYAnchor.constraint(equalTo: buttonView.centerYAnchor),
             //unlockIcon.leadingAnchor.constraint(equalTo: buttonView.leadingAnchor, constant: 14),
             //unlockIcon.trailingAnchor.constraint(equalTo: titleLabel.leadingAnchor, constant: -12),

@@ -105,13 +105,19 @@ class LessonCell: TableViewCell {
     }
     
     func lock() {
-        coverLayer.isHidden = false
-        backLayer.isHidden = true
+        titleLabel.textColor = UIColor(hex: "555555")
+        descriptionLabel.textColor = UIColor(hex: "555555")
+        backLayer.opacity = 0.8
+//        coverLayer.isHidden = false
+//        backLayer.isHidden = true
     }
     
     func unlock() {
-        coverLayer.isHidden = true
-        backLayer.isHidden = false
+        titleLabel.textColor = .white
+        descriptionLabel.textColor = .white
+        backLayer.opacity = 0.6
+//        coverLayer.isHidden = true
+//        backLayer.isHidden = false
     }
     
     //MARK: - Setup
@@ -143,7 +149,7 @@ class LessonCell: TableViewCell {
         backImageView.addSubview(descriptionLabel)
         backImageView.addSubview(doneLabel)
         backImageView.addSubview(doneIcon)
-        backImageView.layer.addSublayer(coverLayer)
+        //backImageView.layer.addSublayer(coverLayer)
         
         let needMoreSpace = dataSource.category == "3" || dataSource.category == "4"
         let bottomSpacing: CGFloat = needMoreSpace ? -9 : -4

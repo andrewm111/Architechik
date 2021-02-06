@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="20C69" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="CourseModel" representedClassName="CourseModel" syncable="YES">
+    <entity name="AchievementCD" representedClassName=".AchievementCD" syncable="YES">
+        <attribute name="descriptionShort" optional="YES" attributeType="String"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="idCourses" optional="YES" attributeType="String"/>
+        <attribute name="imgBad" optional="YES" attributeType="String"/>
+        <attribute name="imgGood" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="ArticleCD" representedClassName=".ArticleCD" syncable="YES">
+        <attribute name="category" optional="YES" attributeType="String"/>
+        <attribute name="descriptionShort" optional="YES" attributeType="String"/>
+        <attribute name="file" optional="YES" attributeType="String"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="idCategory" optional="YES" attributeType="String"/>
+        <attribute name="image" optional="YES" attributeType="String"/>
+        <attribute name="isDone" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="CourseCD" representedClassName=".CourseCD" syncable="YES">
         <attribute name="category" optional="YES" attributeType="String"/>
         <attribute name="courseNumber" attributeType="String"/>
         <attribute name="descriptionFull" attributeType="String"/>
@@ -11,7 +29,32 @@
         <attribute name="price" attributeType="String"/>
         <attribute name="title" attributeType="String"/>
     </entity>
+    <entity name="GrammarCD" representedClassName=".GrammarCD" syncable="YES">
+        <attribute name="category" optional="YES" attributeType="String"/>
+        <attribute name="descriptionShort" optional="YES" attributeType="String"/>
+        <attribute name="file" optional="YES" attributeType="String"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="idCategory" optional="YES" attributeType="String"/>
+        <attribute name="image" optional="YES" attributeType="String"/>
+        <attribute name="isDone" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="LessonCD" representedClassName=".LessonCD" syncable="YES">
+        <attribute name="category" optional="YES" attributeType="String"/>
+        <attribute name="descriptionShort" optional="YES" attributeType="String"/>
+        <attribute name="file" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="idCourses" optional="YES" attributeType="String"/>
+        <attribute name="idType" optional="YES" attributeType="String"/>
+        <attribute name="image" optional="YES" attributeType="String"/>
+        <attribute name="isDone" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+    </entity>
     <elements>
-        <element name="CourseModel" positionX="-63" positionY="-18" width="128" height="164"/>
+        <element name="AchievementCD" positionX="-18" positionY="135" width="128" height="119"/>
+        <element name="ArticleCD" positionX="-63" positionY="-18" width="128" height="149"/>
+        <element name="CourseCD" positionX="-54" positionY="54" width="128" height="164"/>
+        <element name="GrammarCD" positionX="-36" positionY="108" width="128" height="149"/>
+        <element name="LessonCD" positionX="0" positionY="144" width="128" height="164"/>
     </elements>
 </model>
