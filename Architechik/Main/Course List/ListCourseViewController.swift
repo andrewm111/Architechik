@@ -129,6 +129,7 @@ class ListCourseViewController: ViewController {
         
         let filterSize: CGFloat = smallScreen ? 40 : 60
         
+        
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -2),
@@ -166,21 +167,34 @@ class ListCourseViewController: ViewController {
         let vc = CourseViewController()
         vc.product = products.first
         vc.modalPresentationStyle = .overCurrentContext
-        vc.modalTransitionStyle = .coverVertical
+        //vc.modalTransitionStyle = .coverVertical
          let tapLocation = tap.location(in: tableView)
         guard
             let tapIndexPath = self.tableView.indexPathForRow(at: tapLocation),
-            let cell = tableView.cellForRow(at: tapIndexPath) as? CourseCell
+            let cell = tableView.cellForRow(at: tapIndexPath) as? CourseCell,
+            models.count > tapIndexPath.row - 1
             else { return }
         let model = models[tapIndexPath.row - 1]
-        vc.models = lessons.filter({ lesson -> Bool in
+        
+        let filteredModels = lessons.filter({ lesson -> Bool in
             return lesson.idCourses == cell.model?.id
         })
+        let sortedModels = filteredModels.sorted { (lesson1, lesson2) -> Bool in
+            guard let id1 = Int(lesson1.id), let id2 = Int(lesson2.id) else { return false }
+            return id1 < id2
+        }
+        let transition = CATransition()
+        transition.duration = 0.5
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromRight
+        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
+        view.window!.layer.add(transition, forKey: kCATransition)
+        vc.models = sortedModels
         vc.courseTitle = model.title
         vc.descriptionText = model.fullDescription
         vc.courseImageUrl = model.img
         vc.courseId = model.id
-        self.present(vc, animated: true)
+        self.present(vc, animated: false)
     }
     
     @objc

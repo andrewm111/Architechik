@@ -19,7 +19,7 @@ class GrammarViewController: ViewController {
     private lazy var filterButton: UIButton = {
         let view = UIButton(type: .custom)
         let radius: CGFloat = smallScreen ? 20 : 30
-        view.layer.cornerRadius = 30
+        view.layer.cornerRadius = radius
         view.backgroundColor = UIColor(hex: "613191")
         let image = smallScreen ? UIImage(named: "filterSmall") : UIImage(named: "filter")
         view.setImage(image, for: .normal)
@@ -77,8 +77,8 @@ class GrammarViewController: ViewController {
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.isUserInteractionEnabled = true
-        //fetchJSON()
-        lessonView.transform = CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.height)
+        
+        lessonView.transform = CGAffineTransform(translationX: UIScreen.main.bounds.width, y: 0)
         filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
         NotificationCenter.default.addObserver(self, selector: #selector(categoryChanged), name: NSNotification.Name("CategoryChanged"), object: nil)
         NotificationCenter.default.post(name: NSNotification.Name("CategoryChanged"), object: nil, userInfo: ["category": -1, "categoryName": "grammar"])
@@ -173,7 +173,7 @@ class GrammarViewController: ViewController {
 //        vc.modalPresentationStyle = .overCurrentContext
 //        vc.modalTransitionStyle = .coverVertical
 //        present(vc, animated: true)
-        lessonView.urlString = filteredModels[tapIndexPath.row].file
+        lessonView.urlString = filteredModels[tapIndexPath.row - 1].file
     }
     
     //MARK: - Supporting methods

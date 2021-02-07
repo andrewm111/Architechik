@@ -82,8 +82,13 @@ class LessonView: UIView {
 extension LessonView: WKUIDelegate, WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         //webView.scrollView.contentSize.width = UIScreen.main.bounds.width
+        
         self.animateReturnToNormalState()
     }
+    
+//    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+//        delegate?.enablePanGestureRecognizer()
+//    }
 }
 
 //MARK: - SwipeToDismissViewDelegate

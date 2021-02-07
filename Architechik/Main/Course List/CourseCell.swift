@@ -28,7 +28,7 @@ class CourseCell: TableViewCell {
     private let numberOfLessonsLabel: UILabel = {
         let view = UILabel()
         view.textColor = .white
-        view.text = "16 уроков"
+        view.text = "15 уроков"
         view.font = UIFont(name: "Arial", size: 15)
         view.textAlignment = .left
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -97,7 +97,11 @@ class CourseCell: TableViewCell {
 
     func configure(withModel model: Course) {
         self.model = model
-        numberOfLessonsLabel.text = "\(model.courseNumber) уроков"
+        if let numberOfLessons = Int(model.courseNumber) {
+            numberOfLessonsLabel.text = "\(numberOfLessons - 1) уроков"
+        } else {
+            numberOfLessonsLabel.text = "\(model.courseNumber) уроков"
+        }
         titleLabel.text = model.title
         descriptionLabel.text = model.description
         priceLabel.text = "  =  \(model.price) ₽"

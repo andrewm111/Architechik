@@ -54,10 +54,11 @@ class PurchaseView: UIView, CardViewProtocol {
     
     //MARK: - Setup
     private func initialSetup() {
-        layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        layer.cornerRadius = 20
+//        layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+//        layer.cornerRadius = 20
         clipsToBounds = true
         backgroundColor = UIColor(hex: "1F1F24")
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(buttonTapped))
         buttonImageView.addGestureRecognizer(tap)
     }
@@ -67,20 +68,23 @@ class PurchaseView: UIView, CardViewProtocol {
         addSubview(buttonImageView)
         buttonImageView.addSubview(titleLabel)
         
-        if let imageWidth = imageView.image?.size.width, let imageHeight = imageView.image?.size.height {
-            let ratio = imageWidth / imageHeight
+        if let imageViewWidth = imageView.image?.size.width, let imageViewHeight = imageView.image?.size.height {
+            let ratio = imageViewWidth / imageViewHeight
             imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: ratio).isActive = true
+        }
+        if let buttonViewWidth = buttonImageView.image?.size.width, let buttonViewHeight = buttonImageView.image?.size.height {
+            let ratio = buttonViewWidth / buttonViewHeight
+            buttonImageView.widthAnchor.constraint(equalTo: buttonImageView.heightAnchor, multiplier: ratio).isActive = true
         }
         
         NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 25),
+            imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -37),
             imageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.7),
             imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
-            buttonImageView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 24),
-            buttonImageView.bottomAnchor.constraint(lessThanOrEqualTo: self.bottomAnchor, constant: -20),
-            buttonImageView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8),
             buttonImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            buttonImageView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 24),
+            buttonImageView.heightAnchor.constraint(equalToConstant: 50),
             
             titleLabel.centerXAnchor.constraint(equalTo: buttonImageView.centerXAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: buttonImageView.centerYAnchor),

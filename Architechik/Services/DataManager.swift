@@ -30,7 +30,7 @@ class DataManager {
     func saveCourses(_ array: Array<Course>) {
         let courses = array.sorted(by: { $0.id < $1.id } )
         guard let entity = NSEntityDescription.entity(forEntityName: "CourseCD", in: managedContext) else { return }
-        var coursesCD = fetchAllCourses().sorted(by: { $0.id < $1.id } )
+        var coursesCD = fetchAllCourses()
         let diff = coursesCD.count - array.count
         if diff > 0 {
             for course in coursesCD.dropFirst(coursesCD.count - diff) {
@@ -62,7 +62,7 @@ class DataManager {
     func saveArticles(_ array: Array<Article>) {
         let articles = array.sorted(by: { $0.id < $1.id } )
         guard let entity = NSEntityDescription.entity(forEntityName: "ArticleCD", in: managedContext) else { return }
-        var articlesCD = fetchAllArticles().sorted(by: { $0.id < $1.id } )
+        var articlesCD = fetchAllArticles()
         let diff = articlesCD.count - array.count
         if diff > 0 {
             for article in articlesCD.dropFirst(articlesCD.count - diff) {
@@ -94,7 +94,7 @@ class DataManager {
     func saveGrammar(_ array: Array<Grammar>) {
         let grammars = array.sorted(by: { $0.id < $1.id } )
         guard let entity = NSEntityDescription.entity(forEntityName: "GrammarCD", in: managedContext) else { return }
-        var grammarsCD = fetchAllGrammar().sorted(by: { $0.id < $1.id } )
+        var grammarsCD = fetchAllGrammar()
         let diff = grammarsCD.count - array.count
         if diff > 0 {
             for grammar in grammarsCD.dropFirst(grammarsCD.count - diff) {
@@ -126,7 +126,7 @@ class DataManager {
     func saveAchievements(_ array: Array<Achievement>) {
         let achievements = array.sorted(by: { $0.id < $1.id } )
         guard let entity = NSEntityDescription.entity(forEntityName: "AchievementCD", in: managedContext) else { return }
-        var achievementsCD = fetchAllAchievements().sorted(by: { $0.id < $1.id } )
+        var achievementsCD = fetchAllAchievements()
         let diff = achievementsCD.count - array.count
         if diff > 0 {
             for achievement in achievementsCD.dropFirst(achievementsCD.count - diff) {
@@ -158,7 +158,7 @@ class DataManager {
     func saveLessons(_ array: Array<Lesson>) {
         let lessons = array.sorted(by: { $0.id < $1.id } )
         guard let entity = NSEntityDescription.entity(forEntityName: "LessonCD", in: managedContext) else { return }
-        var lessonsCD = fetchAllLessons().sorted(by: { $0.id < $1.id } )
+        var lessonsCD = fetchAllLessons()
         let diff = lessonsCD.count - array.count
         if diff > 0 {
             for lesson in lessonsCD.dropFirst(lessonsCD.count - diff) {
@@ -191,7 +191,7 @@ class DataManager {
     func fetchAllCourses() -> Array<CourseCD> {
         do {
             let courses = try managedContext.fetch(coursesFetchRequest)
-            return courses
+            return courses.sorted(by: { $0.id < $1.id })
         } catch let error as NSError {
             print("Could not fetch courses. \(error), \(error.userInfo)")
             return []
@@ -201,7 +201,7 @@ class DataManager {
     func fetchAllArticles() -> Array<ArticleCD> {
         do {
             let articles = try managedContext.fetch(articlesFetchRequest)
-            return articles
+            return articles.sorted(by: { $0.id < $1.id })
         } catch let error as NSError {
             print("Could not fetch articles. \(error), \(error.userInfo)")
             return []
@@ -211,7 +211,7 @@ class DataManager {
     func fetchAllGrammar() -> Array<GrammarCD> {
         do {
             let grammar = try managedContext.fetch(grammarFetchRequest)
-            return grammar
+            return grammar.sorted(by: { $0.id < $1.id })
         } catch let error as NSError {
             print("Could not fetch grammar. \(error), \(error.userInfo)")
             return []
@@ -221,7 +221,7 @@ class DataManager {
     func fetchAllAchievements() -> Array<AchievementCD> {
         do {
             let achievements = try managedContext.fetch(achievementFetchRequest)
-            return achievements
+            return achievements.sorted(by: { $0.id < $1.id })
         } catch let error as NSError {
             print("Could not fetch achievements. \(error), \(error.userInfo)")
             return []
@@ -231,7 +231,7 @@ class DataManager {
     func fetchAllLessons() -> Array<LessonCD> {
         do {
             let lessons = try managedContext.fetch(lessonsFetchRequest)
-            return lessons
+            return lessons.sorted(by: { $0.id < $1.id })
         } catch let error as NSError {
             print("Could not fetch lessons. \(error), \(error.userInfo)")
             return []

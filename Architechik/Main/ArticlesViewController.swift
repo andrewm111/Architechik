@@ -77,7 +77,7 @@ class ArticlesViewController: ViewController {
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.isUserInteractionEnabled = true
-        lessonView.transform = CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.height)
+        lessonView.transform = CGAffineTransform(translationX: UIScreen.main.bounds.width, y: 0)
         filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
         NotificationCenter.default.addObserver(self, selector: #selector(categoryChanged), name: NSNotification.Name("CategoryChanged"), object: nil)
         NotificationCenter.default.post(name: NSNotification.Name("CategoryChanged"), object: nil, userInfo: ["category": -1, "categoryName": "article"])
@@ -109,7 +109,7 @@ class ArticlesViewController: ViewController {
             filterView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
             lessonView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            lessonView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            lessonView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             lessonView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             lessonView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
@@ -175,7 +175,7 @@ class ArticlesViewController: ViewController {
 //        vc.modalPresentationStyle = .overCurrentContext
 //        vc.modalTransitionStyle = .coverVertical
 //        present(vc, animated: true)
-        lessonView.urlString = filteredModels[tapIndexPath.row].file
+        lessonView.urlString = filteredModels[tapIndexPath.row - 1].file
     }
     
     //MARK: - Supporting methods

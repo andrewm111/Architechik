@@ -17,7 +17,7 @@
 		1F11590D25A0D2DB00682A69 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F11590C25A0D2DB00682A69 /* LoginViewController.swift */; };
 		1F11590F25A0D2DC00682A69 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F11590E25A0D2DC00682A69 /* Assets.xcassets */; };
 		1F11591225A0D2DC00682A69 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F11591025A0D2DC00682A69 /* LaunchScreen.storyboard */; };
-		1F18094225CB077800377C93 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1F18094025CB077800377C93 /* DataModel.xcdatamodeld */; };
+		1F18094225CB077800377C93 /* Architechik.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1F18094025CB077800377C93 /* Architechik.xcdatamodeld */; };
 		1F18094525CB091600377C93 /* ArticleCD+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F18094325CB091600377C93 /* ArticleCD+CoreDataClass.swift */; };
 		1F18094625CB091600377C93 /* ArticleCD+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F18094425CB091600377C93 /* ArticleCD+CoreDataProperties.swift */; };
 		1F18094825CB10A900377C93 /* CoreDataConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F18094725CB10A900377C93 /* CoreDataConvertible.swift */; };
@@ -46,6 +46,9 @@
 		1F83355925A756A500BCEDE8 /* ArticlesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83355825A756A500BCEDE8 /* ArticlesViewController.swift */; };
 		1F83355B25A756AF00BCEDE8 /* GrammarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83355A25A756AF00BCEDE8 /* GrammarViewController.swift */; };
 		1F83355D25A756BC00BCEDE8 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F83355C25A756BC00BCEDE8 /* ProfileViewController.swift */; };
+		1F90F78125D04E750047D3D2 /* StatusBarColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F90F78025D04E750047D3D2 /* StatusBarColor.swift */; };
+		1F99B8EC25CF6F050085AF19 /* UIImage + GIF.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F99B8EB25CF6F050085AF19 /* UIImage + GIF.swift */; };
+		1F99B8EF25CFFC3B0085AF19 /* TabBarController + DataFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F99B8EE25CFFC3B0085AF19 /* TabBarController + DataFetch.swift */; };
 		1F9BB90C25C1AC180049748F /* NetworkDataFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9BB90B25C1AC180049748F /* NetworkDataFetcher.swift */; };
 		1FA10A8425BC234D00D2FBC5 /* LessonCellDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA10A8325BC234D00D2FBC5 /* LessonCellDataSource.swift */; };
 		1FA1A13D25ACC880008621FB /* GrammarArticleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA1A13C25ACC880008621FB /* GrammarArticleModel.swift */; };
@@ -66,6 +69,7 @@
 		1FCF656C25B7943F00624C61 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCF656B25B7943F00624C61 /* PageViewController.swift */; };
 		1FD1892125C005CE0006FB29 /* AchievementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FD1892025C005CE0006FB29 /* AchievementView.swift */; };
 		1FDE177525B4EB1B0059E7FC /* LayoutAnchorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FDE177425B4EB1B0059E7FC /* LayoutAnchorHelper.swift */; };
+		1FE4A05925D0157E000AD9D9 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FE4A05825D0157E000AD9D9 /* Reachability.swift */; };
 		1FED14B225AB9818009A6B0C /* AchievementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FED14B125AB9818009A6B0C /* AchievementCell.swift */; };
 		1FF0A80B25B75C8700A9666B /* HelloViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF0A80A25B75C8700A9666B /* HelloViewController.swift */; };
 		1FF0A80D25B75DD600A9666B /* AppDescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF0A80C25B75DD600A9666B /* AppDescriptionViewController.swift */; };
@@ -125,6 +129,9 @@
 		1F83355825A756A500BCEDE8 /* ArticlesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlesViewController.swift; sourceTree = "<group>"; };
 		1F83355A25A756AF00BCEDE8 /* GrammarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrammarViewController.swift; sourceTree = "<group>"; };
 		1F83355C25A756BC00BCEDE8 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		1F90F78025D04E750047D3D2 /* StatusBarColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarColor.swift; sourceTree = "<group>"; };
+		1F99B8EB25CF6F050085AF19 /* UIImage + GIF.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage + GIF.swift"; sourceTree = "<group>"; };
+		1F99B8EE25CFFC3B0085AF19 /* TabBarController + DataFetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TabBarController + DataFetch.swift"; sourceTree = "<group>"; };
 		1F9BB90B25C1AC180049748F /* NetworkDataFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkDataFetcher.swift; sourceTree = "<group>"; };
 		1FA10A8325BC234D00D2FBC5 /* LessonCellDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonCellDataSource.swift; sourceTree = "<group>"; };
 		1FA1A13C25ACC880008621FB /* GrammarArticleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrammarArticleModel.swift; sourceTree = "<group>"; };
@@ -145,6 +152,7 @@
 		1FCF656B25B7943F00624C61 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 		1FD1892025C005CE0006FB29 /* AchievementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementView.swift; sourceTree = "<group>"; };
 		1FDE177425B4EB1B0059E7FC /* LayoutAnchorHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutAnchorHelper.swift; sourceTree = "<group>"; };
+		1FE4A05825D0157E000AD9D9 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		1FED14B125AB9818009A6B0C /* AchievementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementCell.swift; sourceTree = "<group>"; };
 		1FF0A80A25B75C8700A9666B /* HelloViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelloViewController.swift; sourceTree = "<group>"; };
 		1FF0A80C25B75DD600A9666B /* AppDescriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDescriptionViewController.swift; sourceTree = "<group>"; };
@@ -301,7 +309,7 @@
 			children = (
 				1F3B0E3525B0E677005CF0BC /* Architechik.entitlements */,
 				1F11590A25A0D2DB00682A69 /* AppDelegate.swift */,
-				1F18094025CB077800377C93 /* DataModel.xcdatamodeld */,
+				1F18094025CB077800377C93 /* Architechik.xcdatamodeld */,
 				1F11590E25A0D2DC00682A69 /* Assets.xcassets */,
 				1F11591025A0D2DC00682A69 /* LaunchScreen.storyboard */,
 				1F11591325A0D2DC00682A69 /* Info.plist */,
@@ -312,7 +320,7 @@
 		1F83355525A7568200BCEDE8 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				1F83355325A753A100BCEDE8 /* TabBarController.swift */,
+				1F99B8ED25CFFC240085AF19 /* TabBarController */,
 				1FB3ADF225BEF7CF00710D5B /* TitleCell.swift */,
 				1F5F935025CE896200FBF0D3 /* LessonView.swift */,
 				1FA6C18025C17A3F0038FAE5 /* WebViewController.swift */,
@@ -323,6 +331,15 @@
 				1FED14B025AB97E1009A6B0C /* Profile */,
 			);
 			path = Main;
+			sourceTree = "<group>";
+		};
+		1F99B8ED25CFFC240085AF19 /* TabBarController */ = {
+			isa = PBXGroup;
+			children = (
+				1F83355325A753A100BCEDE8 /* TabBarController.swift */,
+				1F99B8EE25CFFC3B0085AF19 /* TabBarController + DataFetch.swift */,
+			);
+			path = TabBarController;
 			sourceTree = "<group>";
 		};
 		1FB3ADF425BF216200710D5B /* Cells */ = {
@@ -379,6 +396,7 @@
 		1FF6706C25A9B2AB006D4EEE /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				1F99B8EB25CF6F050085AF19 /* UIImage + GIF.swift */,
 				1FF4706825AA4156001E427F /* UIColor + HexValue.swift */,
 				1FF6706D25A9B314006D4EEE /* UITableView + Extension.swift */,
 				1FF6706F25A9B386006D4EEE /* TableViewCell.swift */,
@@ -391,6 +409,8 @@
 				1FDE177425B4EB1B0059E7FC /* LayoutAnchorHelper.swift */,
 				1F503CC125B6D25600E62291 /* StringConversion.swift */,
 				1F0B69B725C836D400103B17 /* UIView + AnchorPoint.swift */,
+				1FE4A05825D0157E000AD9D9 /* Reachability.swift */,
+				1F90F78025D04E750047D3D2 /* StatusBarColor.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -564,8 +584,10 @@
 				1F44C7B925BF5A6C0068FEEF /* ProfileHeaderCell.swift in Sources */,
 				1F3CB71A25B092BC000B6922 /* UIViewController + Extension.swift in Sources */,
 				1F503CC025B6D0AF00E62291 /* API.swift in Sources */,
+				1FE4A05925D0157E000AD9D9 /* Reachability.swift in Sources */,
 				1F517F4D25AE050900F121D4 /* KeychainItem.swift in Sources */,
 				1F6DF55A25C5539E0085D3D8 /* SwipeToDismissControllerDelegate.swift in Sources */,
+				1F90F78125D04E750047D3D2 /* StatusBarColor.swift in Sources */,
 				1FB3ADF625BF217400710D5B /* CourseTitleCell.swift in Sources */,
 				1FA1A14125ACCD70008621FB /* LessonModel.swift in Sources */,
 				1F45852725A8F0B0007E46F2 /* CourseCell.swift in Sources */,
@@ -585,7 +607,7 @@
 				1F6E92E625A8A04900DF974F /* ArticleModel.swift in Sources */,
 				1FCD9EBE25CAFD3B00C94083 /* GrammarCD+CoreDataClass.swift in Sources */,
 				1F5F935125CE896200FBF0D3 /* LessonView.swift in Sources */,
-				1F18094225CB077800377C93 /* DataModel.xcdatamodeld in Sources */,
+				1F18094225CB077800377C93 /* Architechik.xcdatamodeld in Sources */,
 				1FDE177525B4EB1B0059E7FC /* LayoutAnchorHelper.swift in Sources */,
 				1FF8AA1625B6CFD80095663A /* NetworkService.swift in Sources */,
 				1FF0A80D25B75DD600A9666B /* AppDescriptionViewController.swift in Sources */,
@@ -612,6 +634,7 @@
 				1F5F935325CE8D8D00FBF0D3 /* SwipeToDismissViewDelegate.swift in Sources */,
 				1F4A4A1E25BB347F005EA447 /* FeatureCell.swift in Sources */,
 				1FF6707625A9F44E006D4EEE /* LessonCell.swift in Sources */,
+				1F99B8EC25CF6F050085AF19 /* UIImage + GIF.swift in Sources */,
 				1F503CC425B6F72B00E62291 /* AchievementModel.swift in Sources */,
 				1FA6C18125C17A3F0038FAE5 /* WebViewController.swift in Sources */,
 				1FA1A13D25ACC880008621FB /* GrammarArticleModel.swift in Sources */,
@@ -619,6 +642,7 @@
 				1FF579F325C4CF7D0019C010 /* ProgressView.swift in Sources */,
 				1FF6707225A9F3F0006D4EEE /* CourseViewController.swift in Sources */,
 				1F503CBE25B6D08C00E62291 /* RequestType.swift in Sources */,
+				1F99B8EF25CFFC3B0085AF19 /* TabBarController + DataFetch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -769,7 +793,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.26;
+				MARKETING_VERSION = 1.29;
 				PRODUCT_BUNDLE_IDENTIFIER = mikel.Shmonov.Architechik;
 				PRODUCT_NAME = Architechick;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -793,7 +817,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.26;
+				MARKETING_VERSION = 1.29;
 				PRODUCT_BUNDLE_IDENTIFIER = mikel.Shmonov.Architechik;
 				PRODUCT_NAME = Architechick;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -826,13 +850,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		1F18094025CB077800377C93 /* DataModel.xcdatamodeld */ = {
+		1F18094025CB077800377C93 /* Architechik.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				1F18094125CB077800377C93 /* DataModel.xcdatamodel */,
 			);
 			currentVersion = 1F18094125CB077800377C93 /* DataModel.xcdatamodel */;
-			path = DataModel.xcdatamodeld;
+			path = Architechik.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

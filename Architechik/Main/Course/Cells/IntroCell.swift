@@ -52,7 +52,7 @@ class IntroCell: TableViewCell {
         mainView.addSubview(introLabel)
         
         NSLayoutConstraint.activate([
-            mainView.topAnchor.constraint(equalTo: self.topAnchor, constant: 50),
+            mainView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
             mainView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             mainView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: IntroButton.spacing.rawValue),
             mainView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -IntroButton.spacing.rawValue),

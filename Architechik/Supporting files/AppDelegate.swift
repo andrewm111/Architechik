@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          application to it. This property is optional since there are legitimate
          error conditions that could cause the creation of the store to fail.
          */
-        let container = NSPersistentContainer(name: "DataModel")
+        let container = NSPersistentContainer(name: "Architechik")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 print("Persistent container error: \(error)")
@@ -42,9 +42,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = .white
-        self.window?.rootViewController = PageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        //self.window?.rootViewController = PageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         //self.window?.rootViewController = LoginViewController()
-        //self.window?.rootViewController = TabBarController()
+        self.window?.rootViewController = TabBarController()
         self.window?.makeKeyAndVisible()
         SwiftyStoreKit.shouldAddStorePaymentHandler = { payment, product in
             print(payment)
