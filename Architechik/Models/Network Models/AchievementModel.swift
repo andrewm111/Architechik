@@ -6,7 +6,7 @@
 //  Copyright © 2021 Александр Цветков. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct Achievement: Hashable, Codable, CoreDataConvertible {
     
@@ -16,6 +16,7 @@ struct Achievement: Hashable, Codable, CoreDataConvertible {
     var idCourses: String?
     var imgGood: String
     var imgBad: String
+    var progress: CGFloat? = 0
     
     internal init(id: String, title: String, description: String, idCourses: String? = nil, imgGood: String, imgBad: String) {
         self.id = id

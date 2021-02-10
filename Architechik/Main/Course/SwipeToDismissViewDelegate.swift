@@ -39,13 +39,15 @@ extension SwipeToDismissViewDelegate {
             self.transform = CGAffineTransform(translationX: UIScreen.main.bounds.width, y: 0)
         }) { _ in
             self.delegate?.enablePanGestureRecognizer()
+            self.showBlackView()
+            self.setBlackViewAlpha(1)
             self.pan.isEnabled = true
-            self.transform = CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.height)
+            //self.transform = CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.height)
         }
     }
     
     func animateReturnToNormalState() {
-        UIView.animate(withDuration: 0.2) {
+        UIView.animate(withDuration: 0.3) {
             self.transform = .identity
         }
     }

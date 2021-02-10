@@ -20,6 +20,9 @@ class TabBarController: UITabBarController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         fetchData()
+        NetworkDataFetcher.shared.checkUserInDatabase { studentProgress in
+            
+        }
         setViewControllers([coursesVC, articlesVC, grammarVC, profileVC], animated: false)
         selectedViewController = coursesVC
         configureTabBar()

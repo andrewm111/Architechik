@@ -39,7 +39,7 @@ extension TabBarController {
     private func fetchArticles() {
         NetworkDataFetcher.shared.fetchArticles { articles in
             if articles.count != 0 {
-                self.articlesVC.models = articles.sorted(by: { $0.id < $1.id } )
+                self.articlesVC.models = articles.sorted(by: { $0.id > $1.id } )
                 DataManager.shared.saveArticles(articles)
             }
             self.fetchGrammar()
@@ -120,4 +120,5 @@ extension TabBarController {
         }
         profileVC.models = achievements
     }
+
 }

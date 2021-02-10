@@ -12,6 +12,15 @@ class NetworkDataFetcher {
     
     fileprivate init() {}
     static let shared = NetworkDataFetcher()
+    var studentProgress: Array<StudentProgress> = []
+//    {
+//        var array: Array<StudentProgress> = []
+//        _ = DataManager.shared.fetchAllStudentProgress().map({ progressCD in
+//            array.append(StudentProgress(fromModel: progressCD))
+//        })
+//        return array
+//    }()
+    var courses: Array<Course> = []
     
     func fetchCourses(completion: @escaping (Array<Course>) -> Void ) {
         NetworkService.shared.getCourses { result in
@@ -21,6 +30,7 @@ class NetworkDataFetcher {
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
                 do {
                     let models = try decoder.decode(Array<Course>.self, from: data)
+                    self.courses = models
                     completion(models)
                     //print(models)
                 } catch {
@@ -118,17 +128,54 @@ class NetworkDataFetcher {
         }
     }
     
+    //MARK: - Handle user credentials
     func fetchStudentProgress(completion: @escaping (Array<StudentProgress>) -> Void ) {
-        NetworkService.shared.getUserInfo(courseId: "1") { result in
+        NetworkService.shared.getUserInfo { result in
             switch result {
             case .success(let data):
-                let dataString = String(data: data, encoding: .utf8)
-                print(dataString ?? "Failed to convert original data to string")
-                completion([])
+                
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                do {
+                    let models = try decoder.decode(Array<StudentProgress>.self, from: data)
+                    completion(models)
+                } catch {
+                    print("Failed to decode course structure: \(error)")
+                    completion([])
+                }
             case .failure(let error):
                 print("Failed to get student progress: \(error)")
                 completion([])
             }
+        }
+    }
+    
+    func checkUserInDatabase(completion: @escaping (Array<StudentProgress>) -> Void ) {
+        NetworkDataFetcher.shared.fetchStudentProgress { studentProgress in
+            if studentProgress.isEmpty {
+                self.createUserWithToken(completion: completion)
+            } else {
+                DataManager.shared.saveStudentProgress(studentProgress)
+                self.studentProgress = studentProgress.sorted(by: { $0.idCourses < $1.idCourses } )
+                NotificationCenter.default.post(name: NSNotification.Name("SetProgress"), object: nil)
+                completion(studentProgress)
+            }
+        }
+    }
+    
+    private func createUserWithToken(completion: @escaping (Array<StudentProgress>) -> Void ) {
+        NetworkService.shared.createUser { result in
+            switch result {
+            case .success(let data):
+                guard let dataString = String(data: data, encoding: .utf8) else {
+                    print("Wrong response when create user")
+                    return
+                }
+                print("User successfully created: \(dataString)")
+            case .failure(let error):
+                print("Wrong response when create user: \(error)")
+            }
+            self.checkUserInDatabase(completion: completion)
         }
     }
 }

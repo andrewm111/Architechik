@@ -108,9 +108,11 @@ class LoginViewController: IndexableViewController {
             titleImageView.heightAnchor.constraint(equalTo: titleImageView.widthAnchor, multiplier: ratio).isActive = true
         }
         
+        let imageViewHeightMultiplier: CGFloat = UIScreen.main.bounds.width < 370 ? 0.42 : 0.52
+        
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 5),
-            imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.52),
+            imageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: imageViewHeightMultiplier),
             imageView.bottomAnchor.constraint(equalTo: titleImageView.topAnchor, constant: -10),
             imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -134,18 +136,18 @@ class LoginViewController: IndexableViewController {
             cardView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
-    
+
     //MARK: - User events handling
     @objc private func loginButtonTapped() {
-//        let appleIDProvider = ASAuthorizationAppleIDProvider()
-//        let request = appleIDProvider.createRequest()
-//        request.requestedScopes = [.fullName, .email]
-//
-//        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-//        authorizationController.delegate = self
-//        authorizationController.presentationContextProvider = self
-//        authorizationController.performRequests()
-        showTabBarController()
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
+        //showTabBarController()
     }
     
     func performExistingAccountSetupFlows() {
@@ -210,6 +212,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             let password = passwordCredential.password
             
             let defaults = UserDefaults.standard
+            defaults.set("\(username)\(password)", forKey: "userIdentifier")
             defaults.set(username, forKey: "username")
             defaults.set(password, forKey: "password")
             
@@ -220,6 +223,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
         default:
             break
         }
+        
     }
     
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {

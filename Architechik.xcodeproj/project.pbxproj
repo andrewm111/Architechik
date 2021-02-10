@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F00623025D1799100C240C1 /* StudentProgressCD+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F00622E25D1799100C240C1 /* StudentProgressCD+CoreDataClass.swift */; };
+		1F00623125D1799100C240C1 /* StudentProgressCD+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F00622F25D1799100C240C1 /* StudentProgressCD+CoreDataProperties.swift */; };
 		1F08325225C0A12D0043F39F /* PurchaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F08325125C0A12D0043F39F /* PurchaseView.swift */; };
 		1F0B69B825C836D400103B17 /* UIView + AnchorPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0B69B725C836D400103B17 /* UIView + AnchorPoint.swift */; };
 		1F0C100F25B5B4BE0040CCC3 /* DescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0C100E25B5B4BE0040CCC3 /* DescriptionCell.swift */; };
@@ -87,6 +89,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1F00622E25D1799100C240C1 /* StudentProgressCD+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StudentProgressCD+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		1F00622F25D1799100C240C1 /* StudentProgressCD+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StudentProgressCD+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		1F08325125C0A12D0043F39F /* PurchaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseView.swift; sourceTree = "<group>"; };
 		1F0B69B725C836D400103B17 /* UIView + AnchorPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + AnchorPoint.swift"; sourceTree = "<group>"; };
 		1F0C100E25B5B4BE0040CCC3 /* DescriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionCell.swift; sourceTree = "<group>"; };
@@ -252,6 +256,8 @@
 		1F156D8425CA23FC00552840 /* CoreData Models */ = {
 			isa = PBXGroup;
 			children = (
+				1F00622E25D1799100C240C1 /* StudentProgressCD+CoreDataClass.swift */,
+				1F00622F25D1799100C240C1 /* StudentProgressCD+CoreDataProperties.swift */,
 				1F18094325CB091600377C93 /* ArticleCD+CoreDataClass.swift */,
 				1F18094425CB091600377C93 /* ArticleCD+CoreDataProperties.swift */,
 				1FCD9EA425CAFA2A00C94083 /* AchievementCD+CoreDataClass.swift */,
@@ -575,6 +581,7 @@
 				1FED14B225AB9818009A6B0C /* AchievementCell.swift in Sources */,
 				1F6E92E325A8666A00DF974F /* CourseModel.swift in Sources */,
 				1FF6706E25A9B314006D4EEE /* UITableView + Extension.swift in Sources */,
+				1F00623125D1799100C240C1 /* StudentProgressCD+CoreDataProperties.swift in Sources */,
 				1F503CC225B6D25600E62291 /* StringConversion.swift in Sources */,
 				1FF4706B25AA4304001E427F /* ViewController.swift in Sources */,
 				1FCD9EC125CAFD3B00C94083 /* LessonCD+CoreDataProperties.swift in Sources */,
@@ -623,6 +630,7 @@
 				1F517F4B25ADF71400F121D4 /* WebImageView.swift in Sources */,
 				1F18094625CB091600377C93 /* ArticleCD+CoreDataProperties.swift in Sources */,
 				1F83355925A756A500BCEDE8 /* ArticlesViewController.swift in Sources */,
+				1F00623025D1799100C240C1 /* StudentProgressCD+CoreDataClass.swift in Sources */,
 				1FF4706925AA4156001E427F /* UIColor + HexValue.swift in Sources */,
 				1F18094525CB091600377C93 /* ArticleCD+CoreDataClass.swift in Sources */,
 				1FCD9EBF25CAFD3B00C94083 /* GrammarCD+CoreDataProperties.swift in Sources */,

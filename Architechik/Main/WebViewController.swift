@@ -105,6 +105,7 @@ extension WebViewController: UIScrollViewDelegate {
     
     func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
         scrollView.pinchGestureRecognizer?.isEnabled = false
+        
     }
 }
 

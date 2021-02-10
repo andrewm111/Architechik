@@ -35,6 +35,7 @@ extension SwipeToDismissControllerDelegate {
     }
     
     func animateDismiss() {
+        NotificationCenter.default.post(name: NSNotification.Name("SetProgress"), object: nil)
         UIView.animate(withDuration: 0.3, animations: {
             self.view.transform = CGAffineTransform(translationX: UIScreen.main.bounds.width, y: 0)
         }) { _ in

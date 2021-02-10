@@ -28,6 +28,11 @@ class ProfileViewController: ViewController {
     //MARK: - Properties
     var models: Array<Achievement> = [] {
         didSet {
+            checkAchievements()
+        }
+    }
+    var studentAchievements: Array<Achievement> = [] {
+        didSet {
             if models.count != 0 { tableView.reloadData() }
         }
     }
@@ -43,7 +48,15 @@ class ProfileViewController: ViewController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         achievementView.roundImageView()
-        progressView?.progress = 0.75
+        setTotalProgress()
+        tableView.reloadData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        checkAchievements()
+        setTotalProgress()
+        tableView.reloadData()
     }
     
     //MARK: - Setup
@@ -80,6 +93,31 @@ class ProfileViewController: ViewController {
         ])
     }
     
+    //MARK: - Supporting methods
+    private func setTotalProgress() {
+        var totalProgress: CGFloat = 0
+        _ = studentAchievements.map { achievement in
+            totalProgress += achievement.progress ?? 0
+        }
+        progressView?.progress = totalProgress / CGFloat(NetworkDataFetcher.shared.courses.count)
+    }
+    
+    private func checkAchievements() {
+        studentAchievements = []
+        for courseProgress in NetworkDataFetcher.shared.studentProgress {
+            if courseProgress.currentProgress.contains("1"), var achievement = models.filter({ $0.idCourses == courseProgress.idCourses }).first  {
+                let stringProgress = courseProgress.currentProgress.dropFirst().filter( { "1".contains($0) } )
+                let currentProgress = CGFloat(stringProgress.count)
+                guard let courseIndex = NetworkDataFetcher.shared.courses.firstIndex(where: { $0.id == courseProgress.idCourses }) else { return }
+                let courseNumber = NetworkDataFetcher.shared.courses[courseIndex].courseNumber
+                guard let courseNumberInt = Int(courseNumber) else { return }
+                achievement.progress = currentProgress / (CGFloat(courseNumberInt) - 1)
+                studentAchievements.append(achievement)
+            }
+        }
+    }
+    
+    //MARK: - Handle user events
     @objc
     private func cellTapped() {
         guard achievementView.isHidden else {
@@ -120,7 +158,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return models.count + 1
+        return studentAchievements.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -132,8 +170,8 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         default:
             let cell: AchievementCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
-            if models.count >= indexPath.row - 2 {
-                let model = models[indexPath.row - 1]
+            if studentAchievements.count >= indexPath.row {
+                let model = studentAchievements[indexPath.row - 1]
                 cell.configure(withModel: model)
             }
             return cell

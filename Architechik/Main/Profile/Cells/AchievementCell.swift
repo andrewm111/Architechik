@@ -51,7 +51,8 @@ class AchievementCell: TableViewCell {
     func configure(withModel model: Achievement) {
         titleLabel.text = model.title
         descriptionLabel.text = model.description
-        achievementImageView.set(imageURL: model.imgGood)
+        let imageString = model.progress == 1 ? model.imgGood : model.imgBad
+        achievementImageView.set(imageURL: imageString)
         selectionStyle = .none
         backgroundColor = .clear
         initialSetup()

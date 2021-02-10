@@ -50,11 +50,19 @@
         <attribute name="isDone" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="title" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="StudentProgressCD" representedClassName=".StudentProgressCD" syncable="YES">
+        <attribute name="courseAccess" attributeType="String"/>
+        <attribute name="currentProgress" attributeType="String"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="idCourses" attributeType="String"/>
+        <attribute name="studentToken" attributeType="String"/>
+    </entity>
     <elements>
         <element name="AchievementCD" positionX="-18" positionY="135" width="128" height="119"/>
         <element name="ArticleCD" positionX="-63" positionY="-18" width="128" height="149"/>
         <element name="CourseCD" positionX="-54" positionY="54" width="128" height="164"/>
         <element name="GrammarCD" positionX="-36" positionY="108" width="128" height="149"/>
         <element name="LessonCD" positionX="0" positionY="144" width="128" height="164"/>
+        <element name="StudentProgressCD" positionX="-27" positionY="135" width="128" height="104"/>
     </elements>
 </model>

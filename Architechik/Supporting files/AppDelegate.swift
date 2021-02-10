@@ -13,82 +13,24 @@ import SwiftyStoreKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
-    lazy var persistentContainer: NSPersistentContainer = {
-        /*
-         The persistent container for the application. This implementation
-         creates and returns a container, having loaded the store for the
-         application to it. This property is optional since there are legitimate
-         error conditions that could cause the creation of the store to fail.
-         */
-        let container = NSPersistentContainer(name: "Architechik")
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                print("Persistent container error: \(error)")
-                /*
-                 Typical reasons for an error here include:
-                 * The parent directory does not exist, cannot be created, or disallows writing.
-                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
-                 * The device is out of space.
-                 * The store could not be migrated to the current model version.
-                 Check the error message to determine what the actual problem was.
-                 */
-            }
-        })
-        return container
-    }()
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = .white
+        
+        loginUser()
         //self.window?.rootViewController = PageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         //self.window?.rootViewController = LoginViewController()
-        self.window?.rootViewController = TabBarController()
-        self.window?.makeKeyAndVisible()
-        SwiftyStoreKit.shouldAddStorePaymentHandler = { payment, product in
-            print(payment)
-            print(product)
-            // return true if the content can be delivered by your app
-            // return false otherwise
-            return true
-        }
+        //self.window?.rootViewController = TabBarController()
+        //self.window?.makeKeyAndVisible()
+        registerStorePaymentHandler()
         addTransactionObserver()
-        //loginUser()
         return true
     }
     
-    // MARK: - Core Data Saving support
-    func saveContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                print("Failed to save to Core Data: \(error)")
-            }
-        }
-    }
-    
-    private func addTransactionObserver() {
-        SwiftyStoreKit.completeTransactions(atomically: true) { purchases in
-                for purchase in purchases {
-                    switch purchase.transaction.transactionState {
-                    case .purchased, .restored:
-                        if purchase.needsFinishTransaction {
-                            // Deliver content from server, then:
-                            SwiftyStoreKit.finishTransaction(purchase.transaction)
-                        }
-                        // Unlock content
-                    case .failed, .purchasing, .deferred:
-                        break // do nothing
-                    @unknown default:
-                        break
-                    }
-                }
-            }
-    }
-    
+    //MARK: - Handle user credentials
     private func loginUser() {
         let appleIDProvider = ASAuthorizationAppleIDProvider()
         appleIDProvider.getCredentialState(forUserID: KeychainItem.currentUserIdentifier) { (credentialState, error) in
@@ -116,19 +58,71 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
     }
-
-    func applicationWillResignActive(_ application: UIApplication) {
+    
+    // MARK: - Core Data
+    lazy var persistentContainer: NSPersistentContainer = {
+        /*
+         The persistent container for the application. This implementation
+         creates and returns a container, having loaded the store for the
+         application to it. This property is optional since there are legitimate
+         error conditions that could cause the creation of the store to fail.
+         */
+        let container = NSPersistentContainer(name: "Architechik")
+        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
+            if let error = error as NSError? {
+                print("Persistent container error: \(error)")
+                /*
+                 Typical reasons for an error here include:
+                 * The parent directory does not exist, cannot be created, or disallows writing.
+                 * The persistent store is not accessible, due to permissions or data protection when the device is locked.
+                 * The device is out of space.
+                 * The store could not be migrated to the current model version.
+                 Check the error message to determine what the actual problem was.
+                 */
+            }
+        })
+        return container
+    }()
+    
+    func saveContext () {
+        let context = persistentContainer.viewContext
+        if context.hasChanges {
+            do {
+                try context.save()
+            } catch {
+                print("Failed to save to Core Data: \(error)")
+            }
+        }
     }
-
-    func applicationDidEnterBackground(_ application: UIApplication) {
+    
+    //MARK: - In App Purchase
+    private func addTransactionObserver() {
+        SwiftyStoreKit.completeTransactions(atomically: true) { purchases in
+            for purchase in purchases {
+                switch purchase.transaction.transactionState {
+                case .purchased, .restored:
+                    if purchase.needsFinishTransaction {
+                        // Deliver content from server, then:
+                        SwiftyStoreKit.finishTransaction(purchase.transaction)
+                    }
+                // Unlock content
+                case .failed, .purchasing, .deferred:
+                break // do nothing
+                @unknown default:
+                    break
+                }
+            }
+        }
     }
-
-    func applicationWillEnterForeground(_ application: UIApplication) {
+    
+    private func registerStorePaymentHandler() {
+        SwiftyStoreKit.shouldAddStorePaymentHandler = { payment, product in
+            print(payment)
+            print(product)
+            // return true if the content can be delivered by your app
+            // return false otherwise
+            return true
+        }
     }
-
-    func applicationDidBecomeActive(_ application: UIApplication) {
-    }
-
-
 }
 

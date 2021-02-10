@@ -79,12 +79,12 @@ class PurchaseView: UIView, CardViewProtocol {
         
         NSLayoutConstraint.activate([
             imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -37),
-            imageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.7),
+            imageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5),
             imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             buttonImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             buttonImageView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 24),
-            buttonImageView.heightAnchor.constraint(equalToConstant: 50),
+            buttonImageView.heightAnchor.constraint(equalToConstant: 66),
             
             titleLabel.centerXAnchor.constraint(equalTo: buttonImageView.centerXAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: buttonImageView.centerYAnchor),

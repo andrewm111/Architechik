@@ -36,12 +36,12 @@ class NetworkService {
     }
     
     //MARK: - POST requests
-    func createUser(courseId: String, completion: @escaping SessionResult) {
-        makePostRequest(ofType: .post("create"), courseId: courseId, values: nil, completion: completion)
+    func createUser(completion: @escaping SessionResult) {
+        makePostRequest(ofType: .post("create"), courseId: nil, values: nil, completion: completion)
     }
     
-    func getUserInfo(courseId: String, completion: @escaping SessionResult) {
-        makePostRequest(ofType: .post("get"), courseId: courseId, values: nil, completion: completion)
+    func getUserInfo(completion: @escaping SessionResult) {
+        makePostRequest(ofType: .post("get"), courseId: nil, values: nil, completion: completion)
     }
     
     func updateInfo(courseId: String, values: String, completion: @escaping SessionResult) {
@@ -69,7 +69,7 @@ class NetworkService {
     
     private func makePostRequest(ofType type: RequestType, courseId: String?, values: String?, completion: @escaping SessionResult) {
         let urlString = API.scheme + "://" + API.host + type.getPath()
-        print(urlString)
+        
         guard let url = URL(string: urlString) else {
             completion(.failure(NetworkError.failedToCreateURL))
             return
@@ -109,7 +109,7 @@ class NetworkService {
             }
 //            let dataString = String(data: data, encoding: .utf8)
 //            print(dataString ?? "Failed to convert original data to string")
-            if type == .getTable("") || type == .getCourseStructure {
+            if type == .getTable("") || type == .getCourseStructure || type == .post("get") {
                 self.cutUnnecessaryData(data, completion: completion)
             } else {
                 completion(.success(data))
@@ -125,15 +125,16 @@ class NetworkService {
         default:
             return nil
         }
-        let token = "1113"
-        string += "&token=\(token)"
+        if let token = UserDefaults.standard.string(forKey: "userIdentifier") {
+            string += "&token=\(token)"
+        }
         if let id = courseId {
             string += "&course_id=\(id)"
         }
         if let values = values {
             string += "&value=\(values)"
         }
-        print(string)
+        
         let data = string.data(using: .utf8)
         return data
     }

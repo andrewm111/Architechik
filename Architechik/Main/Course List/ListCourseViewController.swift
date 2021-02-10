@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 import SwiftyStoreKit
 import StoreKit
 
@@ -65,7 +66,7 @@ class ListCourseViewController: ViewController {
     private var cellHeights: Array<CGFloat> = []
     var products: Set<SKProduct> = []
     private var currentCategory: Int = -1
-
+    
     //MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,13 +74,14 @@ class ListCourseViewController: ViewController {
         setupSubviews()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        //setProgress()
+    }
+    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        for i in 0...filteredModels.count {
-            if let cell = tableView.cellForRow(at: IndexPath(row: i, section: 0)) as? CourseCell {
-                cell.progressView.progress = 0.75
-            }
-        }
+        
     }
     
     //MARK: - Setup
@@ -89,6 +91,7 @@ class ListCourseViewController: ViewController {
         extendedLayoutIncludesOpaqueBars = true
         view.backgroundColor = UIColor.black
         NotificationCenter.default.addObserver(self, selector: #selector(categoryChanged), name: NSNotification.Name("CategoryChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setProgress), name: NSNotification.Name("SetProgress"), object: nil)
         retrieveProducts()
         configureTableView()
         filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
@@ -119,7 +122,7 @@ class ListCourseViewController: ViewController {
             }
         }
     }
-
+    
     private func setupSubviews() {
         addTabBarSeparator()
         view.addSubview(tableView)
@@ -128,7 +131,6 @@ class ListCourseViewController: ViewController {
         view.addSubview(filterView)
         
         let filterSize: CGFloat = smallScreen ? 40 : 60
-        
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -146,10 +148,10 @@ class ListCourseViewController: ViewController {
             filterView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             filterView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
-//        testButton.centerYAnchor.constraint(equalTo: filterButton.centerYAnchor),
-//        testButton.heightAnchor.constraint(equalToConstant: 30),
-//        testButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-//        testButton.trailingAnchor.constraint(equalTo: filterButton.leadingAnchor, constant: -6),
+        //        testButton.centerYAnchor.constraint(equalTo: filterButton.centerYAnchor),
+        //        testButton.heightAnchor.constraint(equalToConstant: 30),
+        //        testButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+        //        testButton.trailingAnchor.constraint(equalTo: filterButton.leadingAnchor, constant: -6),
     }
     
     //MARK: - Supporting methods
@@ -166,9 +168,9 @@ class ListCourseViewController: ViewController {
         }
         let vc = CourseViewController()
         vc.product = products.first
-        vc.modalPresentationStyle = .overCurrentContext
+        vc.modalPresentationStyle = .overFullScreen
         //vc.modalTransitionStyle = .coverVertical
-         let tapLocation = tap.location(in: tableView)
+        let tapLocation = tap.location(in: tableView)
         guard
             let tapIndexPath = self.tableView.indexPathForRow(at: tapLocation),
             let cell = tableView.cellForRow(at: tapIndexPath) as? CourseCell,
@@ -183,18 +185,51 @@ class ListCourseViewController: ViewController {
             guard let id1 = Int(lesson1.id), let id2 = Int(lesson2.id) else { return false }
             return id1 < id2
         }
+        let studentProgress = NetworkDataFetcher.shared.studentProgress[tapIndexPath.row - 1]
+        let progress = studentProgress.currentProgress
+        var modelsWithProgress: Array<Lesson> = []
+        for (index, model) in sortedModels.enumerated() {
+            let lessonProgress = progress.dropLast(progress.count - index - 1).last
+            var newModel = model
+            if lessonProgress == "1" { newModel.isDone = true } else { newModel.isDone = false }
+            modelsWithProgress.append(newModel)
+        }
         let transition = CATransition()
-        transition.duration = 0.5
+        transition.duration = 0.3
         transition.type = CATransitionType.push
         transition.subtype = CATransitionSubtype.fromRight
         transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
         view.window!.layer.add(transition, forKey: kCATransition)
-        vc.models = sortedModels
+        vc.coursePurchased = studentProgress.courseAccess == "1" ? true : false
+        vc.models = modelsWithProgress
         vc.courseTitle = model.title
         vc.descriptionText = model.fullDescription
         vc.courseImageUrl = model.img
         vc.courseId = model.id
         self.present(vc, animated: false)
+    }
+    
+    @objc
+    private func setProgress() {
+//        for i in 0...filteredModels.count {
+//            guard
+//                let progress = NetworkDataFetcher.shared.studentProgress.filter( { $0.idCourses == filteredModels[i].id } ).first,
+//                let courseNumberInt = Int(filteredModels[i].courseNumber)
+//                else {
+//                    return
+//            }
+//            guard
+//
+//                let cell = tableView.cellForRow(at: IndexPath(row: i + 1, section: 0)) as? CourseCell
+//                else {
+//                    return
+//            }
+//            let courseNumberFloat = CGFloat(courseNumberInt)
+//            let stringProgress = progress.currentProgress.dropFirst().filter( { "1".contains($0) } )
+//            let currentProgress = CGFloat(stringProgress.count)
+//            cell.progressView.setProgressForCourses(currentProgress / courseNumberFloat)
+//        }
+        tableView.reloadData()
     }
     
     @objc
@@ -219,8 +254,8 @@ class ListCourseViewController: ViewController {
             }
         }
         tableView.reloadData()
-//        self.tabBarController?.tabBar.isHidden = false
-//        self.tabBarController?.tabBar.isTranslucent = false
+        //        self.tabBarController?.tabBar.isHidden = false
+        //        self.tabBarController?.tabBar.isTranslucent = false
         //filterView.isHidden = true
     }
     
@@ -235,18 +270,18 @@ class ListCourseViewController: ViewController {
         }
         //filterView.frame = CGRect(x: 0, y: 629, width: 375, height: 200)
     }
-
+    
 }
 
 //MARK: - UITableViewDelegate, UITableViewDataSource
 extension ListCourseViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        let font = UIFont(name: "Arial", size: 15) ?? UIFont.systemFont(ofSize: 15)
-//        let width = UIScreen.main.bounds.width - 16
-//        let string = models[indexPath.row].description
-//        let height = string.height(width: width, font: font) + 129
-//        return height
+        //        let font = UIFont(name: "Arial", size: 15) ?? UIFont.systemFont(ofSize: 15)
+        //        let width = UIScreen.main.bounds.width - 16
+        //        let string = models[indexPath.row].description
+        //        let height = string.height(width: width, font: font) + 129
+        //        return height
         guard indexPath.row != 0 else { return 60 }
         return 230
     }
@@ -265,9 +300,24 @@ extension ListCourseViewController: UITableViewDelegate, UITableViewDataSource {
             let cell: CourseCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
             if filteredModels.count >= indexPath.row - 2 {
                 cell.configure(withModel: filteredModels[indexPath.row - 1])
+                setProgressForCell(cell, modelIndex: indexPath.row - 1)
             }
             return cell
         }
     }
+    
+    private func setProgressForCell(_ cell: CourseCell, modelIndex: Int) {
+            guard
+                let progress = NetworkDataFetcher.shared.studentProgress.filter( { $0.idCourses == filteredModels[modelIndex].id } ).first,
+                let courseNumberInt = Int(filteredModels[modelIndex].courseNumber)
+                else {
+                    return
+        }
+        
+        let courseNumberFloat = CGFloat(courseNumberInt)
+        let stringProgress = progress.currentProgress.dropFirst().filter( { "1".contains($0) } )
+        let currentProgress = CGFloat(stringProgress.count)
+        cell.progressView.setProgressForCourses(currentProgress / (courseNumberFloat - 1))
+        }
 }
 

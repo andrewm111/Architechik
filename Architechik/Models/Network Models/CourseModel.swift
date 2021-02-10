@@ -9,7 +9,7 @@
 import Foundation
 
 struct Course: Hashable, Codable, CoreDataConvertible {
-    
+
     var id: String
     var title: String
     var description: String

@@ -23,7 +23,8 @@ class ProgressView: UIView {
         layer.backgroundColor = UIColor(hex: "613191").cgColor
         return layer
     }()
-
+    
+    //MARK: - Init
     convenience init(withProgress progress: CGFloat) {
         self.init(frame: .zero)
         self.progress = progress
@@ -38,5 +39,9 @@ class ProgressView: UIView {
         layer.addSublayer(progressLayer)
     }
     
-    
+    //MARK: - External methods
+    func setProgressForCourses(_ progress: CGFloat) {
+        let width = UIScreen.main.bounds.width - 40
+        progressLayer.frame = CGRect(x: 0, y: 0, width: width * progress, height: 6)
+    }
 }

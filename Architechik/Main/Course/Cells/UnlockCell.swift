@@ -38,6 +38,13 @@ class UnlockCell: TableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    private let activityIndicatorView: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(style: .large)
+        view.color = .black
+        view.hidesWhenStopped = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     private let unlockIcon: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "appleIcon")
@@ -70,6 +77,7 @@ class UnlockCell: TableViewCell {
         //addSubview(mainView)
         addSubview(buttonView)
         addSubview(unlockIcon)
+        addSubview(activityIndicatorView)
         //mainView.addSubview(unlockIcon)
         //mainView.addSubview(titleLabel)
         
@@ -96,6 +104,11 @@ class UnlockCell: TableViewCell {
             buttonView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: UnlockButton.spacing.rawValue),
             buttonView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -UnlockButton.spacing.rawValue),
             
+            activityIndicatorView.centerYAnchor.constraint(equalTo: buttonView.centerYAnchor),
+            activityIndicatorView.centerXAnchor.constraint(equalTo: buttonView.centerXAnchor),
+            activityIndicatorView.heightAnchor.constraint(lessThanOrEqualTo: buttonView.heightAnchor, multiplier: 0.9),
+            activityIndicatorView.widthAnchor.constraint(lessThanOrEqualTo: buttonView.widthAnchor, multiplier: 0.3),
+            
             stackView.centerYAnchor.constraint(equalTo: buttonView.centerYAnchor),
             stackView.centerXAnchor.constraint(equalTo: buttonView.centerXAnchor),
             stackView.widthAnchor.constraint(equalToConstant: stackViewWidth),
@@ -117,12 +130,24 @@ class UnlockCell: TableViewCell {
 //            titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: buttonView.leadingAnchor, constant: 56),
 //            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: buttonView.trailingAnchor, constant: -14),
         ])
-        
     }
     
+    //MARK: - Handle user events
     @objc
     private func unlockTapped() {
         delegate?.unlock()
+    }
+    
+    func showActivityIndicator() {
+        activityIndicatorView.startAnimating()
+        unlockIcon.isHidden = true
+        titleLabel.isHidden = true
+    }
+    
+    func hideActivityIndicator() {
+        activityIndicatorView.stopAnimating()
+        unlockIcon.isHidden = false
+        titleLabel.isHidden = false
     }
 }
 

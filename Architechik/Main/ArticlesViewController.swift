@@ -175,6 +175,11 @@ class ArticlesViewController: ViewController {
 //        vc.modalPresentationStyle = .overCurrentContext
 //        vc.modalTransitionStyle = .coverVertical
 //        present(vc, animated: true)
+        guard Reachability.isConnectedToNetwork() else {
+            showNetworkAlert()
+            return
+        }
+        
         lessonView.urlString = filteredModels[tapIndexPath.row - 1].file
     }
     

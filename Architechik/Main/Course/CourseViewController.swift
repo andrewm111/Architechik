@@ -81,15 +81,13 @@ class CourseViewController: ViewController, SwipeToDismissControllerDelegate {
         tableView.addGestureRecognizer(tap)
         view.addGestureRecognizer(pan)
         lessonView.transform = CGAffineTransform(translationX: UIScreen.main.bounds.width, y: 0)
-        purchaseView.transform = CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.height)
+        purchaseView.transform = CGAffineTransform(translationX: UIScreen.main.bounds.width, y: 0)
         activityIndicator.transform = CGAffineTransform(scaleX: 2, y: 2)
-        
-//        guard
-//        let product = product,
-//        let price = product.localizedPrice
-//        else { return }
-        //let attributedString = NSAttributedString(string: product.localizedTitle + " за " + price, attributes: purchaseView.attributes)
-        //purchaseView.purchaseButton.setAttributedTitle(attributedString, for: .normal)
+//        DispatchQueue.main.async {
+//            UIView.animate(withDuration: 0.4) {
+//                self.purchaseView.transform = .identity
+//            }
+//        }
     }
 
     private func setupSubviews() {
@@ -130,13 +128,33 @@ class CourseViewController: ViewController, SwipeToDismissControllerDelegate {
             let _ = tableView.cellForRow(at: tapIndexPath) as? LessonCell
             else { return }
         var model: Lesson?
+        var index = 0
         if models.count >= tapIndexPath.row - 2, !coursePurchased {
             model = models[tapIndexPath.row - 3]
+            models[tapIndexPath.row - 3].isDone = true
+            index = tapIndexPath.row - 3
         }
         if models.count >= tapIndexPath.row, coursePurchased {
             model = models[tapIndexPath.row - 1]
+            models[tapIndexPath.row - 1].isDone = true
+            index = tapIndexPath.row - 1
         }
-        if let string = model?.file, Reachability.isConnectedToNetwork() {
+        guard Reachability.isConnectedToNetwork() else {
+            showNetworkAlert()
+            return
+        }
+        if let string = model?.file {
+            if let courseIndex = NetworkDataFetcher.shared.studentProgress.firstIndex(where: { $0.idCourses == courseId } ) {
+                
+                let oldProgress = NetworkDataFetcher.shared.studentProgress[courseIndex].currentProgress
+                let newProgress = String(oldProgress.dropLast(oldProgress.count - index) + "1" + oldProgress.dropFirst(index + 1))
+                NetworkDataFetcher.shared.studentProgress[courseIndex].currentProgress = newProgress
+                DataManager.shared.saveStudentProgress(NetworkDataFetcher.shared.studentProgress)
+                NetworkService.shared.updateInfo(courseId: courseId, values: newProgress) { _ in
+                    
+                }
+            }
+            lessonView.showView()
             lessonView.urlString = string
             pan.isEnabled = false
         }
@@ -158,7 +176,9 @@ class CourseViewController: ViewController, SwipeToDismissControllerDelegate {
 //MARK: - UnlockDelegate
 extension CourseViewController: UnlockDelegate {
     func unlock() {
-        activityIndicator.startAnimating()
+        if let cell = tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as? UnlockCell {
+            cell.showActivityIndicator()
+        }
         self.purchase()
     }
 }
@@ -166,8 +186,14 @@ extension CourseViewController: UnlockDelegate {
 //MARK: - PurchaseViewDelegate
 extension CourseViewController: PurchaseViewDelegate {
     func close() {
-        purchaseView.isHidden = true
-        self.coursePurchased = true
+        if let cell = tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as? UnlockCell {
+            cell.hideActivityIndicator()
+        }
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.3) {
+                self.purchaseView.transform = CGAffineTransform(translationX: UIScreen.main.bounds.width, y: 0)
+            }
+        }
     }
 }
 
@@ -175,26 +201,42 @@ extension CourseViewController: PurchaseViewDelegate {
 extension CourseViewController: WebDelegate {
     func enablePanGestureRecognizer() {
         pan.isEnabled = true
+        tableView.reloadData()
     }
 }
 
 //MARK: - Purchasing
 extension CourseViewController {
     private func purchase() {
+        //activityIndicator.startAnimating()
         SwiftyStoreKit.purchaseProduct("FirstInArchitectureCourseTest", quantity: 1, atomically: true) { result in
             switch result {
             case .success(purchase: let purchase):
                 DispatchQueue.main.async {
-                    UIView.animate(withDuration: 0.4) {
+                    UIView.animate(withDuration: 0.3) {
                         self.purchaseView.transform = .identity
                     }
                 }
+                self.coursePurchased = true
+                if let index = NetworkDataFetcher.shared.studentProgress.firstIndex(where: { $0.idCourses == self.courseId } ) {
+                    NetworkDataFetcher.shared.studentProgress[index].courseAccess = "1"
+                    DataManager.shared.saveStudentProgress(NetworkDataFetcher.shared.studentProgress)
+                }
+                NetworkService.shared.buyCourse(courseId: self.courseId) { result in
+                    switch result {
+                    case .success(let data):
+                        if let dataString = String(data: data, encoding: .utf8) { print(dataString) }
+                    case .failure(let error):
+                        print("Error with purchasing: \(error)")
+                    }
+                }
+                
                 print(purchase)
                 self.verifyPurchase()
             case .error(error: let error):
                 print(error)
             }
-            self.activityIndicator.stopAnimating()
+            //self.activityIndicator.stopAnimating()
         }
     }
     
@@ -231,7 +273,20 @@ extension CourseViewController: IntroDelegate {
 //        vc.modalPresentationStyle = .overCurrentContext
 //        vc.modalTransitionStyle = .coverVertical
 //        present(vc, animated: true)
-        if !models.isEmpty, Reachability.isConnectedToNetwork() {
+        guard Reachability.isConnectedToNetwork() else {
+            showNetworkAlert()
+            return
+        }
+        if !models.isEmpty {
+            if let courseIndex = NetworkDataFetcher.shared.studentProgress.firstIndex(where: { $0.idCourses == courseId } ) {
+                models[0].isDone = true
+                let newProgress = "1" + String(NetworkDataFetcher.shared.studentProgress[courseIndex].currentProgress.dropFirst())
+                NetworkDataFetcher.shared.studentProgress[courseIndex].currentProgress = newProgress
+                DataManager.shared.saveStudentProgress(NetworkDataFetcher.shared.studentProgress)
+                NetworkService.shared.updateInfo(courseId: courseId, values: newProgress) { _ in
+                    
+                }
+            }
             lessonView.urlString = models[0].file
             pan.isEnabled = false
         }
@@ -316,6 +371,7 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
                 let model = models[indexPath.row - 1]
                 cell.configure(withDataSource: model)
                 cell.unlock()
+                if model.isDone == true { cell.makeDone() }
                 if model.idType == "2" {
                     cell.setImage(imageString: model.img ?? "")
                 }
@@ -342,6 +398,7 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
                 let cell: LessonCell = tableView.dequeueReusableCell(forIndexPath: indexPath)
                 let model = models[indexPath.row - 3]
                 cell.configure(withDataSource: model)
+                if model.isDone == true { cell.makeDone() }
                 if indexPath.row >= 4 { cell.lock() }
                 if model.idType == "2" {
                     cell.setImage(imageString: model.img ?? "")

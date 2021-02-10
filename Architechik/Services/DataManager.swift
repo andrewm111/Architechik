@@ -25,6 +25,7 @@ class DataManager {
     let grammarFetchRequest = NSFetchRequest<GrammarCD>(entityName: "GrammarCD")
     let achievementFetchRequest = NSFetchRequest<AchievementCD>(entityName: "AchievementCD")
     let lessonsFetchRequest = NSFetchRequest<LessonCD>(entityName: "LessonCD")
+    let studentProgressFetchRequest = NSFetchRequest<StudentProgressCD>(entityName: "StudentProgressCD")
     
     //MARK: - Save
     func saveCourses(_ array: Array<Course>) {
@@ -60,7 +61,7 @@ class DataManager {
     }
     
     func saveArticles(_ array: Array<Article>) {
-        let articles = array.sorted(by: { $0.id < $1.id } )
+        let articles = array.sorted(by: { $0.id > $1.id } )
         guard let entity = NSEntityDescription.entity(forEntityName: "ArticleCD", in: managedContext) else { return }
         var articlesCD = fetchAllArticles()
         let diff = articlesCD.count - array.count
@@ -187,6 +188,38 @@ class DataManager {
         }
     }
     
+    func saveStudentProgress(_ array: Array<StudentProgress>) {
+        let studentProgress = array.sorted(by: { $0.id < $1.id } )
+        guard let entity = NSEntityDescription.entity(forEntityName: "StudentProgressCD", in: managedContext) else { return }
+        var studentProgressCD = fetchAllStudentProgress()
+        let diff = studentProgressCD.count - array.count
+        if diff > 0 {
+            for progress in studentProgressCD.dropFirst(studentProgressCD.count - diff) {
+                managedContext.delete(progress)
+            }
+            studentProgressCD = Array(studentProgressCD.dropFirst(studentProgressCD.count - diff))
+        } else if diff < 0 {
+            let newProgress = array[studentProgressCD.count...array.count - 1]
+            _ = newProgress.map({ progress in
+                let model = StudentProgressCD(entity: entity, insertInto: managedContext)
+                model.configure(withModel: progress)
+            })
+        }
+        _ = studentProgress.map { progress in
+            for progressCD in studentProgressCD {
+                if progressCD.id == progress.id {
+                    progressCD.configure(withModel: progress)
+                    continue
+                }
+            }
+        }
+        do {
+            try managedContext.save()
+        } catch {
+            print("Error with saving student progress to Core Data: \(error)")
+        }
+    }
+    
     //MARK: - Fetch
     func fetchAllCourses() -> Array<CourseCD> {
         do {
@@ -201,7 +234,7 @@ class DataManager {
     func fetchAllArticles() -> Array<ArticleCD> {
         do {
             let articles = try managedContext.fetch(articlesFetchRequest)
-            return articles.sorted(by: { $0.id < $1.id })
+            return articles.sorted(by: { $0.id > $1.id })
         } catch let error as NSError {
             print("Could not fetch articles. \(error), \(error.userInfo)")
             return []
@@ -234,6 +267,16 @@ class DataManager {
             return lessons.sorted(by: { $0.id < $1.id })
         } catch let error as NSError {
             print("Could not fetch lessons. \(error), \(error.userInfo)")
+            return []
+        }
+    }
+    
+    func fetchAllStudentProgress() -> Array<StudentProgressCD> {
+        do {
+            let studentProgress = try managedContext.fetch(studentProgressFetchRequest)
+            return studentProgress.sorted(by: { $0.id < $1.id })
+        } catch let error as NSError {
+            print("Could not fetch student progress. \(error), \(error.userInfo)")
             return []
         }
     }
@@ -271,6 +314,13 @@ class DataManager {
         let lessons = fetchAllLessons()
         _ = lessons.map({ lesson in
             managedContext.delete(lesson)
+        })
+    }
+    
+    func deleteAllStudentProgress() {
+        let studentProgress = fetchAllStudentProgress()
+        _ = studentProgress.map({ progress in
+            managedContext.delete(progress)
         })
     }
 }

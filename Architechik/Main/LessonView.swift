@@ -13,7 +13,25 @@ class LessonView: UIView {
     
     //MARK: - Subviews
     private let webView: WKWebView = {
-        let view = WKWebView()
+        //initial-scale=1.0, maximum-scale=1.0, 
+        //let view = WKWebView()
+        let source: String = "var meta = document.createElement('meta');" +
+            "meta.name = 'viewport';" +
+            "meta.content = 'user-scalable=no';" +
+            "var head = document.getElementsByTagName('head')[0];" +
+            "head.appendChild(meta);"
+        let script: WKUserScript = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+        let userContentController: WKUserContentController = WKUserContentController()
+        let conf = WKWebViewConfiguration()
+        conf.userContentController = userContentController
+        userContentController.addUserScript(script)
+        let view = WKWebView(frame: CGRect.zero, configuration: conf)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    private let blackView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .black
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -55,8 +73,14 @@ class LessonView: UIView {
     
     private func setupSubviews() {
         addSubview(webView)
+        addSubview(blackView)
         
         NSLayoutConstraint.activate([
+            blackView.topAnchor.constraint(equalTo: self.topAnchor),
+            blackView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            blackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            blackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            
             webView.topAnchor.constraint(equalTo: self.topAnchor),
             webView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             webView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
@@ -76,14 +100,35 @@ class LessonView: UIView {
             break
         }
     }
+    
+    //MARK: - External methods
+    func showView() {
+        self.animateReturnToNormalState()
+    }
+    
+    func setBlackViewAlpha(_ alpha: CGFloat) {
+        self.blackView.alpha = alpha
+    }
+    
+    func showBlackView() {
+        self.blackView.isHidden = false
+    }
+    
+    func hideBlackView() {
+        self.blackView.isHidden = true
+    }
 }
 
 //MARK: - WKUIDelegate, WKNavigationDelegate
 extension LessonView: WKUIDelegate, WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        //webView.scrollView.contentSize.width = UIScreen.main.bounds.width
-        
-        self.animateReturnToNormalState()
+        UIView.animate(withDuration: 0.3, animations: {
+            self.setBlackViewAlpha(0)
+        }, completion: { _ in
+            self.hideBlackView()
+        })
+        webView.evaluateJavaScript("document.documentElement.style.webkitUserSelect='none'")
+        webView.evaluateJavaScript("document.documentElement.style.webkitTouchCallout='none'")
     }
     
 //    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
@@ -108,6 +153,15 @@ extension LessonView: UIScrollViewDelegate {
     }
 }
 
-protocol WebDelegate {
+protocol WebDelegate: UIViewController {
     func enablePanGestureRecognizer()
+}
+
+extension WebDelegate {
+    func showNetworkAlert() {
+        let alert = UIAlertController(title: "Ошибка", message: "Проверьте подключение к сети", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ок", style: .default)
+        alert.addAction(okAction)
+        present(alert, animated: true)
+    }
 }
