@@ -55,6 +55,11 @@ class ArticlesViewController: ViewController {
     var filteredModels: Array<Article> = []
     private lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
     private var currentCategory: Int = -1
+    private lazy var filterViewConstraint = filterView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 280)
+    private let bottomPadding: CGFloat = {
+        let window = UIApplication.shared.windows[0]
+        return window.safeAreaInsets.bottom
+    }()
     
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -91,6 +96,8 @@ class ArticlesViewController: ViewController {
         view.addSubview(lessonView)
         
         let filterSize: CGFloat = smallScreen ? 40 : 60
+        let window = UIApplication.shared.windows[0]
+        let bottomPadding = window.safeAreaInsets.bottom
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -100,11 +107,11 @@ class ArticlesViewController: ViewController {
             
             filterButton.heightAnchor.constraint(equalToConstant: filterSize),
             filterButton.widthAnchor.constraint(equalToConstant: filterSize),
-            filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
+            filterButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -80 - bottomPadding),
             filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
             
             filterView.heightAnchor.constraint(equalToConstant: 280),
-            filterView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 370),
+            filterViewConstraint,
             filterView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             filterView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
@@ -126,9 +133,13 @@ class ArticlesViewController: ViewController {
         currentCategory = category
         self.tabBarController?.tabBar.isHidden = false
         self.tabBarController?.tabBar.isTranslucent = false
-        filterView.hide { _ in
-            self.tableView.isScrollEnabled = true
-            self.filterView.isHidden = true
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.2) {
+                self.filterViewConstraint.constant = 280
+            } completion: { _ in
+                self.tableView.isScrollEnabled = true
+                self.filterView.isHidden = true
+            }
         }
         if category == -1 {
             filteredModels = models
@@ -148,10 +159,13 @@ class ArticlesViewController: ViewController {
         //self.tabBarController?.tabBar.isTranslucent = true
         self.tabBarController?.tabBar.isHidden = true
         self.tableView.isScrollEnabled = false
-        filterView.show { _ in
-            
+        DispatchQueue.main.async {
+            self.filterView.isHidden = false
+            self.filterViewConstraint.constant = 0
+            UIView.animate(withDuration: 0.2) {
+                self.view.layoutIfNeeded()
+            }
         }
-        //filterView.frame = CGRect(x: 0, y: 629, width: 375, height: 200)
     }
     
     @objc
@@ -159,9 +173,14 @@ class ArticlesViewController: ViewController {
         guard filterView.isHidden else {
             self.tabBarController?.tabBar.isHidden = false
             self.tabBarController?.tabBar.isTranslucent = false
-            filterView.hide { _ in
-                self.tableView.isScrollEnabled = true
-                self.filterView.isHidden = true
+            DispatchQueue.main.async {
+                self.filterViewConstraint.constant = 280
+                UIView.animate(withDuration: 0.2) {
+                    self.view.layoutIfNeeded()
+                } completion: { _ in
+                    self.tableView.isScrollEnabled = true
+                    self.filterView.isHidden = true
+                }
             }
             return
         }
@@ -179,7 +198,7 @@ class ArticlesViewController: ViewController {
             showNetworkAlert()
             return
         }
-        
+        lessonView.showView()
         lessonView.urlString = filteredModels[tapIndexPath.row - 1].file
     }
     

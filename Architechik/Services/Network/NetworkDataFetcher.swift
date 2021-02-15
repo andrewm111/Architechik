@@ -21,11 +21,19 @@ class NetworkDataFetcher {
 //        return array
 //    }()
     var courses: Array<Course> = []
+    var timesCreateUserCalled: Int = 0
+    var timesGetProgressCalled: Int = 0
     
     func fetchCourses(completion: @escaping (Array<Course>) -> Void ) {
         NetworkService.shared.getCourses { result in
             switch result {
             case .success(let data):
+                if let dataString = String(data: data, encoding: .utf8) {
+                    if dataString.contains("<b>Warning</b>") || dataString.contains("[]") || dataString == "0" {
+                        completion([])
+                        return
+                    }
+                }
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
                 do {
@@ -40,14 +48,20 @@ class NetworkDataFetcher {
             case .failure(let error):
                 print("Failed to get courses: \(error)")
                 completion([])
-            }
-        }
-    }
+            } // switch
+        } // get courses
+    } // fetchCourses
     
     func fetchArticles(completion: @escaping (Array<Article>) -> Void ) {
         NetworkService.shared.getArticles { result in
             switch result {
             case .success(let data):
+                if let dataString = String(data: data, encoding: .utf8) {
+                    if dataString.contains("<b>Warning</b>") || dataString.contains("[]") || dataString == "0" {
+                        completion([])
+                        return
+                    }
+                }
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
                 do {
@@ -69,6 +83,12 @@ class NetworkDataFetcher {
         NetworkService.shared.getGrammar { result in
             switch result {
             case .success(let data):
+                if let dataString = String(data: data, encoding: .utf8) {
+                    if dataString.contains("<b>Warning</b>") || dataString.contains("[]") || dataString == "0" {
+                        completion([])
+                        return
+                    }
+                }
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
                 do {
@@ -90,6 +110,12 @@ class NetworkDataFetcher {
         NetworkService.shared.getAchievements { result in
             switch result {
             case .success(let data):
+                if let dataString = String(data: data, encoding: .utf8) {
+                    if dataString.contains("<b>Warning</b>") || dataString.contains("[]") || dataString == "0" {
+                        completion([])
+                        return
+                    }
+                }
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
                 do {
@@ -111,6 +137,12 @@ class NetworkDataFetcher {
             NetworkService.shared.getCourseStructure { result in
                 switch result {
                 case .success(let data):
+                    if let dataString = String(data: data, encoding: .utf8) {
+                        if dataString.contains("<b>Warning</b>") || dataString.contains("[]") || dataString == "0" {
+                            completion([])
+                            return
+                        }
+                    }
                     let decoder = JSONDecoder()
                     decoder.keyDecodingStrategy = .convertFromSnakeCase
                     do {
@@ -129,53 +161,111 @@ class NetworkDataFetcher {
     }
     
     //MARK: - Handle user credentials
-    func fetchStudentProgress(completion: @escaping (Array<StudentProgress>) -> Void ) {
+    private func fetchStudentProgress(completion: @escaping (Array<StudentProgress>?) -> Void ) {
         NetworkService.shared.getUserInfo { result in
             switch result {
             case .success(let data):
-                
+                if let dataString = String(data: data, encoding: .utf8) {
+                    if dataString.contains("0") && dataString.count < 5 {
+                        completion([])
+                        return
+                    }
+                    if dataString.contains("<b>Warning</b>") || dataString.contains("[]") {
+                        completion(nil)
+                        self.timesGetProgressCalled += 1
+                        if self.timesGetProgressCalled == 4 {
+                            self.timesGetProgressCalled = 0
+                        } else {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                self.fetchStudentProgress(completion: completion)
+                            }
+                        }
+                        return
+                    }
+                }
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
                 do {
                     let models = try decoder.decode(Array<StudentProgress>.self, from: data)
                     completion(models)
+                    self.timesGetProgressCalled = 0
                 } catch {
-                    print("Failed to decode course structure: \(error)")
-                    completion([])
+                    print("Failed to decode student progress: \(error)")
+                    self.timesGetProgressCalled += 1
+                    if self.timesGetProgressCalled == 4 {
+                        self.timesGetProgressCalled = 0
+                    } else {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                            self.fetchStudentProgress(completion: completion)
+                        }
+                    }
+                    completion(nil)
                 }
             case .failure(let error):
                 print("Failed to get student progress: \(error)")
-                completion([])
+                completion(nil)
             }
         }
     }
     
     func checkUserInDatabase(completion: @escaping (Array<StudentProgress>) -> Void ) {
         NetworkDataFetcher.shared.fetchStudentProgress { studentProgress in
-            if studentProgress.isEmpty {
-                self.createUserWithToken(completion: completion)
+            guard let progress = studentProgress else { return }
+            //print(progress)
+            if progress.isEmpty {
+                self.createUserWithToken { result in
+//                    switch result {
+//                    case .success(_):
+//                        break
+//                    case .failure(_):
+//                        break
+//                    }
+                }
             } else {
-                DataManager.shared.saveStudentProgress(studentProgress)
-                self.studentProgress = studentProgress.sorted(by: { $0.idCourses < $1.idCourses } )
+                DataManager.shared.saveStudentProgress(progress)
+                self.studentProgress = progress.sorted(by: { $0.idCourses < $1.idCourses } )
                 NotificationCenter.default.post(name: NSNotification.Name("SetProgress"), object: nil)
-                completion(studentProgress)
+                //completion(studentProgress)
             }
+            
         }
     }
     
-    private func createUserWithToken(completion: @escaping (Array<StudentProgress>) -> Void ) {
+    private func createUserWithToken(completion: @escaping (Result<String, Error>) -> Void ) {
         NetworkService.shared.createUser { result in
             switch result {
             case .success(let data):
-                guard let dataString = String(data: data, encoding: .utf8) else {
-                    print("Wrong response when create user")
-                    return
+                if let dataString = String(data: data, encoding: .utf8) {
+                    if dataString.contains("<b>Warning</b>") || dataString.contains("[]") || dataString == "0" {
+                        completion(.failure(NetworkError.userNotCreated))
+                        self.timesCreateUserCalled += 1
+                        if self.timesCreateUserCalled == 4 {
+                            self.timesCreateUserCalled = 0
+                        } else {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                self.createUserWithToken(completion: completion)
+                            }
+                        }
+                        return
+                    }
                 }
-                print("User successfully created: \(dataString)")
+                completion(.success("User created"))
+                self.timesCreateUserCalled = 0
+                self.checkUserInDatabase { _ in
+                    
+                }
             case .failure(let error):
+                completion(.failure(error))
                 print("Wrong response when create user: \(error)")
-            }
-            self.checkUserInDatabase(completion: completion)
-        }
+                self.timesCreateUserCalled += 1
+                if self.timesCreateUserCalled == 4 {
+                    self.timesCreateUserCalled = 0
+                } else {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        self.createUserWithToken(completion: completion)
+                    }
+                }
+            } // switch
+        } // Create user
     }
 }

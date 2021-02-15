@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Network
 
 class TabBarController: UITabBarController {
     
@@ -16,13 +17,17 @@ class TabBarController: UITabBarController {
     lazy var grammarVC = generateViewController(vcType: GrammarViewController.self, title: "Grammar", imageName: "grammar")
     lazy var profileVC = generateViewController(vcType: ProfileViewController.self, title: "Profile", imageName: "achievements")
     
+    var timesFetchCoursesCalled: Int = 0
+    var timesFetchLessonsCalled: Int = 0
+    var timesFetchArticlesCalled: Int = 0
+    var timesFetchGrammarCalled: Int = 0
+    var timesFetchAchievementsCalled: Int = 0
+    
     //MARK: - Init
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         fetchData()
-        NetworkDataFetcher.shared.checkUserInDatabase { studentProgress in
-            
-        }
+        NetworkDataFetcher.shared.checkUserInDatabase { studentProgress in }
         setViewControllers([coursesVC, articlesVC, grammarVC, profileVC], animated: false)
         selectedViewController = coursesVC
         configureTabBar()
@@ -35,9 +40,22 @@ class TabBarController: UITabBarController {
     //MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(showAlert), name: NSNotification.Name("ShowServerAlert"), object: nil)
     }
     
     //MARK: - Supporting methods
+    @objc
+    private func showAlert(_ notification: Notification) {
+        guard
+            let title = notification.userInfo?["title"] as? String,
+            let text = notification.userInfo?["text"] as? String
+            else { return }
+        let alertController = UIAlertController(title: title, message: text, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ок", style: .default)
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
+    }
+    
     private func configureTabBar() {
         tabBar.tintColor = UIColor(hex: "613191")
         tabBar.unselectedItemTintColor = UIColor.white

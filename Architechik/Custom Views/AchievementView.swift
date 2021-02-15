@@ -78,7 +78,11 @@ class AchievementView: UIView, CardViewProtocol {
     //MARK: - Properties
     private var delegate: SharingDelegate?
     private var model: Achievement?
-    var height: CGFloat = 310
+    var height: CGFloat = 300
+    private let bottomPadding: CGFloat = {
+        let window = UIApplication.shared.windows[0]
+        return window.safeAreaInsets.bottom
+    }()
     
     convenience init(withModel model: Achievement?, delegate: SharingDelegate) {
         self.init(frame: .zero)
@@ -134,7 +138,7 @@ class AchievementView: UIView, CardViewProtocol {
             
             buttonView.topAnchor.constraint(equalTo: backView.bottomAnchor, constant: 15),
             buttonView.heightAnchor.constraint(equalToConstant: 205 / 4),
-            buttonView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -80),
+            buttonView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -24 - bottomPadding),
             buttonView.leadingAnchor.constraint(equalTo: backView.leadingAnchor),
             buttonView.trailingAnchor.constraint(equalTo: backView.trailingAnchor),
             

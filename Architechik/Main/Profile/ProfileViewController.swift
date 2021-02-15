@@ -18,7 +18,7 @@ class ProfileViewController: ViewController {
     }()
     private lazy var achievementView: AchievementView = {
         let view = AchievementView(withModel: nil, delegate: self)
-        view.height = 250
+        view.height = 310
         view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -37,6 +37,11 @@ class ProfileViewController: ViewController {
         }
     }
     private lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
+    private lazy var achievementViewConstraint = achievementView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 254 + bottomPadding)
+    private let bottomPadding: CGFloat = {
+        let window = UIApplication.shared.windows[0]
+        return window.safeAreaInsets.bottom
+    }()
     
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -86,8 +91,8 @@ class ProfileViewController: ViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
-            achievementView.heightAnchor.constraint(equalToConstant: 310),
-            achievementView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 360),
+            achievementView.heightAnchor.constraint(equalToConstant: 254 + bottomPadding),
+            achievementViewConstraint,
             achievementView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             achievementView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
@@ -99,13 +104,14 @@ class ProfileViewController: ViewController {
         _ = studentAchievements.map { achievement in
             totalProgress += achievement.progress ?? 0
         }
+        guard NetworkDataFetcher.shared.courses.count != 0 else { return }
         progressView?.progress = totalProgress / CGFloat(NetworkDataFetcher.shared.courses.count)
     }
     
     private func checkAchievements() {
         studentAchievements = []
         for courseProgress in NetworkDataFetcher.shared.studentProgress {
-            if courseProgress.currentProgress.contains("1"), var achievement = models.filter({ $0.idCourses == courseProgress.idCourses }).first  {
+            if var achievement = models.filter({ $0.idCourses == courseProgress.idCourses }).first  {
                 let stringProgress = courseProgress.currentProgress.dropFirst().filter( { "1".contains($0) } )
                 let currentProgress = CGFloat(stringProgress.count)
                 guard let courseIndex = NetworkDataFetcher.shared.courses.firstIndex(where: { $0.id == courseProgress.idCourses }) else { return }
@@ -121,13 +127,16 @@ class ProfileViewController: ViewController {
     @objc
     private func cellTapped() {
         guard achievementView.isHidden else {
-            self.tabBarController?.tabBar.isHidden = false
-            self.tabBarController?.tabBar.isTranslucent = false
-            achievementView.hide { _ in
+            DispatchQueue.main.async {
+                self.achievementViewConstraint.constant = 254 + self.bottomPadding
                 self.tableView.isScrollEnabled = true
-                self.achievementView.isHidden = true
-                //                self.tabBarController?.tabBar.isHidden = false
-                //                self.tabBarController?.tabBar.isTranslucent = false
+                UIView.animate(withDuration: 0.2) {
+                    self.tabBarController?.tabBar.isHidden = false
+                    self.tabBarController?.tabBar.isTranslucent = false
+                    self.view.layoutIfNeeded()
+                } completion: { _ in
+                    self.achievementView.isHidden = true
+                }
             }
             return
         }
@@ -137,10 +146,17 @@ class ProfileViewController: ViewController {
             let cell = tableView.cellForRow(at: tapIndexPath) as? AchievementCell
             else { return }
         achievementView.configure(withModel: models[tapIndexPath.row - 1], image: cell.getImage())
-        self.tabBarController?.tabBar.isHidden = true
-        self.tableView.isScrollEnabled = false
-        achievementView.show { _ in
-            
+       
+        DispatchQueue.main.async {
+            self.achievementViewConstraint.constant = 0
+            self.tableView.isScrollEnabled = false
+            self.achievementView.isHidden = false
+            UIView.animate(withDuration: 0.2) {
+                self.tabBarController?.tabBar.isHidden = true
+                self.view.layoutIfNeeded()
+            } completion: { _ in
+                
+            }
         }
     }
 }

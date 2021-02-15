@@ -81,7 +81,7 @@ class CourseViewController: ViewController, SwipeToDismissControllerDelegate {
         tableView.addGestureRecognizer(tap)
         view.addGestureRecognizer(pan)
         lessonView.transform = CGAffineTransform(translationX: UIScreen.main.bounds.width, y: 0)
-        purchaseView.transform = CGAffineTransform(translationX: UIScreen.main.bounds.width, y: 0)
+        purchaseView.transform = CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.height)
         activityIndicator.transform = CGAffineTransform(scaleX: 2, y: 2)
 //        DispatchQueue.main.async {
 //            UIView.animate(withDuration: 0.4) {
@@ -125,39 +125,43 @@ class CourseViewController: ViewController, SwipeToDismissControllerDelegate {
         let tapLocation = tap.location(in: tableView)
         guard
             let tapIndexPath = self.tableView.indexPathForRow(at: tapLocation),
-            let _ = tableView.cellForRow(at: tapIndexPath) as? LessonCell
+            let _ = tableView.cellForRow(at: tapIndexPath) as? LessonCell,
+            coursePurchased
             else { return }
-        var model: Lesson?
-        var index = 0
-        if models.count >= tapIndexPath.row - 2, !coursePurchased {
-            model = models[tapIndexPath.row - 3]
-            models[tapIndexPath.row - 3].isDone = true
-            index = tapIndexPath.row - 3
-        }
-        if models.count >= tapIndexPath.row, coursePurchased {
-            model = models[tapIndexPath.row - 1]
-            models[tapIndexPath.row - 1].isDone = true
-            index = tapIndexPath.row - 1
-        }
         guard Reachability.isConnectedToNetwork() else {
             showNetworkAlert()
             return
         }
-        if let string = model?.file {
-            if let courseIndex = NetworkDataFetcher.shared.studentProgress.firstIndex(where: { $0.idCourses == courseId } ) {
-                
-                let oldProgress = NetworkDataFetcher.shared.studentProgress[courseIndex].currentProgress
-                let newProgress = String(oldProgress.dropLast(oldProgress.count - index) + "1" + oldProgress.dropFirst(index + 1))
-                NetworkDataFetcher.shared.studentProgress[courseIndex].currentProgress = newProgress
-                DataManager.shared.saveStudentProgress(NetworkDataFetcher.shared.studentProgress)
-                NetworkService.shared.updateInfo(courseId: courseId, values: newProgress) { _ in
-                    
-                }
-            }
-            lessonView.showView()
-            lessonView.urlString = string
-            pan.isEnabled = false
+        var model: Lesson?
+        var lessonIndex = 0
+        if models.count >= tapIndexPath.row - 2, !coursePurchased {
+            model = models[tapIndexPath.row - 3]
+            lessonIndex = tapIndexPath.row - 3
         }
+        if models.count >= tapIndexPath.row, coursePurchased {
+            model = models[tapIndexPath.row - 1]
+            lessonIndex = tapIndexPath.row - 1
+        }
+        guard let string = model?.file, lessonIndex >= 0 else { return }
+        if let courseIndex = NetworkDataFetcher.shared.studentProgress.firstIndex(where: { $0.idCourses == courseId } ) {
+            var progress = NetworkDataFetcher.shared.studentProgress[courseIndex].currentProgress
+            let insertIndex = progress.index(progress.startIndex, offsetBy: lessonIndex)
+            progress.insert("1", at: insertIndex)
+            let removeIndex = progress.index(after: insertIndex)
+            progress.remove(at: removeIndex)
+            
+            NetworkDataFetcher.shared.studentProgress[courseIndex].currentProgress = progress
+            DataManager.shared.saveStudentProgress(NetworkDataFetcher.shared.studentProgress)
+            NetworkService.shared.updateInfo(courseId: courseId, values: progress) { _ in
+                
+            }
+        }
+        lessonView.showView()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.models[lessonIndex].isDone = true
+        }
+        lessonView.urlString = string
+        pan.isEnabled = false
     }
     
     @objc
@@ -192,7 +196,10 @@ extension CourseViewController: PurchaseViewDelegate {
         DispatchQueue.main.async {
             UIView.animate(withDuration: 0.3) {
                 self.purchaseView.transform = CGAffineTransform(translationX: UIScreen.main.bounds.width, y: 0)
+            } completion: { _ in
+                self.purchaseView.transform = CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.height)
             }
+
         }
     }
 }
@@ -213,11 +220,12 @@ extension CourseViewController {
             switch result {
             case .success(purchase: let purchase):
                 DispatchQueue.main.async {
-                    UIView.animate(withDuration: 0.3) {
+                    UIView.animate(withDuration: 0.4) {
                         self.purchaseView.transform = .identity
+                    } completion: { _ in
+                        self.coursePurchased = true
                     }
                 }
-                self.coursePurchased = true
                 if let index = NetworkDataFetcher.shared.studentProgress.firstIndex(where: { $0.idCourses == self.courseId } ) {
                     NetworkDataFetcher.shared.studentProgress[index].courseAccess = "1"
                     DataManager.shared.saveStudentProgress(NetworkDataFetcher.shared.studentProgress)
@@ -230,10 +238,12 @@ extension CourseViewController {
                         print("Error with purchasing: \(error)")
                     }
                 }
-                
                 print(purchase)
                 self.verifyPurchase()
             case .error(error: let error):
+                if let cell = self.tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as? UnlockCell {
+                    cell.hideActivityIndicator()
+                }
                 print(error)
             }
             //self.activityIndicator.stopAnimating()
@@ -287,6 +297,7 @@ extension CourseViewController: IntroDelegate {
                     
                 }
             }
+            lessonView.showView()
             lessonView.urlString = models[0].file
             pan.isEnabled = false
         }

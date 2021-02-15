@@ -10,6 +10,7 @@
 		1F00623025D1799100C240C1 /* StudentProgressCD+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F00622E25D1799100C240C1 /* StudentProgressCD+CoreDataClass.swift */; };
 		1F00623125D1799100C240C1 /* StudentProgressCD+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F00622F25D1799100C240C1 /* StudentProgressCD+CoreDataProperties.swift */; };
 		1F08325225C0A12D0043F39F /* PurchaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F08325125C0A12D0043F39F /* PurchaseView.swift */; };
+		1F0AA79325D7F36C00195F92 /* NetworkSpeedTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0AA79225D7F36C00195F92 /* NetworkSpeedTest.swift */; };
 		1F0B69B825C836D400103B17 /* UIView + AnchorPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0B69B725C836D400103B17 /* UIView + AnchorPoint.swift */; };
 		1F0C100F25B5B4BE0040CCC3 /* DescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0C100E25B5B4BE0040CCC3 /* DescriptionCell.swift */; };
 		1F0C101125B5C98F0040CCC3 /* UnlockCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F0C101025B5C98F0040CCC3 /* UnlockCell.swift */; };
@@ -28,6 +29,7 @@
 		1F3CB71A25B092BC000B6922 /* UIViewController + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3CB71925B092BC000B6922 /* UIViewController + Extension.swift */; };
 		1F44C7B925BF5A6C0068FEEF /* ProfileHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F44C7B825BF5A6C0068FEEF /* ProfileHeaderCell.swift */; };
 		1F45852725A8F0B0007E46F2 /* CourseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F45852625A8F0B0007E46F2 /* CourseCell.swift */; };
+		1F46234025DAD4360039128B /* StringProtocol + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F46233F25DAD4360039128B /* StringProtocol + Extension.swift */; };
 		1F4A4A1B25BB06D3005EA447 /* IndexableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4A4A1A25BB06D3005EA447 /* IndexableViewController.swift */; };
 		1F4A4A1E25BB347F005EA447 /* FeatureCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4A4A1D25BB347F005EA447 /* FeatureCell.swift */; };
 		1F503CBE25B6D08C00E62291 /* RequestType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F503CBD25B6D08C00E62291 /* RequestType.swift */; };
@@ -92,6 +94,7 @@
 		1F00622E25D1799100C240C1 /* StudentProgressCD+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StudentProgressCD+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		1F00622F25D1799100C240C1 /* StudentProgressCD+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StudentProgressCD+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		1F08325125C0A12D0043F39F /* PurchaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseView.swift; sourceTree = "<group>"; };
+		1F0AA79225D7F36C00195F92 /* NetworkSpeedTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSpeedTest.swift; sourceTree = "<group>"; };
 		1F0B69B725C836D400103B17 /* UIView + AnchorPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView + AnchorPoint.swift"; sourceTree = "<group>"; };
 		1F0C100E25B5B4BE0040CCC3 /* DescriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionCell.swift; sourceTree = "<group>"; };
 		1F0C101025B5C98F0040CCC3 /* UnlockCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockCell.swift; sourceTree = "<group>"; };
@@ -113,6 +116,7 @@
 		1F3CB71925B092BC000B6922 /* UIViewController + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController + Extension.swift"; sourceTree = "<group>"; };
 		1F44C7B825BF5A6C0068FEEF /* ProfileHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderCell.swift; sourceTree = "<group>"; };
 		1F45852625A8F0B0007E46F2 /* CourseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCell.swift; sourceTree = "<group>"; };
+		1F46233F25DAD4360039128B /* StringProtocol + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringProtocol + Extension.swift"; sourceTree = "<group>"; };
 		1F4A4A1A25BB06D3005EA447 /* IndexableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexableViewController.swift; sourceTree = "<group>"; };
 		1F4A4A1D25BB347F005EA447 /* FeatureCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureCell.swift; sourceTree = "<group>"; };
 		1F503CBD25B6D08C00E62291 /* RequestType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestType.swift; sourceTree = "<group>"; };
@@ -417,6 +421,8 @@
 				1F0B69B725C836D400103B17 /* UIView + AnchorPoint.swift */,
 				1FE4A05825D0157E000AD9D9 /* Reachability.swift */,
 				1F90F78025D04E750047D3D2 /* StatusBarColor.swift */,
+				1F0AA79225D7F36C00195F92 /* NetworkSpeedTest.swift */,
+				1F46233F25DAD4360039128B /* StringProtocol + Extension.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -596,6 +602,7 @@
 				1F6DF55A25C5539E0085D3D8 /* SwipeToDismissControllerDelegate.swift in Sources */,
 				1F90F78125D04E750047D3D2 /* StatusBarColor.swift in Sources */,
 				1FB3ADF625BF217400710D5B /* CourseTitleCell.swift in Sources */,
+				1F0AA79325D7F36C00195F92 /* NetworkSpeedTest.swift in Sources */,
 				1FA1A14125ACCD70008621FB /* LessonModel.swift in Sources */,
 				1F45852725A8F0B0007E46F2 /* CourseCell.swift in Sources */,
 				1F83355425A753A100BCEDE8 /* TabBarController.swift in Sources */,
@@ -643,6 +650,7 @@
 				1F4A4A1E25BB347F005EA447 /* FeatureCell.swift in Sources */,
 				1FF6707625A9F44E006D4EEE /* LessonCell.swift in Sources */,
 				1F99B8EC25CF6F050085AF19 /* UIImage + GIF.swift in Sources */,
+				1F46234025DAD4360039128B /* StringProtocol + Extension.swift in Sources */,
 				1F503CC425B6F72B00E62291 /* AchievementModel.swift in Sources */,
 				1FA6C18125C17A3F0038FAE5 /* WebViewController.swift in Sources */,
 				1FA1A13D25ACC880008621FB /* GrammarArticleModel.swift in Sources */,
@@ -801,7 +809,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.29;
+				MARKETING_VERSION = 1.32;
 				PRODUCT_BUNDLE_IDENTIFIER = mikel.Shmonov.Architechik;
 				PRODUCT_NAME = Architechick;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -825,7 +833,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.29;
+				MARKETING_VERSION = 1.32;
 				PRODUCT_BUNDLE_IDENTIFIER = mikel.Shmonov.Architechik;
 				PRODUCT_NAME = Architechick;
 				PROVISIONING_PROFILE_SPECIFIER = "";

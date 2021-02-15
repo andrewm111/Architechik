@@ -51,11 +51,14 @@ class FilterView: UIView, CardViewProtocol {
     private func setupSubviews() {
         addSubview(stackView)
         
+        let window = UIApplication.shared.windows[0]
+        let bottomPadding = window.safeAreaInsets.bottom
+        
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
             stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
             stackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-            stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -50),
+            stackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10 - bottomPadding),
         ])
     }
 }

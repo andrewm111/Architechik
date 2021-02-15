@@ -13,7 +13,13 @@ class ProgressView: UIView {
     //MARK: - Properties
     var progress: CGFloat = 0 {
         didSet {
-            progressLayer.frame = CGRect(x: 0, y: 0, width: self.frame.width * progress, height: 6)
+            var width: CGFloat = 0
+            if progress <= 0 || self.frame.width <= 0 {
+                width = 0
+            } else {
+                width = self.frame.width * progress
+            }
+            progressLayer.frame = CGRect(x: 0, y: 0, width: width, height: 6)
         }
     }
     private lazy var progressLayer: CALayer = {

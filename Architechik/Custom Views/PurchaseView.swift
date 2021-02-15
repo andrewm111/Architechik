@@ -10,7 +10,7 @@ import UIKit
 import StoreKit
 import SwiftyStoreKit
 
-class PurchaseView: UIView, CardViewProtocol {
+class PurchaseView: UIView {
     
     //MARK: - Subviews
     private let imageView: UIImageView = {
@@ -18,6 +18,14 @@ class PurchaseView: UIView, CardViewProtocol {
         view.clipsToBounds = true
         view.image = UIImage(named: "purchaseSuccess")
         view.contentMode = .scaleAspectFit
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    private let gradientView: UIImageView = {
+        let view = UIImageView()
+        view.image = UIImage(named: "backgroundBuy")
+        view.contentMode = .scaleAspectFill
+        //view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -64,6 +72,7 @@ class PurchaseView: UIView, CardViewProtocol {
     }
     
     private func setupSubviews() {
+        addSubview(gradientView)
         addSubview(imageView)
         addSubview(buttonImageView)
         buttonImageView.addSubview(titleLabel)
@@ -76,15 +85,26 @@ class PurchaseView: UIView, CardViewProtocol {
             let ratio = buttonViewWidth / buttonViewHeight
             buttonImageView.widthAnchor.constraint(equalTo: buttonImageView.heightAnchor, multiplier: ratio).isActive = true
         }
+        let buttonImageViewWidth: CGFloat = smallScreen ? 50 : 66
+        
+//        if let gradientViewWidth = gradientView.image?.size.width, let gradientViewHeight = gradientView.image?.size.height {
+//            let ratio = gradientViewHeight / gradientViewWidth
+//            gradientView.heightAnchor.constraint(equalTo: gradientView.widthAnchor, multiplier: ratio).isActive = true
+//        }
         
         NSLayoutConstraint.activate([
+            gradientView.topAnchor.constraint(equalTo: self.topAnchor),
+            gradientView.bottomAnchor.constraint(equalTo: imageView.centerYAnchor),
+            gradientView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            gradientView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            
             imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -37),
             imageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.5),
             imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             buttonImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             buttonImageView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 24),
-            buttonImageView.heightAnchor.constraint(equalToConstant: 66),
+            buttonImageView.heightAnchor.constraint(equalToConstant: buttonImageViewWidth),
             
             titleLabel.centerXAnchor.constraint(equalTo: buttonImageView.centerXAnchor),
             titleLabel.centerYAnchor.constraint(equalTo: buttonImageView.centerYAnchor),

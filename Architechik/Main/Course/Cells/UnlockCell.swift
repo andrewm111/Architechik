@@ -56,6 +56,7 @@ class UnlockCell: TableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    lazy var stackView = UIStackView(arrangedSubviews: [unlockView, titleLabel])
     private var delegate: UnlockDelegate?
 
     func configure(withDelegate delegate: UnlockDelegate) {
@@ -90,7 +91,7 @@ class UnlockCell: TableViewCell {
 //        let mainViewTotalHeight = mainViewHeight + (UnlockButton.getVerticalShadow() * mainViewHeight)
 //        mainView.frame = CGRect(x: leftSpacing, y: topSpacing, width: mainViewTotalWidth, height: mainViewTotalHeight)
         
-        let stackView = UIStackView(arrangedSubviews: [unlockView, titleLabel])
+        
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.spacing = 12
@@ -106,8 +107,8 @@ class UnlockCell: TableViewCell {
             
             activityIndicatorView.centerYAnchor.constraint(equalTo: buttonView.centerYAnchor),
             activityIndicatorView.centerXAnchor.constraint(equalTo: buttonView.centerXAnchor),
-            activityIndicatorView.heightAnchor.constraint(lessThanOrEqualTo: buttonView.heightAnchor, multiplier: 0.9),
-            activityIndicatorView.widthAnchor.constraint(lessThanOrEqualTo: buttonView.widthAnchor, multiplier: 0.3),
+//            activityIndicatorView.heightAnchor.constraint(lessThanOrEqualTo: buttonView.heightAnchor, multiplier: 0.9),
+//            activityIndicatorView.widthAnchor.constraint(lessThanOrEqualTo: buttonView.widthAnchor, multiplier: 0.3),
             
             stackView.centerYAnchor.constraint(equalTo: buttonView.centerYAnchor),
             stackView.centerXAnchor.constraint(equalTo: buttonView.centerXAnchor),
@@ -140,14 +141,16 @@ class UnlockCell: TableViewCell {
     
     func showActivityIndicator() {
         activityIndicatorView.startAnimating()
+        stackView.isHidden = true
         unlockIcon.isHidden = true
-        titleLabel.isHidden = true
+//        titleLabel.isHidden = true
     }
     
     func hideActivityIndicator() {
         activityIndicatorView.stopAnimating()
+        stackView.isHidden = false
         unlockIcon.isHidden = false
-        titleLabel.isHidden = false
+//        titleLabel.isHidden = false
     }
 }
 

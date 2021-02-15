@@ -42,8 +42,8 @@ enum RequestType {
             return true
         case (.getTable, .getTable):
             return true
-        case (.post, .post):
-            return true
+        case (.post(let a), .post(let b)):
+            return a == b
         default:
             return false
         }

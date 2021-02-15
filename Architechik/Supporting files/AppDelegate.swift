@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import AuthenticationServices
 import SwiftyStoreKit
+import Network
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,23 +20,52 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = .white
-        
-        loginUser()
+        UserDefaults.standard.setValue("444666", forKey: "userIdentifier")
+//        let monitor = NWPathMonitor()
+//        monitor.pathUpdateHandler = { path in
+//            print(path.status)
+//        }
+//        let queue = DispatchQueue(label: "Monitor", qos: .background)
+//        monitor.start(queue: queue)
+//        Timer.scheduledTimer(timeInterval: 4, target: self, selector: #selector(hasConnection), userInfo: nil, repeats: true)
+        //loginUser()
         //self.window?.rootViewController = PageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         //self.window?.rootViewController = LoginViewController()
-        //self.window?.rootViewController = TabBarController()
-        //self.window?.makeKeyAndVisible()
+        self.window?.rootViewController = TabBarController()
+        self.window?.makeKeyAndVisible()
         registerStorePaymentHandler()
         addTransactionObserver()
         return true
     }
     
+    @objc
+    private func hasConnection() -> Bool {
+        var URLString: String? = nil
+        if let url = URL(string: "https://www.google.com") {
+            do {
+                URLString = try String(contentsOf: url)
+            } catch {
+                print(error)
+            }
+        }
+        return URLString != nil ? true : false
+    }
+    
     //MARK: - Handle user credentials
     private func loginUser() {
         let appleIDProvider = ASAuthorizationAppleIDProvider()
+        //print(KeychainItem.currentUserIdentifier)
         appleIDProvider.getCredentialState(forUserID: KeychainItem.currentUserIdentifier) { (credentialState, error) in
+                if KeychainItem.currentUserIdentifier == "" {
+                    let letters = "abcdefghijklmnopqrstuvwxyz0123456789"
+                    let userIdentifier = String((0..<17).map{ _ in letters.randomElement()! })
+                    UserDefaults.standard.set(userIdentifier, forKey: "userIdentifier")
+                } else {
+                    UserDefaults.standard.set(KeychainItem.currentUserIdentifier, forKey: "userIdentifier")
+                }
             switch credentialState {
             case .authorized:
+                
                 DispatchQueue.main.async {
                     self.window?.rootViewController = TabBarController()
                 }
@@ -126,3 +156,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
+//MARK: - NetworkSpeedProviderDelegate
+extension AppDelegate: NetworkSpeedProviderDelegate {
+    func callWhileSpeedChange(networkStatus: NetworkStatus) {
+        print(networkStatus)
+    }
+}

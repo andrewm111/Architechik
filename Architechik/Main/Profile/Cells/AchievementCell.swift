@@ -49,8 +49,8 @@ class AchievementCell: TableViewCell {
     }()
 
     func configure(withModel model: Achievement) {
-        titleLabel.text = model.title
-        descriptionLabel.text = model.description
+        titleLabel.text = model.progress == 1 ? model.title : "Пройди курс чтобы получить достижение"
+        descriptionLabel.text = model.progress == 1 ? model.description : "???"
         let imageString = model.progress == 1 ? model.imgGood : model.imgBad
         achievementImageView.set(imageURL: imageString)
         selectionStyle = .none

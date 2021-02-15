@@ -86,6 +86,9 @@ class LessonCell: TableViewCell {
         backgroundColor = .clear
         initialSetup(withDataSource: dataSource)
         setupSubviews(withDataSource: dataSource)
+        if !(dataSource is Lesson) {
+            titleLabel.font = UIFont(name: "Arial-BoldMT", size: 17)
+        }
     }
     
     func setImage(imageString: String) {

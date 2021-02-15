@@ -66,6 +66,11 @@ class ListCourseViewController: ViewController {
     private var cellHeights: Array<CGFloat> = []
     var products: Set<SKProduct> = []
     private var currentCategory: Int = -1
+    private lazy var filterViewConstraint = filterView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 280 + bottomPadding)
+    private let bottomPadding: CGFloat = {
+        let window = UIApplication.shared.windows[0]
+        return window.safeAreaInsets.bottom
+    }()
     
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -95,6 +100,8 @@ class ListCourseViewController: ViewController {
         retrieveProducts()
         configureTableView()
         filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
+//        let tap1 = UITapGestureRecognizer(target: self, action: #selector(filterButtonTapped))
+//        filterButton.addGestureRecognizer(tap1)
         NotificationCenter.default.post(name: NSNotification.Name("CategoryChanged"), object: nil, userInfo: ["category": -1])
     }
     
@@ -132,6 +139,7 @@ class ListCourseViewController: ViewController {
         
         let filterSize: CGFloat = smallScreen ? 40 : 60
         
+        
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -2),
@@ -140,13 +148,13 @@ class ListCourseViewController: ViewController {
             
             filterButton.heightAnchor.constraint(equalToConstant: filterSize),
             filterButton.widthAnchor.constraint(equalToConstant: filterSize),
-            filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30),
+            filterButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -80 - bottomPadding),
             filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
             
             filterView.heightAnchor.constraint(equalToConstant: 280),
-            filterView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 370),
-            filterView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            filterView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            filterViewConstraint,
+            filterView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
+            filterView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
         ])
         //        testButton.centerYAnchor.constraint(equalTo: filterButton.centerYAnchor),
         //        testButton.heightAnchor.constraint(equalToConstant: 30),
@@ -160,16 +168,17 @@ class ListCourseViewController: ViewController {
         guard filterView.isHidden else {
             self.tabBarController?.tabBar.isHidden = false
             self.tabBarController?.tabBar.isTranslucent = false
-            filterView.hide { _ in
-                self.tableView.isScrollEnabled = true
-                self.filterView.isHidden = true
+            DispatchQueue.main.async {
+                self.filterViewConstraint.constant = 280
+                UIView.animate(withDuration: 0.2) {
+                    self.view.layoutIfNeeded()
+                } completion: { _ in
+                    self.tableView.isScrollEnabled = true
+                    self.filterView.isHidden = true
+                }
             }
             return
         }
-        let vc = CourseViewController()
-        vc.product = products.first
-        vc.modalPresentationStyle = .overFullScreen
-        //vc.modalTransitionStyle = .coverVertical
         let tapLocation = tap.location(in: tableView)
         guard
             let tapIndexPath = self.tableView.indexPathForRow(at: tapLocation),
@@ -177,7 +186,10 @@ class ListCourseViewController: ViewController {
             models.count > tapIndexPath.row - 1
             else { return }
         let model = models[tapIndexPath.row - 1]
-        
+        let vc = CourseViewController()
+        vc.product = products.first
+        vc.modalPresentationStyle = .overFullScreen
+        //vc.modalTransitionStyle = .coverVertical
         let filteredModels = lessons.filter({ lesson -> Bool in
             return lesson.idCourses == cell.model?.id
         })
@@ -185,14 +197,21 @@ class ListCourseViewController: ViewController {
             guard let id1 = Int(lesson1.id), let id2 = Int(lesson2.id) else { return false }
             return id1 < id2
         }
+        guard NetworkDataFetcher.shared.studentProgress.count > tapIndexPath.row - 1 else { return }
         let studentProgress = NetworkDataFetcher.shared.studentProgress[tapIndexPath.row - 1]
         let progress = studentProgress.currentProgress
         var modelsWithProgress: Array<Lesson> = []
         for (index, model) in sortedModels.enumerated() {
-            let lessonProgress = progress.dropLast(progress.count - index - 1).last
-            var newModel = model
-            if lessonProgress == "1" { newModel.isDone = true } else { newModel.isDone = false }
-            modelsWithProgress.append(newModel)
+            if progress.count - index - 1 >= 0 {
+                let lessonProgress = progress.dropLast(progress.count - index - 1).last
+                var newModel = model
+                if lessonProgress == "1" { newModel.isDone = true } else { newModel.isDone = false }
+                modelsWithProgress.append(newModel)
+            } else {
+                var newModel = model
+                newModel.isDone = false
+                modelsWithProgress.append(newModel)
+            }
         }
         let transition = CATransition()
         transition.duration = 0.3
@@ -242,9 +261,14 @@ class ListCourseViewController: ViewController {
         currentCategory = category
         self.tabBarController?.tabBar.isHidden = false
         self.tabBarController?.tabBar.isTranslucent = false
-        filterView.hide { _ in
-            self.tableView.isScrollEnabled = true
-            self.filterView.isHidden = true
+        DispatchQueue.main.async {
+            self.filterViewConstraint.constant = 280
+            UIView.animate(withDuration: 0.2) {
+                self.view.layoutIfNeeded()
+            } completion: { _ in
+                self.tableView.isScrollEnabled = true
+                self.filterView.isHidden = true
+            }
         }
         if category == -1 {
             filteredModels = models
@@ -254,8 +278,8 @@ class ListCourseViewController: ViewController {
             }
         }
         tableView.reloadData()
-        //        self.tabBarController?.tabBar.isHidden = false
-        //        self.tabBarController?.tabBar.isTranslucent = false
+        //self.tabBarController?.tabBar.isHidden = false
+        //self.tabBarController?.tabBar.isTranslucent = false
         //filterView.isHidden = true
     }
     
@@ -264,13 +288,15 @@ class ListCourseViewController: ViewController {
         //self.tabBarController?.tabBar.isTranslucent = true
         self.tabBarController?.tabBar.isHidden = true
         self.tableView.isScrollEnabled = false
-        //filterView.isHidden = false
-        filterView.show { _ in
-            
+        //filterView.show {_ in}
+        DispatchQueue.main.async {
+            self.filterView.isHidden = false
+            self.filterViewConstraint.constant = 0
+            UIView.animate(withDuration: 0.2) {
+                self.view.layoutIfNeeded()
+            }
         }
-        //filterView.frame = CGRect(x: 0, y: 629, width: 375, height: 200)
     }
-    
 }
 
 //MARK: - UITableViewDelegate, UITableViewDataSource

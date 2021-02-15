@@ -59,7 +59,8 @@ class NetworkService {
             completion(.failure(NetworkError.failedToCreateURL))
             return
         }
-        var request = URLRequest(url: url, timeoutInterval: Double.infinity)
+        var request = URLRequest(url: url)
+        //var request = URLRequest(url: url, timeoutInterval: 3)
         request.httpMethod = type.getHTTPMethod()
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             self.handleSession(ofType: type, data: data, response: response, error: error, completion: completion)
@@ -69,12 +70,12 @@ class NetworkService {
     
     private func makePostRequest(ofType type: RequestType, courseId: String?, values: String?, completion: @escaping SessionResult) {
         let urlString = API.scheme + "://" + API.host + type.getPath()
-        
         guard let url = URL(string: urlString) else {
             completion(.failure(NetworkError.failedToCreateURL))
             return
         }
-        var request = URLRequest(url: url, timeoutInterval: Double.infinity)
+        var request = URLRequest(url: url)
+        //var request = URLRequest(url: url, timeoutInterval: Double.infinity)
         request.httpMethod = type.getHTTPMethod()
         request.httpBody = generateHttpBody(type: type, courseId: courseId, values: values)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
@@ -127,6 +128,8 @@ class NetworkService {
         }
         if let token = UserDefaults.standard.string(forKey: "userIdentifier") {
             string += "&token=\(token)"
+        } else if KeychainItem.currentUserIdentifier != "" {
+            string += "&token=\(KeychainItem.currentUserIdentifier)"
         }
         if let id = courseId {
             string += "&course_id=\(id)"
@@ -134,7 +137,7 @@ class NetworkService {
         if let values = values {
             string += "&value=\(values)"
         }
-        
+        //print(string)
         let data = string.data(using: .utf8)
         return data
     }
@@ -144,13 +147,16 @@ class NetworkService {
             completion(.failure(NetworkError.dataIsNotConvertibleToString))
             return
         }
-        guard let start = dataString.firstIndex(of: "["),
-            let end = dataString.lastIndex(of: "]")
+        
+        guard
+            let startIndex = dataString.endIndex(of: "<body>"),
+            let endIndex = dataString.index(of: "</body>")
             else {
                 completion(.failure(NetworkError.dataIsNotJSON))
                 return
         }
-        let string = dataString[start...end]
+        let string = dataString[startIndex..<endIndex]
+        //print(string)
         if let newData = string.data(using: .utf8) {
             completion(.success(newData))
         } else {

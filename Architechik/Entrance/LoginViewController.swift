@@ -54,7 +54,8 @@ class LoginViewController: IndexableViewController {
         view.textAlignment = .center
         view.text = "Добро пожаловать!"
         view.textColor = .white
-        view.font = UIFont(name: "Arial-BoldMT", size: 32)
+        let fontSize: CGFloat = UIScreen.main.bounds.width < 370 ? 26 : 32
+        view.font = UIFont(name: "Arial-BoldMT", size: fontSize)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -108,7 +109,8 @@ class LoginViewController: IndexableViewController {
             titleImageView.heightAnchor.constraint(equalTo: titleImageView.widthAnchor, multiplier: ratio).isActive = true
         }
         
-        let imageViewHeightMultiplier: CGFloat = UIScreen.main.bounds.width < 370 ? 0.42 : 0.52
+        let imageViewHeightMultiplier: CGFloat = UIScreen.main.bounds.width < 370 ? 0.47 : 0.52
+        let welcomeSpacing: CGFloat = UIScreen.main.bounds.width < 370 ? 12 : 20
         
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 5),
@@ -119,8 +121,8 @@ class LoginViewController: IndexableViewController {
             
             welcomeLabel.heightAnchor.constraint(equalToConstant: 34),
             welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
-            welcomeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            welcomeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            welcomeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: welcomeSpacing),
+            welcomeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -welcomeSpacing),
             
             titleImageView.bottomAnchor.constraint(equalTo: cardView.topAnchor, constant: -50),
             titleImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 45),
