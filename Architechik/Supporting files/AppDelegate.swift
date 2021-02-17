@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = .white
-        UserDefaults.standard.setValue("444666", forKey: "userIdentifier")
+        //UserDefaults.standard.setValue("444666", forKey: "userIdentifier")
 //        let monitor = NWPathMonitor()
 //        monitor.pathUpdateHandler = { path in
 //            print(path.status)

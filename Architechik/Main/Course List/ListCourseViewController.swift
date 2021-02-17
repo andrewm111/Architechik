@@ -81,12 +81,20 @@ class ListCourseViewController: ViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //setProgress()
+        guard Reachability.isConnectedToNetwork() else {
+            showNetworkAlert()
+            return
+        }
+        
+//        var frame = self.tabBarController?.tabBar.frame
+//        let height = frame?.size.height
+//        frame?.origin.y = self.view.frame.size.height + height!
+//        self.tabBarController?.tabBar.frame = frame!
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        
+        //self.tabBarController?.tabBar.alpha = 0
     }
     
     //MARK: - Setup
@@ -138,11 +146,12 @@ class ListCourseViewController: ViewController {
         view.addSubview(filterView)
         
         let filterSize: CGFloat = smallScreen ? 40 : 60
-        
+//        let width = UIScreen.main.bounds.width
+//        filterView.frame = CGRect(x: 0, y: 0, width: width, height: 280)
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -2),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -2),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
@@ -156,6 +165,7 @@ class ListCourseViewController: ViewController {
             filterView.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
             filterView.trailingAnchor.constraint(equalTo: tableView.trailingAnchor),
         ])
+        
         //        testButton.centerYAnchor.constraint(equalTo: filterButton.centerYAnchor),
         //        testButton.heightAnchor.constraint(equalToConstant: 30),
         //        testButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
@@ -166,17 +176,30 @@ class ListCourseViewController: ViewController {
     @objc
     private func cellTapped() {
         guard filterView.isHidden else {
-            self.tabBarController?.tabBar.isHidden = false
-            self.tabBarController?.tabBar.isTranslucent = false
-            DispatchQueue.main.async {
-                self.filterViewConstraint.constant = 280
+            //self.tabBarController?.tabBar.isHidden = false
+            self.filterView.hide { _ in
+                self.tableView.isScrollEnabled = true
+                self.filterView.isHidden = true
                 UIView.animate(withDuration: 0.2) {
-                    self.view.layoutIfNeeded()
-                } completion: { _ in
-                    self.tableView.isScrollEnabled = true
-                    self.filterView.isHidden = true
-                }
+                    self.tabBarController?.tabBar.alpha = 1
+                } completion: { _ in }
             }
+            //self.tabBarController?.tabBar.isTranslucent = false
+//            DispatchQueue.main.async {
+//                self.tabBarController?.tabBar.isHidden = false
+//                self.tabBarController?.tabBar.isTranslucent = false
+//                self.filterViewConstraint.constant = 280
+//                UIView.animate(withDuration: 0.2) {
+//                    self.view.layoutIfNeeded()
+//                } completion: { _ in
+//                    self.tableView.isScrollEnabled = true
+//                    self.filterView.isHidden = true
+//                }
+//            }
+            return
+        }
+        guard Reachability.isConnectedToNetwork() else {
+            showNetworkAlert()
             return
         }
         let tapLocation = tap.location(in: tableView)
@@ -259,15 +282,25 @@ class ListCourseViewController: ViewController {
             name == "course"
             else { return }
         currentCategory = category
-        self.tabBarController?.tabBar.isHidden = false
-        self.tabBarController?.tabBar.isTranslucent = false
-        DispatchQueue.main.async {
-            self.filterViewConstraint.constant = 280
+//        DispatchQueue.main.async {
+//            self.filterViewConstraint.constant = 280
+//            UIView.animate(withDuration: 0.2) {
+//                self.view.layoutIfNeeded()
+//            } completion: { _ in
+//                self.tableView.isScrollEnabled = true
+//                self.filterView.isHidden = true
+//                self.tabBarController?.tabBar.isHidden = false
+//                self.tabBarController?.tabBar.isTranslucent = false
+//            }
+//        }
+        //self.tabBarController?.tabBar.isHidden = false
+        //self.tabBarController?.tabBar.isTranslucent = false
+        
+        filterView.hide { _ in
+            self.tableView.isScrollEnabled = true
+            self.filterView.isHidden = true
             UIView.animate(withDuration: 0.2) {
-                self.view.layoutIfNeeded()
-            } completion: { _ in
-                self.tableView.isScrollEnabled = true
-                self.filterView.isHidden = true
+                self.tabBarController?.tabBar.alpha = 1
             }
         }
         if category == -1 {
@@ -285,17 +318,27 @@ class ListCourseViewController: ViewController {
     
     @objc
     private func filterButtonTapped() {
-        //self.tabBarController?.tabBar.isTranslucent = true
-        self.tabBarController?.tabBar.isHidden = true
-        self.tableView.isScrollEnabled = false
-        //filterView.show {_ in}
-        DispatchQueue.main.async {
-            self.filterView.isHidden = false
-            self.filterViewConstraint.constant = 0
-            UIView.animate(withDuration: 0.2) {
-                self.view.layoutIfNeeded()
-            }
+        UIView.animate(withDuration: 3.2) {
+            //self.tabBarController?.tabBar.alpha = 0
+//            let oldFrame = self.tabBarController!.tabBar.frame
+//            self.tabBarController?.tabBar.frame = CGRect(x: oldFrame.minX, y: oldFrame.minY + 100, width: oldFrame.width, height: oldFrame.height)
+        } completion: { _ in
+            //self.tabBarController?.tabBar.isHidden = true
+            self.tableView.isScrollEnabled = false
+            self.filterView.show {_ in}
         }
+//        DispatchQueue.main.async {
+//            self.tabBarController?.tabBar.isTranslucent = true
+//            self.tabBarController?.tabBar.isHidden = true
+//            self.tableView.isScrollEnabled = false
+//            self.filterView.isHidden = false
+//            self.filterViewConstraint.constant = 0
+//            UIView.animate(withDuration: 3.2) {
+//                self.view.layoutIfNeeded()
+//            } completion: { _ in
+//
+//            }
+//        }
     }
 }
 
@@ -347,3 +390,7 @@ extension ListCourseViewController: UITableViewDelegate, UITableViewDataSource {
         }
 }
 
+//MARK: - WebDelegate
+extension ListCourseViewController: WebDelegate {
+    func enablePanGestureRecognizer() {}
+}

@@ -29,7 +29,9 @@ extension TabBarController {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                         self.fetchCourses()
                     }
-                } else { self.timesFetchCoursesCalled = 0 }
+                } else {
+                    self.timesFetchCoursesCalled = 0
+                }
             }
             if self.timesFetchCoursesCalled == 1 {
                 self.fetchLessons()
@@ -105,7 +107,7 @@ extension TabBarController {
     }
     
     private func fetchAchievements() {
-        NotificationCenter.default.post(name: NSNotification.Name("ShowServerAlert"), object: nil, userInfo: ["title": "Error", "text": "Server error"])
+        //NotificationCenter.default.post(name: NSNotification.Name("ShowServerAlert"), object: nil, userInfo: ["title": "Error", "text": "Server error"])
         NetworkDataFetcher.shared.fetchAchievments { achievements in
             if !achievements.isEmpty {
                 self.timesFetchGrammarCalled += 1
@@ -121,13 +123,7 @@ extension TabBarController {
                 } else { self.timesFetchAchievementsCalled = 0 }
             }
         } // NetworkDataFetcher
-        let monitor = NWPathMonitor()
-        monitor.pathUpdateHandler = { path in
-            //print(path.status)
-            self.fetchCourses()
-        }
-        let queue = DispatchQueue(label: "Monitor", qos: .background)
-        monitor.start(queue: queue)
+        createMonitor()
     }
     
     //MARK: - Fetch from device
@@ -145,7 +141,7 @@ extension TabBarController {
         _ = coursesCD.map { courseCD in
             courses.append(Course(fromModel: courseCD))
         }
-        coursesVC.models = courses
+        if !courses.isEmpty { coursesVC.models = courses }
     }
     
     private func fetchLessonsFromDevice() {
@@ -154,7 +150,7 @@ extension TabBarController {
         _ = lessonsCD.map { lessonCD in
             lessons.append(Lesson(fromModel: lessonCD))
         }
-        coursesVC.lessons = lessons
+        if !lessons.isEmpty { coursesVC.lessons = lessons }
     }
     
     private func fetchArticlesFromDevice() {
@@ -164,7 +160,7 @@ extension TabBarController {
         _ = articlesCD.map { articleCD in
             articles.append(Article(fromModel: articleCD))
         }
-        articlesVC.models = articles
+        if !articles.isEmpty { articlesVC.models = articles }
     }
     
     private func fetchGrammarFromDevice() {
@@ -174,7 +170,7 @@ extension TabBarController {
         _ = grammarsCD.map { grammarCD in
             grammars.append(Grammar(fromModel: grammarCD))
         }
-        grammarVC.models = grammars
+        if !grammars.isEmpty { grammarVC.models = grammars }
     }
     
     private func fetchAchievementsFromDevice() {
@@ -184,6 +180,7 @@ extension TabBarController {
             achievements.append(Achievement(fromModel: achievementCD))
         }
         profileVC.models = achievements
+        if !achievements.isEmpty { profileVC.models = achievements }
     }
     
 }

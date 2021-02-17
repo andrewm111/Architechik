@@ -131,11 +131,11 @@ class ProfileViewController: ViewController {
                 self.achievementViewConstraint.constant = 254 + self.bottomPadding
                 self.tableView.isScrollEnabled = true
                 UIView.animate(withDuration: 0.2) {
-                    self.tabBarController?.tabBar.isHidden = false
-                    self.tabBarController?.tabBar.isTranslucent = false
                     self.view.layoutIfNeeded()
                 } completion: { _ in
                     self.achievementView.isHidden = true
+                    self.tabBarController?.tabBar.isHidden = false
+                    self.tabBarController?.tabBar.isTranslucent = false
                 }
             }
             return
@@ -143,16 +143,18 @@ class ProfileViewController: ViewController {
         let tapLocation = tap.location(in: tableView)
         guard
             let tapIndexPath = self.tableView.indexPathForRow(at: tapLocation),
-            let cell = tableView.cellForRow(at: tapIndexPath) as? AchievementCell
+            let cell = tableView.cellForRow(at: tapIndexPath) as? AchievementCell,
+            models[tapIndexPath.row - 1].progress == 1
             else { return }
+        
         achievementView.configure(withModel: models[tapIndexPath.row - 1], image: cell.getImage())
        
         DispatchQueue.main.async {
             self.achievementViewConstraint.constant = 0
             self.tableView.isScrollEnabled = false
             self.achievementView.isHidden = false
+            self.tabBarController?.tabBar.isHidden = true
             UIView.animate(withDuration: 0.2) {
-                self.tabBarController?.tabBar.isHidden = true
                 self.view.layoutIfNeeded()
             } completion: { _ in
                 
@@ -199,14 +201,10 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
 extension ProfileViewController: SharingDelegate {
     
     func shareTapped(image: UIImage?, text: String) {
-        self.tabBarController?.tabBar.isHidden = false
-        self.tabBarController?.tabBar.isTranslucent = false
-        achievementView.hide { _ in
-            self.tableView.isScrollEnabled = true
-            self.achievementView.isHidden = true
-            //                self.tabBarController?.tabBar.isHidden = false
-            //                self.tabBarController?.tabBar.isTranslucent = false
-        }
+        self.presentActivityVC(image: image, text: text)
+    }
+    
+    private func presentActivityVC(image: UIImage?, text: String) {
         // Setting description
         let firstActivityItem = text
         
@@ -245,7 +243,20 @@ extension ProfileViewController: SharingDelegate {
         ]
         
         activityViewController.isModalInPresentation = true
-        present(activityViewController, animated: true)
+        present(activityViewController, animated: true) {
+            DispatchQueue.main.async {
+                self.achievementViewConstraint.constant = 254 + self.bottomPadding
+                self.tableView.isScrollEnabled = true
+                UIView.animate(withDuration: 0.2) {
+                    self.view.layoutIfNeeded()
+                } completion: { _ in
+                    self.achievementView.isHidden = true
+                    self.tabBarController?.tabBar.isHidden = false
+                    self.tabBarController?.tabBar.isTranslucent = false
+                    
+                }
+            }
+        }
     }
     
 }

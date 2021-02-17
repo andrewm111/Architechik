@@ -16,6 +16,7 @@ class TabBarController: UITabBarController {
     lazy var articlesVC = generateViewController(vcType: ArticlesViewController.self, title: "Articles", imageName: "articles")
     lazy var grammarVC = generateViewController(vcType: GrammarViewController.self, title: "Grammar", imageName: "grammar")
     lazy var profileVC = generateViewController(vcType: ProfileViewController.self, title: "Profile", imageName: "achievements")
+    var monitor: NWPathMonitor?
     
     var timesFetchCoursesCalled: Int = 0
     var timesFetchLessonsCalled: Int = 0
@@ -56,6 +57,26 @@ class TabBarController: UITabBarController {
         present(alertController, animated: true)
     }
     
+    func createMonitor() {
+        guard self.monitor == nil else { return }
+        self.monitor = NWPathMonitor()
+        monitor?.pathUpdateHandler = { path in
+            switch path.status {
+            case .satisfied:
+                self.fetchCourses()
+                NetworkDataFetcher.shared.checkUserInDatabase { studentProgress in }
+            case .unsatisfied:
+                break
+            case .requiresConnection:
+                break
+            @unknown default:
+                break
+            }
+        }
+        let queue = DispatchQueue(label: "Monitor", qos: .background)
+        monitor?.start(queue: queue)
+    }
+    
     private func configureTabBar() {
         tabBar.tintColor = UIColor(hex: "613191")
         tabBar.unselectedItemTintColor = UIColor.white
@@ -66,12 +87,13 @@ class TabBarController: UITabBarController {
     
     private func generateViewController<T: UIViewController>(vcType: T.Type, title: String, imageName: String) -> T {
         let vc = T()
+        //let image = eightPlusOrLess ? UIImage(named: "\(imageName)Small") : UIImage(named: imageName)
         let image = UIImage(named: imageName)
         let unselectedImage = image?.withTintColor(UIColor.white)
         let selectedImage = image?.withTintColor(UIColor(hex: "613191"))
         let tabBarItem = UITabBarItem(title: title, image: unselectedImage, selectedImage: selectedImage)
         tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: 0, right: 0)
-        let verticalOffset: CGFloat = smallScreen ? 3 : 5
+        let verticalOffset: CGFloat = smallScreen ? 3 : 1
         let fontSize: CGFloat = smallScreen ? 12 : 13
         tabBarItem.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: verticalOffset)
         let font = UIFont(name: "Arial", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize)
@@ -82,4 +104,9 @@ class TabBarController: UITabBarController {
         vc.tabBarItem = tabBarItem
         return vc
     }
+}
+
+//MARK: - WebDelegate
+extension TabBarController: WebDelegate {
+    func enablePanGestureRecognizer() {}
 }

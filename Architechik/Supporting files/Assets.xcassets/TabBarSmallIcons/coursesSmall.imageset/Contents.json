@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Webp.net-resizeimage.png",
+      "filename" : "courses-2.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Webp.net-resizeimage-1.png",
+      "filename" : "courses-1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Webp.net-resizeimage-2.png",
+      "filename" : "courses.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
@@ -19,8 +19,5 @@
   "info" : {
     "author" : "xcode",
     "version" : 1
-  },
-  "properties" : {
-    "template-rendering-intent" : "original"
   }
 }

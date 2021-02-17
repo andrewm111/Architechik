@@ -175,6 +175,7 @@ class NetworkDataFetcher {
                         self.timesGetProgressCalled += 1
                         if self.timesGetProgressCalled == 4 {
                             self.timesGetProgressCalled = 0
+                            NotificationCenter.default.post(name: NSNotification.Name("ShowServerAlert"), object: nil, userInfo: ["title": "Ошибка", "text": "Не удалось получить ваши данные"])
                         } else {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                                 self.fetchStudentProgress(completion: completion)
@@ -194,6 +195,7 @@ class NetworkDataFetcher {
                     self.timesGetProgressCalled += 1
                     if self.timesGetProgressCalled == 4 {
                         self.timesGetProgressCalled = 0
+                        NotificationCenter.default.post(name: NSNotification.Name("ShowServerAlert"), object: nil, userInfo: ["title": "Ошибка", "text": "Не удалось получить ваши данные"])
                     } else {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                             self.fetchStudentProgress(completion: completion)
@@ -203,6 +205,15 @@ class NetworkDataFetcher {
                 }
             case .failure(let error):
                 print("Failed to get student progress: \(error)")
+                self.timesGetProgressCalled += 1
+                if self.timesGetProgressCalled == 4 {
+                    self.timesGetProgressCalled = 0
+                    NotificationCenter.default.post(name: NSNotification.Name("ShowServerAlert"), object: nil, userInfo: ["title": "Ошибка", "text": "Не удалось получить ваши данные"])
+                } else {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        self.fetchStudentProgress(completion: completion)
+                    }
+                }
                 completion(nil)
             }
         }

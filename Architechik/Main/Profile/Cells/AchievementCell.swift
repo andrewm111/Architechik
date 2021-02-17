@@ -14,8 +14,8 @@ class AchievementCell: TableViewCell {
     private let achievementImageView: WebImageView = {
         let view = WebImageView()
         view.layer.cornerRadius = 40
-        view.backgroundColor = UIColor(hex: "613191")
-        view.image = UIImage(named: "bumagaFull")
+        //view.backgroundColor = UIColor(hex: "613191")
+        //view.image = UIImage(named: "bumagaFull")
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -49,8 +49,8 @@ class AchievementCell: TableViewCell {
     }()
 
     func configure(withModel model: Achievement) {
-        titleLabel.text = model.progress == 1 ? model.title : "Пройди курс чтобы получить достижение"
-        descriptionLabel.text = model.progress == 1 ? model.description : "???"
+        titleLabel.text = model.title
+        descriptionLabel.text = model.progress == 1 ? model.description : "..."
         let imageString = model.progress == 1 ? model.imgGood : model.imgBad
         achievementImageView.set(imageURL: imageString)
         selectionStyle = .none

@@ -131,14 +131,15 @@ class ArticlesViewController: ViewController {
             name == "article"
             else { return }
         currentCategory = category
-        self.tabBarController?.tabBar.isHidden = false
-        self.tabBarController?.tabBar.isTranslucent = false
         DispatchQueue.main.async {
+            self.filterViewConstraint.constant = 280
             UIView.animate(withDuration: 0.2) {
-                self.filterViewConstraint.constant = 280
+                self.view.layoutIfNeeded()
             } completion: { _ in
                 self.tableView.isScrollEnabled = true
                 self.filterView.isHidden = true
+                self.tabBarController?.tabBar.isHidden = false
+                self.tabBarController?.tabBar.isTranslucent = false
             }
         }
         if category == -1 {
@@ -171,8 +172,6 @@ class ArticlesViewController: ViewController {
     @objc
     private func cellTapped() {
         guard filterView.isHidden else {
-            self.tabBarController?.tabBar.isHidden = false
-            self.tabBarController?.tabBar.isTranslucent = false
             DispatchQueue.main.async {
                 self.filterViewConstraint.constant = 280
                 UIView.animate(withDuration: 0.2) {
@@ -180,6 +179,8 @@ class ArticlesViewController: ViewController {
                 } completion: { _ in
                     self.tableView.isScrollEnabled = true
                     self.filterView.isHidden = true
+                    self.tabBarController?.tabBar.isHidden = false
+                    self.tabBarController?.tabBar.isTranslucent = false
                 }
             }
             return

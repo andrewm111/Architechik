@@ -152,9 +152,8 @@ class CourseViewController: ViewController, SwipeToDismissControllerDelegate {
             
             NetworkDataFetcher.shared.studentProgress[courseIndex].currentProgress = progress
             DataManager.shared.saveStudentProgress(NetworkDataFetcher.shared.studentProgress)
-            NetworkService.shared.updateInfo(courseId: courseId, values: progress) { _ in
-                
-            }
+            
+            updateProgress(timesUpdateCalled: 0, courseId: courseId, progress: progress)
         }
         lessonView.showView()
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -162,6 +161,21 @@ class CourseViewController: ViewController, SwipeToDismissControllerDelegate {
         }
         lessonView.urlString = string
         pan.isEnabled = false
+    }
+    
+    private func updateProgress(timesUpdateCalled: Int, courseId: String, progress: String) {
+        NetworkService.shared.updateInfo(courseId: courseId, values: progress) { result in
+            switch result {
+            case .success(_):
+                break
+            case .failure(_):
+                if timesUpdateCalled < 3 {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        self.updateProgress(timesUpdateCalled: timesUpdateCalled + 1, courseId: courseId, progress: progress)
+                    }
+                }
+            }
+        }
     }
     
     @objc

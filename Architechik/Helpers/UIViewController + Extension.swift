@@ -14,6 +14,10 @@ extension UIViewController {
         return UIScreen.main.bounds.height < 600
     }
     
+    var eightPlusOrLess: Bool {
+        return UIScreen.main.bounds.height < 740
+    }
+    
     func addDismissKeyboardByTap() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
@@ -42,6 +46,10 @@ extension UIView {
     
     var smallScreen: Bool {
         return UIScreen.main.bounds.height < 600
+    }
+    
+    var eightPlusOrLess: Bool {
+        return UIScreen.main.bounds.height < 740
     }
     
     func addDismissKeyboardByTap() {
