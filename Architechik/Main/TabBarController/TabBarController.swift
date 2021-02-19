@@ -28,7 +28,7 @@ class TabBarController: UITabBarController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         fetchData()
-        NetworkDataFetcher.shared.checkUserInDatabase { studentProgress in }
+        NotificationCenter.default.addObserver(self, selector: #selector(createMonitor), name: NSNotification.Name("CreateMonitor"), object: nil)
         setViewControllers([coursesVC, articlesVC, grammarVC, profileVC], animated: false)
         selectedViewController = coursesVC
         configureTabBar()
@@ -57,6 +57,7 @@ class TabBarController: UITabBarController {
         present(alertController, animated: true)
     }
     
+    @objc
     func createMonitor() {
         guard self.monitor == nil else { return }
         self.monitor = NWPathMonitor()
@@ -75,6 +76,7 @@ class TabBarController: UITabBarController {
         }
         let queue = DispatchQueue(label: "Monitor", qos: .background)
         monitor?.start(queue: queue)
+        
     }
     
     private func configureTabBar() {

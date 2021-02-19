@@ -123,7 +123,8 @@ extension TabBarController {
                 } else { self.timesFetchAchievementsCalled = 0 }
             }
         } // NetworkDataFetcher
-        createMonitor()
+        NotificationCenter.default.post(name: NSNotification.Name("CreateMonitor"), object: nil)
+        
     }
     
     //MARK: - Fetch from device

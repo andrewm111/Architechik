@@ -62,6 +62,7 @@
 		1FAB8F6525CA257B005E0FFE /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FAB8F6425CA257B005E0FFE /* DataManager.swift */; };
 		1FB3ADF325BEF7CF00710D5B /* TitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB3ADF225BEF7CF00710D5B /* TitleCell.swift */; };
 		1FB3ADF625BF217400710D5B /* CourseTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB3ADF525BF217400710D5B /* CourseTitleCell.swift */; };
+		1FC0377B25DEB2DA007636C0 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FC0377A25DEB2DA007636C0 /* FilterViewController.swift */; };
 		1FCD9EB325CAFD3600C94083 /* AchievementCD+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD9EA425CAFA2A00C94083 /* AchievementCD+CoreDataClass.swift */; };
 		1FCD9EBB25CAFD3B00C94083 /* AchievementCD+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD9EA825CAFA2A00C94083 /* AchievementCD+CoreDataProperties.swift */; };
 		1FCD9EBE25CAFD3B00C94083 /* GrammarCD+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCD9EA125CAFA2900C94083 /* GrammarCD+CoreDataClass.swift */; };
@@ -149,6 +150,7 @@
 		1FAB8F6425CA257B005E0FFE /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		1FB3ADF225BEF7CF00710D5B /* TitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleCell.swift; sourceTree = "<group>"; };
 		1FB3ADF525BF217400710D5B /* CourseTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTitleCell.swift; sourceTree = "<group>"; };
+		1FC0377A25DEB2DA007636C0 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		1FCD9E9D25CAF8FD00C94083 /* CourseCD+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CourseCD+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		1FCD9E9E25CAF8FD00C94083 /* CourseCD+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CourseCD+CoreDataClass.swift"; sourceTree = "<group>"; };
 		1FCD9EA125CAFA2900C94083 /* GrammarCD+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GrammarCD+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 			isa = PBXGroup;
 			children = (
 				1F0C101225B5FCE40040CCC3 /* FilterView.swift */,
+				1FC0377A25DEB2DA007636C0 /* FilterViewController.swift */,
 				1F0C101425B5FF2C0040CCC3 /* CategoryView.swift */,
 			);
 			path = Filter;
@@ -654,6 +657,7 @@
 				1F503CC425B6F72B00E62291 /* AchievementModel.swift in Sources */,
 				1FA6C18125C17A3F0038FAE5 /* WebViewController.swift in Sources */,
 				1FA1A13D25ACC880008621FB /* GrammarArticleModel.swift in Sources */,
+				1FC0377B25DEB2DA007636C0 /* FilterViewController.swift in Sources */,
 				1FA1A13F25ACCBF0008621FB /* StudentsProgressModel.swift in Sources */,
 				1FF579F325C4CF7D0019C010 /* ProgressView.swift in Sources */,
 				1FF6707225A9F3F0006D4EEE /* CourseViewController.swift in Sources */,
@@ -809,7 +813,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.34;
+				MARKETING_VERSION = 1.35;
 				PRODUCT_BUNDLE_IDENTIFIER = mikel.Shmonov.Architechik;
 				PRODUCT_NAME = Architechick;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -833,7 +837,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.34;
+				MARKETING_VERSION = 1.35;
 				PRODUCT_BUNDLE_IDENTIFIER = mikel.Shmonov.Architechik;
 				PRODUCT_NAME = Architechick;
 				PROVISIONING_PROFILE_SPECIFIER = "";

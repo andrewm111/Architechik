@@ -110,11 +110,7 @@ class NetworkService {
             }
 //            let dataString = String(data: data, encoding: .utf8)
 //            print(dataString ?? "Failed to convert original data to string")
-            if type == .getTable("") || type == .getCourseStructure || type == .post("get") {
-                self.cutUnnecessaryData(data, completion: completion)
-            } else {
-                completion(.success(data))
-            }
+            self.cutUnnecessaryData(data, completion: completion)
         }
     }
     
@@ -147,7 +143,7 @@ class NetworkService {
             completion(.failure(NetworkError.dataIsNotConvertibleToString))
             return
         }
-        
+        //print(dataString)
         guard
             let startIndex = dataString.endIndex(of: "<body>"),
             let endIndex = dataString.index(of: "</body>")
@@ -155,9 +151,12 @@ class NetworkService {
                 completion(.failure(NetworkError.dataIsNotJSON))
                 return
         }
-        let string = dataString[startIndex..<endIndex]
-        //print(string)
-        if let newData = string.data(using: .utf8) {
+        var newString = dataString[startIndex..<endIndex]
+        if let arrayStartIndex = newString.firstIndex(of: "["), let arrayEndIndex = newString.firstIndex(of: "]") {
+            newString = newString[arrayStartIndex...arrayEndIndex]
+        }
+        //print(newString)
+        if let newData = newString.data(using: .utf8) {
             completion(.success(newData))
         } else {
             completion(.failure(NetworkError.failedToConvertBackToData))

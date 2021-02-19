@@ -166,8 +166,18 @@ class CourseViewController: ViewController, SwipeToDismissControllerDelegate {
     private func updateProgress(timesUpdateCalled: Int, courseId: String, progress: String) {
         NetworkService.shared.updateInfo(courseId: courseId, values: progress) { result in
             switch result {
-            case .success(_):
-                break
+            case .success(let data):
+                guard let dataString = String(data: data, encoding: .utf8) else {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        self.updateProgress(timesUpdateCalled: timesUpdateCalled + 1, courseId: courseId, progress: progress)
+                    }
+                    return
+                }
+                if (dataString.contains("<b>Warning</b>") || dataString.contains("[]") || dataString.contains("0")) && timesUpdateCalled < 3 {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        self.updateProgress(timesUpdateCalled: timesUpdateCalled + 1, courseId: courseId, progress: progress)
+                    }
+                }
             case .failure(_):
                 if timesUpdateCalled < 3 {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
@@ -194,6 +204,11 @@ class CourseViewController: ViewController, SwipeToDismissControllerDelegate {
 //MARK: - UnlockDelegate
 extension CourseViewController: UnlockDelegate {
     func unlock() {
+//        if let index = NetworkDataFetcher.shared.studentProgress.firstIndex(where: { $0.idCourses == self.courseId } ) {
+//            print("Called")
+//            NetworkDataFetcher.shared.studentProgress[index].courseAccess = "1"
+//            DataManager.shared.saveStudentProgress(NetworkDataFetcher.shared.studentProgress)
+//        }
         if let cell = tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as? UnlockCell {
             cell.showActivityIndicator()
         }
@@ -244,14 +259,7 @@ extension CourseViewController {
                     NetworkDataFetcher.shared.studentProgress[index].courseAccess = "1"
                     DataManager.shared.saveStudentProgress(NetworkDataFetcher.shared.studentProgress)
                 }
-                NetworkService.shared.buyCourse(courseId: self.courseId) { result in
-                    switch result {
-                    case .success(let data):
-                        if let dataString = String(data: data, encoding: .utf8) { print(dataString) }
-                    case .failure(let error):
-                        print("Error with purchasing: \(error)")
-                    }
-                }
+                self.makeBuyRequest(timesCalled: 0)
                 print(purchase)
                 self.verifyPurchase()
             case .error(error: let error):
@@ -287,6 +295,30 @@ extension CourseViewController {
         }
     }
 
+    private func makeBuyRequest(timesCalled: Int) {
+        guard timesCalled < 4 else { return }
+        NetworkService.shared.buyCourse(courseId: self.courseId) { result in
+            switch result {
+            case .success(let data):
+                guard let dataString = String(data: data, encoding: .utf8) else {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        self.makeBuyRequest(timesCalled: timesCalled + 1)
+                    }
+                    return
+                }
+                if dataString.contains("0") || !dataString.contains("1") {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        self.makeBuyRequest(timesCalled: timesCalled + 1)
+                    }
+                }
+            case .failure(let error):
+                print("Error with purchasing: \(error)")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    self.makeBuyRequest(timesCalled: timesCalled + 1)
+                }
+            }
+        }
+    }
 }
 
 //MARK: - IntroDelegate
@@ -307,9 +339,7 @@ extension CourseViewController: IntroDelegate {
                 let newProgress = "1" + String(NetworkDataFetcher.shared.studentProgress[courseIndex].currentProgress.dropFirst())
                 NetworkDataFetcher.shared.studentProgress[courseIndex].currentProgress = newProgress
                 DataManager.shared.saveStudentProgress(NetworkDataFetcher.shared.studentProgress)
-                NetworkService.shared.updateInfo(courseId: courseId, values: newProgress) { _ in
-                    
-                }
+                updateProgress(timesUpdateCalled: 0, courseId: courseId, progress: newProgress)
             }
             lessonView.showView()
             lessonView.urlString = models[0].file
