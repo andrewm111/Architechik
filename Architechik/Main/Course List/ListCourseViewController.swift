@@ -21,16 +21,27 @@ class ListCourseViewController: ViewController {
     }()
     private lazy var filterBackView: UIView = {
         let view = UIView()
+        view.isUserInteractionEnabled = true
+        view.clipsToBounds = true
         view.backgroundColor = UIColor(hex: "613191")
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-//    private lazy var filterView: FilterView = {
-//        let view = FilterView(withCategoryName: "course")
-//        view.isHidden = true
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        return view
-//    }()
+    private lazy var filterImageView: UIImageView = {
+        let view = UIImageView()
+        view.isUserInteractionEnabled = true
+        view.image = UIImage(named: "filter")
+        view.contentMode = .scaleAspectFit
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    private let activityIndicatorView: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(style: .large)
+        view.hidesWhenStopped = true
+        view.color = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     //MARK: - Properties
     lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
@@ -58,7 +69,6 @@ class ListCourseViewController: ViewController {
     private var cellHeights: Array<CGFloat> = []
     var products: Set<SKProduct> = []
     private var currentCategory: Int = -1
-    //private lazy var filterViewConstraint = filterView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 280 + bottomPadding)
     private let bottomPadding: CGFloat = {
         let window = UIApplication.shared.windows[0]
         return window.safeAreaInsets.bottom
@@ -70,7 +80,7 @@ class ListCourseViewController: ViewController {
         return vc
     }()
     private var filterIsHidden = true
-    private lazy var filterHeight: CGFloat = UIScreen.main.bounds.height * 0.39
+    private lazy var filterHeight: CGFloat = UIScreen.main.bounds.height * 0.41
     
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -93,13 +103,11 @@ class ListCourseViewController: ViewController {
     
     //MARK: - Setup
     private func initialSetup() {
-        //view.backgroundColor = UIColor(hex: "1F1F24")
         edgesForExtendedLayout = .bottom
         extendedLayoutIncludesOpaqueBars = true
         view.backgroundColor = UIColor.black
         NotificationCenter.default.addObserver(self, selector: #selector(categoryChanged), name: NSNotification.Name("CategoryChanged"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setProgress), name: NSNotification.Name("SetProgress"), object: nil)
-        //retrieveProducts()
         configureTableView()
         let tap1 = UITapGestureRecognizer(target: self, action: #selector(filterButtonTapped))
         filterBackView.addGestureRecognizer(tap1)
@@ -124,7 +132,6 @@ class ListCourseViewController: ViewController {
             return course.idProduct
         }
         let setProducts = Set<String>(products)
-        //print(setProducts)
         SwiftyStoreKit.retrieveProductsInfo(setProducts) { result in
             self.products = result.retrievedProducts
             if let product = result.retrievedProducts.first {
@@ -142,12 +149,17 @@ class ListCourseViewController: ViewController {
         addTabBarSeparator()
         view.addSubview(tableView)
         view.addSubview(filterBackView)
+        filterBackView.addSubview(filterImageView)
+        view.addSubview(activityIndicatorView)
         
-        let filterSize: CGFloat = UIScreen.main.bounds.height * 0.07696428571428571
-        //let filterSize: CGFloat = smallScreen ? 40 : 60
+        let screenHeight = UIScreen.main.bounds.height
+        let screenWidth = UIScreen.main.bounds.width
+        let filterSize: CGFloat = screenHeight * 0.07696428571428571
         filterBackView.layer.cornerRadius = filterSize / 2
-        let filterBottomSpacing: CGFloat = eightPlusOrLess ? 30 : 50
-        let filterTrailingSpacing: CGFloat = eightPlusOrLess ? 18 : 26
+        let filterBottomSpacing: CGFloat = 0.120772946859903 * screenWidth
+        let filterTrailingSpacing: CGFloat = 0.030732860520095 * screenHeight
+        
+        activityIndicatorView.startAnimating()
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -155,10 +167,18 @@ class ListCourseViewController: ViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
+            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
             filterBackView.heightAnchor.constraint(equalToConstant: filterSize),
             filterBackView.widthAnchor.constraint(equalToConstant: filterSize),
             filterBackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30 - filterBottomSpacing - bottomPadding),
             filterBackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -filterTrailingSpacing),
+            
+            filterImageView.centerYAnchor.constraint(equalTo: filterBackView.centerYAnchor),
+            filterImageView.centerXAnchor.constraint(equalTo: filterBackView.centerXAnchor),
+            filterImageView.widthAnchor.constraint(equalTo: filterBackView.widthAnchor, multiplier: 0.5),
+            filterImageView.heightAnchor.constraint(equalTo: filterBackView.heightAnchor, multiplier: 0.5),
         ])
     }
     

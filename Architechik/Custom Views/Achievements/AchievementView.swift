@@ -172,8 +172,10 @@ final class AchievementView: UIView, CardViewProtocol {
     
     @objc
     private func shareTapped() {
-        guard model?.progress == 1 else { return }
-        delegate?.shareTapped(image: imageView.image, text: descriptionLabel.text ?? "Я получил достижение в Architechik")
+        //guard model?.progress == 1 else { return }
+        let descriptionText = descriptionLabel.text ?? "Я получил достижение в Architechik"
+        let textToShare = model?.progress == 1 ? descriptionText : "Для открытия достижения пройдите курс"
+        delegate?.shareTapped(image: imageView.image, text: textToShare)
     }
 }
 

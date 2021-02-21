@@ -16,13 +16,6 @@ class ProfileViewController: ViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-//    private lazy var achievementView: AchievementView = {
-//        let view = AchievementView(withModel: nil, delegate: self)
-//        view.height = 310
-//        view.isHidden = true
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        return view
-//    }()
     private var progressView: ProgressView?
     
     //MARK: - Properties
@@ -37,12 +30,11 @@ class ProfileViewController: ViewController {
         }
     }
     private lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
-    //private lazy var achievementViewConstraint = achievementView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 254 + bottomPadding)
     var bottomPadding: CGFloat = {
         let window = UIApplication.shared.windows[0]
         return window.safeAreaInsets.bottom
     }()
-    lazy var achievementHeight: CGFloat = 254 + self.bottomPadding
+    lazy var achievementHeight: CGFloat = (UIScreen.main.bounds.height * 0.37) + self.bottomPadding
     private let achievementVC: AchievementViewController = {
         let vc = AchievementViewController()
         vc.modalPresentationStyle = .overCurrentContext
@@ -59,7 +51,6 @@ class ProfileViewController: ViewController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        //achievementVC.achievementView?.roundImageView()
         setTotalProgress()
         tableView.reloadData()
     }
@@ -75,7 +66,6 @@ class ProfileViewController: ViewController {
     private func initialSetup() {
         achievementVC.achievementView = AchievementView(withModel: nil, delegate: self)
         view.backgroundColor = .black
-        //view.backgroundColor = UIColor(hex: "1F1F24")
         edgesForExtendedLayout = .bottom
         extendedLayoutIncludesOpaqueBars = true
         tableView.showsVerticalScrollIndicator = false
@@ -93,18 +83,12 @@ class ProfileViewController: ViewController {
     private func setupSubviews() {
         addTabBarSeparator()
         view.addSubview(tableView)
-        //view.addSubview(achievementView)
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 4),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -2),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            
-//            achievementView.heightAnchor.constraint(equalToConstant: 254 + bottomPadding),
-//            achievementViewConstraint,
-//            achievementView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//            achievementView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
     
@@ -140,7 +124,7 @@ class ProfileViewController: ViewController {
             let width = UIScreen.main.bounds.width
             let height = UIScreen.main.bounds.height
             UIView.animate(withDuration: 0.2) {
-                self.achievementVC.view.frame = CGRect(x: 0, y: height, width: width, height: 254 + self.bottomPadding)
+                self.achievementVC.view.frame = CGRect(x: 0, y: height, width: width, height: self.achievementHeight)
             } completion: { _ in
                 self.tableView.isScrollEnabled = true
                 self.achievementIsHidden = true
@@ -164,7 +148,7 @@ class ProfileViewController: ViewController {
         let height = UIScreen.main.bounds.height
         self.achievementVC.view.frame = CGRect(x: 0, y: height, width: width, height: 254 + self.bottomPadding)
         UIView.animate(withDuration: 0.2) {
-            self.achievementVC.view.frame = CGRect(x: 0, y: height - (254 + self.bottomPadding), width: width, height: 254 + self.bottomPadding)
+            self.achievementVC.view.frame = CGRect(x: 0, y: height - (self.achievementHeight), width: width, height: self.achievementHeight)
         } completion: { _ in
             self.achievementIsHidden = false
         }
