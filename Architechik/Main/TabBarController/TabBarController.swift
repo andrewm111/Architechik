@@ -27,7 +27,7 @@ class TabBarController: UITabBarController {
     //MARK: - Init
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        fetchData()
+        fetchFromDevice()
         NotificationCenter.default.addObserver(self, selector: #selector(createMonitor), name: NSNotification.Name("CreateMonitor"), object: nil)
         setViewControllers([coursesVC, articlesVC, grammarVC, profileVC], animated: false)
         selectedViewController = coursesVC
@@ -42,6 +42,7 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(showAlert), name: NSNotification.Name("ShowServerAlert"), object: nil)
+        createMonitor()
     }
     
     //MARK: - Supporting methods

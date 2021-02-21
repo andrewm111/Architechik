@@ -19,9 +19,10 @@ struct Course: Hashable, Codable, CoreDataConvertible {
     var price: String
     var courseNumber: String
     var img: String
+    var idProduct: String = ""
     var courseStructure: Array<Lesson>? = []
     
-    internal init(id: String, title: String, description: String, fullDescription: String, idCategory: String? = nil, category: String? = nil, price: String, courseNumber: String, img: String, courseStructure: Array<Lesson>? = []) {
+    internal init(id: String, title: String, description: String, fullDescription: String, idCategory: String? = nil, category: String? = nil, price: String, courseNumber: String, img: String, idProduct: String = "", courseStructure: Array<Lesson>? = []) {
         self.id = id
         self.title = title
         self.description = description
@@ -32,6 +33,7 @@ struct Course: Hashable, Codable, CoreDataConvertible {
         self.courseNumber = courseNumber
         self.img = img
         self.courseStructure = courseStructure
+        self.idProduct = idProduct
     }
     
     init(fromModel model: CourseCD) {

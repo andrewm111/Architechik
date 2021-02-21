@@ -115,25 +115,31 @@ class NetworkService {
     }
     
     private func generateHttpBody(type: RequestType, courseId: String?, values: String?) -> Data? {
+        let defaults = UserDefaults.standard
         var string = "password=abc_132-A-b"
         switch type {
         case .post(let type):
             string += "&type=\(type)"
+            if type == "create" {
+                if let email = defaults.string(forKey: "email") { string += "&email=\(email)" }
+                if let name = defaults.string(forKey: "fullName") { string += "&name=\(name)" }
+            }
         default:
             return nil
         }
-        if let token = UserDefaults.standard.string(forKey: "userIdentifier") {
+        if let token = defaults.string(forKey: "userIdentifier") {
             string += "&token=\(token)"
         } else if KeychainItem.currentUserIdentifier != "" {
             string += "&token=\(KeychainItem.currentUserIdentifier)"
         }
+        
         if let id = courseId {
             string += "&course_id=\(id)"
         }
         if let values = values {
             string += "&value=\(values)"
         }
-        //print(string)
+        print(string)
         let data = string.data(using: .utf8)
         return data
     }

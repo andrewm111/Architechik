@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AchievementView: UIView, CardViewProtocol {
+final class AchievementView: UIView, CardViewProtocol {
     
     //MARK: - Subviews
     private let backView: UIView = {
@@ -115,6 +115,10 @@ class AchievementView: UIView, CardViewProtocol {
         let shareIconWidth: CGFloat = 24
         let totalWidth: CGFloat = 24 + 10 + buttonLabel.intrinsicContentSize.width
         let spacing: CGFloat = (UIScreen.main.bounds.width - totalWidth) / 2
+        guard let delegate = self.delegate else { return }
+        let buttonViewHeight: CGFloat = (delegate.achievementHeight - delegate.bottomPadding - 49) / 4
+        let imageViewHeight: CGFloat = (buttonViewHeight * 3) - 20
+        imageView.layer.cornerRadius = imageViewHeight / 2
         
         NSLayoutConstraint.activate([
             backView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
@@ -137,7 +141,7 @@ class AchievementView: UIView, CardViewProtocol {
             descriptionLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
             
             buttonView.topAnchor.constraint(equalTo: backView.bottomAnchor, constant: 15),
-            buttonView.heightAnchor.constraint(equalToConstant: 205 / 4),
+            buttonView.heightAnchor.constraint(equalToConstant: buttonViewHeight),
             buttonView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -24 - bottomPadding),
             buttonView.leadingAnchor.constraint(equalTo: backView.leadingAnchor),
             buttonView.trailingAnchor.constraint(equalTo: backView.trailingAnchor),
@@ -155,21 +159,26 @@ class AchievementView: UIView, CardViewProtocol {
     }
     
     func configure(withModel model: Achievement, image: UIImage?) {
+        self.model = model
         titleLabel.text = model.title
-        descriptionLabel.text = model.description
         imageView.image = image
+        descriptionLabel.text = model.progress == 1 ? model.description : "Пройди курс, чтобы поделиться достижением"
     }
     
     func roundImageView() {
-        imageView.layer.cornerRadius = imageView.frame.height / 2
+        //delegate?.achievementHeight =
+        //imageView.layer.cornerRadius = imageView.frame.height / 2
     }
     
     @objc
     private func shareTapped() {
+        guard model?.progress == 1 else { return }
         delegate?.shareTapped(image: imageView.image, text: descriptionLabel.text ?? "Я получил достижение в Architechik")
     }
 }
 
 protocol SharingDelegate {
+    var achievementHeight: CGFloat { get set }
+    var bottomPadding: CGFloat { get set }
     func shareTapped(image: UIImage?, text: String)
 }

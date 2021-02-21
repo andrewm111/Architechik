@@ -20,9 +20,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = .white
-        UserDefaults.standard.setValue("19198700", forKey: "userIdentifier")
+        //UserDefaults.standard.setValue("19198700", forKey: "userIdentifier")
         //self.window?.rootViewController = PageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         //self.window?.rootViewController = LoginViewController()
+        //loginUser()
         #if DEBUG
         self.window?.rootViewController = TabBarController()
         self.window?.makeKeyAndVisible()

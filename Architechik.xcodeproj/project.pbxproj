@@ -24,6 +24,7 @@
 		1F18094525CB091600377C93 /* ArticleCD+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F18094325CB091600377C93 /* ArticleCD+CoreDataClass.swift */; };
 		1F18094625CB091600377C93 /* ArticleCD+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F18094425CB091600377C93 /* ArticleCD+CoreDataProperties.swift */; };
 		1F18094825CB10A900377C93 /* CoreDataConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F18094725CB10A900377C93 /* CoreDataConvertible.swift */; };
+		1F25D52525E23F320043ED1C /* AchievementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F25D52425E23F320043ED1C /* AchievementViewController.swift */; };
 		1F3B0E3925B0EA8F005CF0BC /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F3B0E3825B0EA8F005CF0BC /* StoreKit.framework */; };
 		1F3CB71825AF122B000B6922 /* String + Height.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3CB71725AF122B000B6922 /* String + Height.swift */; };
 		1F3CB71A25B092BC000B6922 /* UIViewController + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3CB71925B092BC000B6922 /* UIViewController + Extension.swift */; };
@@ -111,6 +112,7 @@
 		1F18094325CB091600377C93 /* ArticleCD+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArticleCD+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		1F18094425CB091600377C93 /* ArticleCD+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArticleCD+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		1F18094725CB10A900377C93 /* CoreDataConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataConvertible.swift; sourceTree = "<group>"; };
+		1F25D52425E23F320043ED1C /* AchievementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementViewController.swift; sourceTree = "<group>"; };
 		1F3B0E3525B0E677005CF0BC /* Architechik.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = Architechik.entitlements; path = "Architechik/Supporting files/Architechik.entitlements"; sourceTree = SOURCE_ROOT; };
 		1F3B0E3825B0EA8F005CF0BC /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		1F3CB71725AF122B000B6922 /* String + Height.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Height.swift"; sourceTree = "<group>"; };
@@ -239,7 +241,7 @@
 		1F156D8225CA238E00552840 /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
-				1FD1892025C005CE0006FB29 /* AchievementView.swift */,
+				1F25D52225E23F050043ED1C /* Achievements */,
 				1FF579F225C4CF7D0019C010 /* ProgressView.swift */,
 				1F08325125C0A12D0043F39F /* PurchaseView.swift */,
 				1F0C101625B5FF300040CCC3 /* Filter */,
@@ -277,6 +279,15 @@
 				1FCD9E9D25CAF8FD00C94083 /* CourseCD+CoreDataProperties.swift */,
 			);
 			path = "CoreData Models";
+			sourceTree = "<group>";
+		};
+		1F25D52225E23F050043ED1C /* Achievements */ = {
+			isa = PBXGroup;
+			children = (
+				1FD1892025C005CE0006FB29 /* AchievementView.swift */,
+				1F25D52425E23F320043ED1C /* AchievementViewController.swift */,
+			);
+			path = Achievements;
 			sourceTree = "<group>";
 		};
 		1F3B0E5925B1CFA4005CF0BC /* Services */ = {
@@ -662,6 +673,7 @@
 				1FF579F325C4CF7D0019C010 /* ProgressView.swift in Sources */,
 				1FF6707225A9F3F0006D4EEE /* CourseViewController.swift in Sources */,
 				1F503CBE25B6D08C00E62291 /* RequestType.swift in Sources */,
+				1F25D52525E23F320043ED1C /* AchievementViewController.swift in Sources */,
 				1F99B8EF25CFFC3B0085AF19 /* TabBarController + DataFetch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

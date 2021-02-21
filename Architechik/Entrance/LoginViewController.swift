@@ -192,21 +192,22 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             let email = appleIDCredential.email
             
             let defaults = UserDefaults.standard
-            defaults.set(userIdentifier, forKey: "userIdentifier")
-            defaults.set(token, forKey: "token")
             
-            if let givenName = fullName?.givenName, let middleName = fullName?.middleName, let email = email {
-                defaults.set(email, forKey: "email")
-                defaults.set("\(givenName) \(middleName)", forKey: "fullName")
-                print("FullName: \(givenName) \(middleName)")
-                print("Email: \(email)")
+            defaults.set(token, forKey: "token")
+            defaults.set("\(userIdentifier)", forKey: "userIdentifier")
+            // defaults.set("3134588", forKey: "userIdentifier")
+            if let givenName = fullName?.givenName, let familyName = fullName?.familyName {
+                defaults.set("\(givenName) \(familyName)", forKey: "fullName")
             } else {
-                print("FullName: \(String(describing: fullName))")
-                print("Email: \(String(describing: email))")
+                defaults.set("\(String(describing: fullName))", forKey: "fullName")
             }
-            print("User identifier: \(userIdentifier)")
+            if let email = email {
+                defaults.set(email, forKey: "email")
+            }
+            
+            //print("User identifier: \(userIdentifier)")
             self.saveInKeychain(userIdentifier)
-            print("Token: \(String(describing: token?.hexEncodedString()))")
+            //print("Token: \(String(describing: token?.hexEncodedString()))")
             showTabBarController()
         case let passwordCredential as ASPasswordCredential:
             
@@ -215,7 +216,7 @@ extension LoginViewController: ASAuthorizationControllerDelegate, ASAuthorizatio
             
             let defaults = UserDefaults.standard
             defaults.set("\(username)\(password)", forKey: "userIdentifier")
-            defaults.set(username, forKey: "username")
+            defaults.set(username, forKey: "fullName")
             defaults.set(password, forKey: "password")
             
             print("Username: \(username)")

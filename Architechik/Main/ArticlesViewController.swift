@@ -26,12 +26,12 @@ class ArticlesViewController: ViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let filterView: FilterView = {
-        let view = FilterView(withCategoryName: "article")
-        view.isHidden = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+//    private let filterView: FilterView = {
+//        let view = FilterView(withCategoryName: "article")
+//        view.isHidden = true
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        return view
+//    }()
     private lazy var lessonView: LessonView = {
         let view = LessonView(withDelegate: self)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -55,11 +55,19 @@ class ArticlesViewController: ViewController {
     var filteredModels: Array<Article> = []
     private lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
     private var currentCategory: Int = -1
-    private lazy var filterViewConstraint = filterView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 280)
+    //private lazy var filterViewConstraint = filterView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 280)
     private let bottomPadding: CGFloat = {
         let window = UIApplication.shared.windows[0]
         return window.safeAreaInsets.bottom
     }()
+    private lazy var filterVC: FilterViewController = {
+        let vc = FilterViewController()
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.filterView = FilterView(withCategoryName: "course")
+        return vc
+    }()
+    private var filterIsHidden = true
+    private lazy var filterHeight: CGFloat = UIScreen.main.bounds.height * 0.39
     
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -74,6 +82,8 @@ class ArticlesViewController: ViewController {
         view.backgroundColor = UIColor.black
         edgesForExtendedLayout = .bottom
         extendedLayoutIncludesOpaqueBars = true
+        tableView.showsVerticalScrollIndicator = false
+        tableView.showsHorizontalScrollIndicator = false
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(LessonCell.self)
@@ -92,12 +102,14 @@ class ArticlesViewController: ViewController {
         addTabBarSeparator()
         view.addSubview(tableView)
         view.addSubview(filterButton)
-        view.addSubview(filterView)
+        //view.addSubview(filterView)
         view.addSubview(lessonView)
         
         let filterSize: CGFloat = smallScreen ? 40 : 60
         let window = UIApplication.shared.windows[0]
         let bottomPadding = window.safeAreaInsets.bottom
+        let filterBottomSpacing: CGFloat = eightPlusOrLess ? 30 : 50
+        let filterTrailingSpacing: CGFloat = eightPlusOrLess ? 18 : 26
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -107,16 +119,16 @@ class ArticlesViewController: ViewController {
             
             filterButton.heightAnchor.constraint(equalToConstant: filterSize),
             filterButton.widthAnchor.constraint(equalToConstant: filterSize),
-            filterButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -80 - bottomPadding),
-            filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
+            filterButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30 - filterBottomSpacing - bottomPadding),
+            filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -filterTrailingSpacing),
             
-            filterView.heightAnchor.constraint(equalToConstant: 280),
-            filterViewConstraint,
-            filterView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            filterView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//            filterView.heightAnchor.constraint(equalToConstant: 280),
+//            filterViewConstraint,
+//            filterView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//            filterView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
             lessonView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            lessonView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            lessonView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -2),
             lessonView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             lessonView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
@@ -130,18 +142,18 @@ class ArticlesViewController: ViewController {
             let name = notification.userInfo?["categoryName"] as? String,
             name == "article"
             else { return }
-        currentCategory = category
-        DispatchQueue.main.async {
-            self.filterViewConstraint.constant = 280
-            UIView.animate(withDuration: 0.2) {
-                self.view.layoutIfNeeded()
-            } completion: { _ in
-                self.tableView.isScrollEnabled = true
-                self.filterView.isHidden = true
-                self.tabBarController?.tabBar.isHidden = false
-                self.tabBarController?.tabBar.isTranslucent = false
-            }
+        let width = UIScreen.main.bounds.width
+        let height = UIScreen.main.bounds.height
+        UIView.animate(withDuration: 0.2) {
+            self.filterVC.view.frame = CGRect(x: 0, y: height, width: width, height: self.filterHeight)
+        } completion: { _ in
+            self.tableView.isScrollEnabled = true
+            self.filterIsHidden = true
+            self.filterVC.willMove(toParent: nil)
+            self.filterVC.view.removeFromSuperview()
+            self.filterVC.removeFromParent()
         }
+        currentCategory = category
         if category == -1 {
             filteredModels = models
         } else {
@@ -150,38 +162,37 @@ class ArticlesViewController: ViewController {
             }
         }
         tableView.reloadData()
-        //        self.tabBarController?.tabBar.isHidden = false
-        //        self.tabBarController?.tabBar.isTranslucent = false
-        //filterView.isHidden = true
     }
     
     @objc
     private func filterButtonTapped() {
-        //self.tabBarController?.tabBar.isTranslucent = true
-        self.tabBarController?.tabBar.isHidden = true
         self.tableView.isScrollEnabled = false
-        DispatchQueue.main.async {
-            self.filterView.isHidden = false
-            self.filterViewConstraint.constant = 0
-            UIView.animate(withDuration: 0.2) {
-                self.view.layoutIfNeeded()
-            }
+        self.tabBarController?.addChild(filterVC)
+        self.tabBarController?.view.addSubview(filterVC.view)
+        filterVC.didMove(toParent: self.tabBarController)
+        let width = UIScreen.main.bounds.width
+        let height = UIScreen.main.bounds.height
+        self.filterVC.view.frame = CGRect(x: 0, y: height, width: width, height: 280)
+        UIView.animate(withDuration: 0.2) {
+            self.filterVC.view.frame = CGRect(x: 0, y: height - self.filterHeight, width: width, height: self.filterHeight)
+        } completion: { _ in
+            self.filterIsHidden = false
         }
     }
     
     @objc
     private func cellTapped() {
-        guard filterView.isHidden else {
-            DispatchQueue.main.async {
-                self.filterViewConstraint.constant = 280
-                UIView.animate(withDuration: 0.2) {
-                    self.view.layoutIfNeeded()
-                } completion: { _ in
-                    self.tableView.isScrollEnabled = true
-                    self.filterView.isHidden = true
-                    self.tabBarController?.tabBar.isHidden = false
-                    self.tabBarController?.tabBar.isTranslucent = false
-                }
+        guard filterIsHidden else {
+            let width = UIScreen.main.bounds.width
+            let height = UIScreen.main.bounds.height
+            UIView.animate(withDuration: 0.2) {
+                self.filterVC.view.frame = CGRect(x: 0, y: height, width: width, height: self.filterHeight)
+            } completion: { _ in
+                self.tableView.isScrollEnabled = true
+                self.filterIsHidden = true
+                self.filterVC.willMove(toParent: nil)
+                self.filterVC.view.removeFromSuperview()
+                self.filterVC.removeFromParent()
             }
             return
         }
@@ -190,11 +201,6 @@ class ArticlesViewController: ViewController {
             let tapIndexPath = self.tableView.indexPathForRow(at: tapLocation),
             let _ = tableView.cellForRow(at: tapIndexPath) as? LessonCell
             else { return }
-//        let vc = WebViewController()
-//        vc.urlString = filteredModels[tapIndexPath.row].file
-//        vc.modalPresentationStyle = .overCurrentContext
-//        vc.modalTransitionStyle = .coverVertical
-//        present(vc, animated: true)
         guard Reachability.isConnectedToNetwork() else {
             showNetworkAlert()
             return
