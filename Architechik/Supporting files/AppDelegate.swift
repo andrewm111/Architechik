@@ -11,15 +11,19 @@ import CoreData
 import AuthenticationServices
 import SwiftyStoreKit
 import Network
+import CallKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    var callObserver = CXCallObserver()
+
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = .white
+        //UIApplication.shared.isIdleTimerDisabled = true
         //UserDefaults.standard.setValue("19198700", forKey: "userIdentifier")
         //self.window?.rootViewController = PageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         //self.window?.rootViewController = LoginViewController()
@@ -30,6 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #else
         loginUser()
         #endif
+        
+        callObserver.setDelegate(self, queue: nil) // nil queue means main thread
         registerStorePaymentHandler()
         addTransactionObserver()
         return true
@@ -158,4 +164,32 @@ extension AppDelegate: NetworkSpeedProviderDelegate {
     func callWhileSpeedChange(networkStatus: NetworkStatus) {
         print(networkStatus)
     }
+}
+
+//MARK: - CXCallObserverDelegate
+extension AppDelegate: CXCallObserverDelegate {
+    func callObserver(_ callObserver: CXCallObserver, callChanged call: CXCall) {
+        if call.hasEnded == true {
+            print("Disconnected")
+            UIApplication.shared.isIdleTimerDisabled = true
+            UIApplication.shared.isIdleTimerDisabled = false
+        }
+        if call.isOutgoing == true && call.hasConnected == false {
+            print("Dialing")
+            UIApplication.shared.isIdleTimerDisabled = false
+            UIApplication.shared.isIdleTimerDisabled = true
+        }
+        if call.isOutgoing == false && call.hasConnected == false && call.hasEnded == false {
+            print("Incoming")
+            UIApplication.shared.isIdleTimerDisabled = false
+            UIApplication.shared.isIdleTimerDisabled = true
+        }
+        if call.hasConnected == true && call.hasEnded == false {
+            print("Connected")
+            UIApplication.shared.isIdleTimerDisabled = false
+            UIApplication.shared.isIdleTimerDisabled = true
+        }
+    }
+    
+    
 }

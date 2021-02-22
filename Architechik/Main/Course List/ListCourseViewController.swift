@@ -47,6 +47,9 @@ class ListCourseViewController: ViewController {
     lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
     lazy var jsonPath = Bundle.main.path(forResource: "courses", ofType: "json")
     var models: Array<Course> = [] {
+        willSet {
+            if !newValue.isEmpty { activityIndicatorView.stopAnimating() }
+        }
         didSet {
             if currentCategory == -1 {
                 filteredModels = models
@@ -55,8 +58,7 @@ class ListCourseViewController: ViewController {
                     return model.idCategory == "\(currentCategory)"
                 }
             }
-            if models.count != 0 {
-                
+            if !models.isEmpty {
                 if models.first?.idProduct != "" {
                     retrieveProducts()
                 }
@@ -80,7 +82,7 @@ class ListCourseViewController: ViewController {
         return vc
     }()
     private var filterIsHidden = true
-    private lazy var filterHeight: CGFloat = UIScreen.main.bounds.height * 0.41
+    private lazy var filterHeight: CGFloat = UIScreen.main.bounds.height * 0.344827586206897
     
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -115,6 +117,9 @@ class ListCourseViewController: ViewController {
     }
     
     private func configureTableView() {
+//        tableView.alwaysBounceVertical = false
+//        tableView.alwaysBounceHorizontal = false
+//        tableView.bounces = false
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
         tableView.delegate = self
@@ -156,10 +161,10 @@ class ListCourseViewController: ViewController {
         let screenWidth = UIScreen.main.bounds.width
         let filterSize: CGFloat = screenHeight * 0.07696428571428571
         filterBackView.layer.cornerRadius = filterSize / 2
-        let filterBottomSpacing: CGFloat = 0.120772946859903 * screenWidth
-        let filterTrailingSpacing: CGFloat = 0.030732860520095 * screenHeight
+        let filterBottomSpacing: CGFloat = 0.098522167487685 * screenHeight
+        let filterTrailingSpacing: CGFloat = 0.048 * screenWidth
         
-        activityIndicatorView.startAnimating()
+        if models.isEmpty { activityIndicatorView.startAnimating() }
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -172,7 +177,7 @@ class ListCourseViewController: ViewController {
             
             filterBackView.heightAnchor.constraint(equalToConstant: filterSize),
             filterBackView.widthAnchor.constraint(equalToConstant: filterSize),
-            filterBackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30 - filterBottomSpacing - bottomPadding),
+            filterBackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -filterBottomSpacing - bottomPadding),
             filterBackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -filterTrailingSpacing),
             
             filterImageView.centerYAnchor.constraint(equalTo: filterBackView.centerYAnchor),
@@ -282,6 +287,7 @@ class ListCourseViewController: ViewController {
                 return model.idCategory == "\(category)"
             }
         }
+        if tableView.numberOfRows(inSection: 0) != 0 { tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false) }
         tableView.reloadData()
     }
     

@@ -179,8 +179,9 @@ extension TabBarController {
         _ = achievementsCD.map { achievementCD in
             achievements.append(Achievement(fromModel: achievementCD))
         }
-        profileVC.models = achievements
-        if !achievements.isEmpty { profileVC.models = achievements }
+        if !achievements.isEmpty {
+            profileVC.models = achievements
+        }
     }
     
 }

@@ -242,6 +242,7 @@ class NetworkDataFetcher {
                 DataManager.shared.saveStudentProgress(correctProgress)
                 self.studentProgress = correctProgress.sorted(by: { $0.idCourses < $1.idCourses } )
                 NotificationCenter.default.post(name: NSNotification.Name("SetProgress"), object: nil)
+                completion([])
             }
             //NotificationCenter.default.post(name: NSNotification.Name("CreateMonitor"), object: nil)
         }

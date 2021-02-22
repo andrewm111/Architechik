@@ -68,6 +68,8 @@ class CourseViewController: ViewController, SwipeToDismissControllerDelegate {
     private func initialSetup() {
         //view.backgroundColor = UIColor(hex: "1F1F24")
         view.backgroundColor = UIColor.black
+        tableView.showsVerticalScrollIndicator = false
+        tableView.showsHorizontalScrollIndicator = false
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(LessonCell.self)

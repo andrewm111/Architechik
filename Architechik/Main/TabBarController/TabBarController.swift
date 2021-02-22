@@ -28,6 +28,7 @@ class TabBarController: UITabBarController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         fetchFromDevice()
+        createMonitor()
         NotificationCenter.default.addObserver(self, selector: #selector(createMonitor), name: NSNotification.Name("CreateMonitor"), object: nil)
         setViewControllers([coursesVC, articlesVC, grammarVC, profileVC], animated: false)
         selectedViewController = coursesVC
@@ -42,7 +43,7 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(showAlert), name: NSNotification.Name("ShowServerAlert"), object: nil)
-        createMonitor()
+        
     }
     
     //MARK: - Supporting methods
@@ -65,8 +66,9 @@ class TabBarController: UITabBarController {
         monitor?.pathUpdateHandler = { path in
             switch path.status {
             case .satisfied:
-                self.fetchCourses()
-                NetworkDataFetcher.shared.checkUserInDatabase { studentProgress in }
+                NetworkDataFetcher.shared.checkUserInDatabase { _ in
+                    self.fetchCourses()
+                }
             case .unsatisfied:
                 break
             case .requiresConnection:

@@ -139,7 +139,7 @@ class NetworkService {
         if let values = values {
             string += "&value=\(values)"
         }
-        print(string)
+        //print(string)
         let data = string.data(using: .utf8)
         return data
     }

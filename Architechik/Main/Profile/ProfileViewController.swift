@@ -17,16 +17,32 @@ class ProfileViewController: ViewController {
         return view
     }()
     private var progressView: ProgressView?
+    private let activityIndicatorView: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(style: .large)
+        view.hidesWhenStopped = true
+        view.color = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     //MARK: - Properties
     var models: Array<Achievement> = [] {
+        willSet {
+            if !newValue.isEmpty { activityIndicatorView.stopAnimating() }
+        }
         didSet {
             checkAchievements()
         }
     }
     var studentAchievements: Array<Achievement> = [] {
+        willSet {
+            if !newValue.isEmpty { activityIndicatorView.stopAnimating() }
+        }
         didSet {
-            if studentAchievements.count != 0 { tableView.reloadData() }
+            if !studentAchievements.isEmpty {
+                activityIndicatorView.stopAnimating()
+                tableView.reloadData()
+            }
         }
     }
     private lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
@@ -34,7 +50,11 @@ class ProfileViewController: ViewController {
         let window = UIApplication.shared.windows[0]
         return window.safeAreaInsets.bottom
     }()
-    lazy var achievementHeight: CGFloat = (UIScreen.main.bounds.height * 0.37) + self.bottomPadding
+    lazy var achievementHeight: CGFloat = {
+        let padding: CGFloat = 0
+        let height: CGFloat = (UIScreen.main.bounds.height * 0.312807881773399) + self.bottomPadding + padding
+        return height
+    }()
     private let achievementVC: AchievementViewController = {
         let vc = AchievementViewController()
         vc.modalPresentationStyle = .overCurrentContext
@@ -83,12 +103,18 @@ class ProfileViewController: ViewController {
     private func setupSubviews() {
         addTabBarSeparator()
         view.addSubview(tableView)
+        view.addSubview(activityIndicatorView)
+        
+        if studentAchievements.isEmpty { activityIndicatorView.startAnimating() }
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 4),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -2),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
     }
     
@@ -103,7 +129,7 @@ class ProfileViewController: ViewController {
     }
     
     private func checkAchievements() {
-        studentAchievements = []
+        var array: Array<Achievement> = []
         for courseProgress in NetworkDataFetcher.shared.studentProgress {
             if var achievement = models.filter({ $0.idCourses == courseProgress.idCourses }).first  {
                 let stringProgress = courseProgress.currentProgress.dropFirst().filter( { "1".contains($0) } )
@@ -112,9 +138,10 @@ class ProfileViewController: ViewController {
                 let courseNumber = NetworkDataFetcher.shared.courses[courseIndex].courseNumber
                 guard let courseNumberInt = Int(courseNumber) else { return }
                 achievement.progress = currentProgress / (CGFloat(courseNumberInt) - 1)
-                studentAchievements.append(achievement)
+                array.append(achievement)
             }
         }
+        studentAchievements = array
     }
     
     //MARK: - Handle user events

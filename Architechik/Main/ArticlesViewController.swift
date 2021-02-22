@@ -37,10 +37,20 @@ class ArticlesViewController: ViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    private let activityIndicatorView: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(style: .large)
+        view.hidesWhenStopped = true
+        view.color = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     //MARK: - Properties
     lazy var jsonPath = Bundle.main.path(forResource: "articles", ofType: "json")
     var models: Array<Article> = [] {
+        willSet {
+            if !newValue.isEmpty { activityIndicatorView.stopAnimating() }
+        }
         didSet {
             if currentCategory == -1 {
                 filteredModels = models
@@ -49,7 +59,7 @@ class ArticlesViewController: ViewController {
                     return model.idCategory == "\(currentCategory)"
                 }
             }
-            if models.count != 0 { tableView.reloadData() }
+            if !models.isEmpty { tableView.reloadData() }
         }
     }
     var filteredModels: Array<Article> = []
@@ -62,11 +72,11 @@ class ArticlesViewController: ViewController {
     private lazy var filterVC: FilterViewController = {
         let vc = FilterViewController()
         vc.modalPresentationStyle = .overCurrentContext
-        vc.filterView = FilterView(withCategoryName: "course")
+        vc.filterView = FilterView(withCategoryName: "article")
         return vc
     }()
     private var filterIsHidden = true
-    private lazy var filterHeight: CGFloat = UIScreen.main.bounds.height * 0.41
+    private lazy var filterHeight: CGFloat = UIScreen.main.bounds.height * 0.344827586206897
     
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -104,15 +114,16 @@ class ArticlesViewController: ViewController {
         view.addSubview(filterBackView)
         filterBackView.addSubview(filterImageView)
         view.addSubview(lessonView)
+        view.addSubview(activityIndicatorView)
         
         let screenHeight = UIScreen.main.bounds.height
         let screenWidth = UIScreen.main.bounds.width
         let filterSize: CGFloat = screenHeight * 0.07696428571428571
-        //let filterSize: CGFloat = smallScreen ? 40 : 60
         filterBackView.layer.cornerRadius = filterSize / 2
+        let filterBottomSpacing: CGFloat = 0.098522167487685 * screenHeight
+        let filterTrailingSpacing: CGFloat = 0.048 * screenWidth
         
-        let filterBottomSpacing: CGFloat = 0.120772946859903 * screenWidth
-        let filterTrailingSpacing: CGFloat = 0.030732860520095 * screenHeight
+        if models.isEmpty { activityIndicatorView.startAnimating() }
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -120,9 +131,12 @@ class ArticlesViewController: ViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
+            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
             filterBackView.heightAnchor.constraint(equalToConstant: filterSize),
             filterBackView.widthAnchor.constraint(equalToConstant: filterSize),
-            filterBackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -30 - filterBottomSpacing - bottomPadding),
+            filterBackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -filterBottomSpacing - bottomPadding),
             filterBackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -filterTrailingSpacing),
             
             filterImageView.centerYAnchor.constraint(equalTo: filterBackView.centerYAnchor),
@@ -164,6 +178,7 @@ class ArticlesViewController: ViewController {
                 return model.idCategory == "\(category)"
             }
         }
+        if tableView.numberOfRows(inSection: 0) != 0 { tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false) }
         tableView.reloadData()
     }
     
