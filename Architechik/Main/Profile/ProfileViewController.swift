@@ -129,6 +129,7 @@ class ProfileViewController: ViewController {
     }
     
     private func checkAchievements() {
+        studentAchievements = models
         var array: Array<Achievement> = []
         for courseProgress in NetworkDataFetcher.shared.studentProgress {
             if var achievement = models.filter({ $0.idCourses == courseProgress.idCourses }).first  {
@@ -141,6 +142,7 @@ class ProfileViewController: ViewController {
                 array.append(achievement)
             }
         }
+        
         studentAchievements = array
     }
     
@@ -199,6 +201,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         switch indexPath.row {
         case 0:
             let cell: ProfileHeaderCell = tableView.dequeueReusableCell(forIndexPath: indexPath)

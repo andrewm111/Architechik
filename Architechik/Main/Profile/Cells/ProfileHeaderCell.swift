@@ -23,7 +23,7 @@ class ProfileHeaderCell: TableViewCell {
         let view = UILabel()
         view.font = UIFont(name: "Arial", size: 18)
         view.textColor = .white
-        view.text = "Кол-во пройденных курсов"
+        view.text = "Количество пройденных курсов"
         view.textAlignment = .center
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -31,8 +31,12 @@ class ProfileHeaderCell: TableViewCell {
     private let tapLabel: UILabel = {
         let view = UILabel()
         view.textColor = UIColor(hex: "613191")
-        view.text = "Нажми на достижение чтобы поделиться"
-        view.font = UIFont(name: "Arial", size: 18)
+        view.text = "Нажми на достижение, чтобы поделиться"
+        if UIScreen.main.bounds.height < 600 {
+            view.font = UIFont(name: "Arial", size: 15)
+        } else {
+            view.font = UIFont(name: "Arial", size: 18)
+        }
         view.textAlignment = .center
         view.translatesAutoresizingMaskIntoConstraints = false
         return view

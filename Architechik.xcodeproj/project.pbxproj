@@ -825,7 +825,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.38;
+				MARKETING_VERSION = 1.46;
 				PRODUCT_BUNDLE_IDENTIFIER = mikel.Shmonov.Architechik;
 				PRODUCT_NAME = Architechick;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -849,7 +849,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.38;
+				MARKETING_VERSION = 1.46;
 				PRODUCT_BUNDLE_IDENTIFIER = mikel.Shmonov.Architechik;
 				PRODUCT_NAME = Architechick;
 				PROVISIONING_PROFILE_SPECIFIER = "";

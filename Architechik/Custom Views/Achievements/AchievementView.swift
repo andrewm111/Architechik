@@ -184,7 +184,8 @@ final class AchievementView: UIView, CardViewProtocol {
         self.model = model
         titleLabel.text = model.title
         imageView.image = image
-        descriptionLabel.text = model.description
+        
+        descriptionLabel.text = model.progress == 1 ? model.description : "Пройди курс чтобы открыть достижение"
     }
     
     private func setupConstraints() {

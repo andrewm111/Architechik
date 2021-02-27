@@ -28,7 +28,9 @@ class TabBarController: UITabBarController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         fetchFromDevice()
-        createMonitor()
+        NetworkDataFetcher.shared.checkUserInDatabase { _ in
+            self.fetchCourses()
+        }
         NotificationCenter.default.addObserver(self, selector: #selector(createMonitor), name: NSNotification.Name("CreateMonitor"), object: nil)
         setViewControllers([coursesVC, articlesVC, grammarVC, profileVC], animated: false)
         selectedViewController = coursesVC
@@ -64,6 +66,7 @@ class TabBarController: UITabBarController {
         guard self.monitor == nil else { return }
         self.monitor = NWPathMonitor()
         monitor?.pathUpdateHandler = { path in
+            print("Path update handler called")
             switch path.status {
             case .satisfied:
                 NetworkDataFetcher.shared.checkUserInDatabase { _ in

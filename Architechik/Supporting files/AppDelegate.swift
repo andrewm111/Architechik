@@ -24,17 +24,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = .white
         //UIApplication.shared.isIdleTimerDisabled = true
-        //UserDefaults.standard.setValue("19198700", forKey: "userIdentifier")
+        
         //self.window?.rootViewController = PageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         //self.window?.rootViewController = LoginViewController()
         //loginUser()
-        #if DEBUG
-        self.window?.rootViewController = TabBarController()
-        self.window?.makeKeyAndVisible()
-        #else
+//        #if DEBUG
+//        UserDefaults.standard.setValue("19198700", forKey: "userIdentifier")
+//        self.window?.rootViewController = TabBarController()
+//        self.window?.makeKeyAndVisible()
+//        #else
+//        loginUser()
+//        #endif
         loginUser()
-        #endif
-        
         callObserver.setDelegate(self, queue: nil) // nil queue means main thread
         registerStorePaymentHandler()
         addTransactionObserver()

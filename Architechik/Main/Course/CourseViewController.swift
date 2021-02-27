@@ -159,7 +159,8 @@ class CourseViewController: ViewController, SwipeToDismissControllerDelegate {
         }
         lessonView.showView()
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.models[lessonIndex].isDone = true
+            
+            if !self.models.isEmpty { self.models[lessonIndex].isDone = true }
         }
         lessonView.urlString = string
         pan.isEnabled = false
@@ -263,7 +264,7 @@ extension CourseViewController {
                 }
                 self.makeBuyRequest(timesCalled: 0)
                 print(purchase)
-                self.verifyPurchase()
+                //self.verifyPurchase()
             case .error(error: let error):
                 if let cell = self.tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as? UnlockCell {
                     cell.hideActivityIndicator()
@@ -274,28 +275,28 @@ extension CourseViewController {
         }
     }
     
-    private func verifyPurchase() {
-        let appleValidator = AppleReceiptValidator(service: .production, sharedSecret: "999")
-        SwiftyStoreKit.verifyReceipt(using: appleValidator, forceRefresh: false) { result in
-            switch result {
-            case .success(let receipt):
-                let productId = "FirstInArchitectureCourseTest"
-                // Verify the purchase of Consumable or NonConsumable
-                let purchaseResult = SwiftyStoreKit.verifyPurchase(
-                    productId: productId,
-                    inReceipt: receipt)
-                    
-                switch purchaseResult {
-                case .purchased(let receiptItem):
-                    print("\(productId) is purchased: \(receiptItem)")
-                case .notPurchased:
-                    print("The user has never purchased \(productId)")
-                }
-            case .error(let error):
-                print("Verify receipt failed: \(error)")
-            }
-        }
-    }
+//    private func verifyPurchase() {
+//        let appleValidator = AppleReceiptValidator(service: .production, sharedSecret: "999")
+//        SwiftyStoreKit.verifyReceipt(using: appleValidator, forceRefresh: false) { result in
+//            switch result {
+//            case .success(let receipt):
+//                let productId = "FirstInArchitectureCourseTest"
+//                // Verify the purchase of Consumable or NonConsumable
+//                let purchaseResult = SwiftyStoreKit.verifyPurchase(
+//                    productId: productId,
+//                    inReceipt: receipt)
+//
+//                switch purchaseResult {
+//                case .purchased(let receiptItem):
+//                    print("\(productId) is purchased: \(receiptItem)")
+//                case .notPurchased:
+//                    print("The user has never purchased \(productId)")
+//                }
+//            case .error(let error):
+//                print("Verify receipt failed: \(error)")
+//            }
+//        }
+//    }
 
     private func makeBuyRequest(timesCalled: Int) {
         guard timesCalled < 4 else { return }
@@ -378,14 +379,17 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
         case 1:
             return calculateDescriptionHeight()
         default:
-            switch models[indexPath.row - 1].category {
-            case "2":
-                return 140
-            case "3", "4":
-                return 80
-            default:
-                return 140
+            if models.count >= indexPath.row {
+                switch models[indexPath.row - 1].category {
+                case "2":
+                    return 140
+                case "3", "4":
+                    return 80
+                default:
+                    return 140
+                }
             }
+            return 140
         }
     }
     
@@ -405,14 +409,17 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
             //let mainViewTotalHeight = mainViewHeight + (UnlockButton.getVerticalShadow() * mainViewHeight)
             return mainViewHeight + 80
         default:
-            switch models[indexPath.row - 3].category {
-            case "2":
-                return 140
-            case "3", "4":
-                return 80
-            default:
-                return 140
+            if models.count >= indexPath.row - 2 {
+                switch models[indexPath.row - 3].category {
+                case "2":
+                    return 140
+                case "3", "4":
+                    return 80
+                default:
+                    return 140
+                }
             }
+            return 140
         }
     }
     
@@ -429,9 +436,9 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.configure(withDataSource: model)
                 cell.unlock()
                 if model.isDone == true { cell.makeDone() }
-                if model.idType == "2" {
-                    cell.setImage(imageString: model.img ?? "")
-                }
+                //if model.idType == "2" {
+                cell.setImage(imageString: model.img ?? "")
+                //}
                 return cell
             }
             return UITableViewCell()
@@ -457,9 +464,9 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.configure(withDataSource: model)
                 if model.isDone == true { cell.makeDone() }
                 if indexPath.row >= 4 { cell.lock() }
-                if model.idType == "2" {
-                    cell.setImage(imageString: model.img ?? "")
-                }
+                //if model.idType == "2" {
+                cell.setImage(imageString: model.img ?? "")
+                //}
                 return cell
             }
             return UITableViewCell()

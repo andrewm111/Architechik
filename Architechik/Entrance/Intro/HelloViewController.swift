@@ -18,9 +18,10 @@ class HelloViewController: IndexableViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let topLabel: UILabel = {
+    private lazy var topLabel: UILabel = {
         let view = UILabel()
-        view.font = UIFont(name: "Arial-BoldMT", size: 24)
+        let fontSize: CGFloat = smallScreen ? 18 : 24
+        view.font = UIFont(name: "Arial-BoldMT", size: fontSize)
         view.textAlignment = .left
         view.textColor = .white
         view.text = "Рад видеть тебя в нашем\nприложении"
@@ -29,9 +30,10 @@ class HelloViewController: IndexableViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let bottomLabel: UILabel = {
+    private lazy var bottomLabel: UILabel = {
         let view = UILabel()
-        view.font = UIFont(name: "Arial-BoldMT", size: 24)
+        let fontSize: CGFloat = smallScreen ? 18 : 24
+        view.font = UIFont(name: "Arial-BoldMT", size: fontSize)
         view.textAlignment = .left
         view.textColor = .white
         view.text = "Нам предстоит узнать\nмного всего интересного"

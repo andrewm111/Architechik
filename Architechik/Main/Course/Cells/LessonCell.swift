@@ -136,16 +136,16 @@ class LessonCell: TableViewCell {
             makeNotDone()
         }
         guard dataSource.id != "" else { return }
-        switch dataSource.category {
-        case "2":
-            break
-        case "3":
-            backImageView.image = UIImage(named: "repeatBackground")
-        case "4":
-            backImageView.image = UIImage(named: "testBackground")
-        default:
-            break
-        }
+//        switch dataSource.category {
+//        case "2":
+//            break
+//        case "3":
+//            backImageView.image = UIImage(named: "repeatBackground")
+//        case "4":
+//            backImageView.image = UIImage(named: "testBackground")
+//        default:
+//            break
+//        }
     }
     
     private func setupSubviews(withDataSource dataSource: LessonCellDataSource) {

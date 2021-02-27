@@ -44,7 +44,7 @@ class ListCourseViewController: ViewController {
     }()
     
     //MARK: - Properties
-    lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
+    lazy var cellTap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
     lazy var jsonPath = Bundle.main.path(forResource: "courses", ofType: "json")
     var models: Array<Course> = [] {
         willSet {
@@ -71,6 +71,10 @@ class ListCourseViewController: ViewController {
     private var cellHeights: Array<CGFloat> = []
     var products: Set<SKProduct> = []
     private var currentCategory: Int = -1
+    private let topPadding: CGFloat = {
+        let window = UIApplication.shared.windows[0]
+        return window.safeAreaInsets.top
+    }()
     private let bottomPadding: CGFloat = {
         let window = UIApplication.shared.windows[0]
         return window.safeAreaInsets.bottom
@@ -129,7 +133,7 @@ class ListCourseViewController: ViewController {
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.isUserInteractionEnabled = true
-        tableView.addGestureRecognizer(tap)
+        tableView.addGestureRecognizer(cellTap)
     }
     
     private func retrieveProducts() {
@@ -208,12 +212,13 @@ class ListCourseViewController: ViewController {
             showNetworkAlert()
             return
         }
-        let tapLocation = tap.location(in: tableView)
+        let tapLocation = cellTap.location(in: tableView)
         guard
             let tapIndexPath = self.tableView.indexPathForRow(at: tapLocation),
             let cell = tableView.cellForRow(at: tapIndexPath) as? CourseCell,
             models.count > tapIndexPath.row - 1
             else { return }
+        cellTap.isEnabled = false
         let model = models[tapIndexPath.row - 1]
         let vc = CourseViewController()
         vc.product = products.first
@@ -225,7 +230,10 @@ class ListCourseViewController: ViewController {
             guard let id1 = Int(lesson1.id), let id2 = Int(lesson2.id) else { return false }
             return id1 < id2
         }
-        guard NetworkDataFetcher.shared.studentProgress.count > tapIndexPath.row - 1 else { return }
+        guard NetworkDataFetcher.shared.studentProgress.count > tapIndexPath.row - 1 else {
+            cellTap.isEnabled = true
+            return
+        }
         let studentProgress = NetworkDataFetcher.shared.studentProgress[tapIndexPath.row - 1]
         let progress = studentProgress.currentProgress
         var modelsWithProgress: Array<Lesson> = []
@@ -241,19 +249,33 @@ class ListCourseViewController: ViewController {
                 modelsWithProgress.append(newModel)
             }
         }
-        let transition = CATransition()
-        transition.duration = 0.3
-        transition.type = CATransitionType.push
-        transition.subtype = CATransitionSubtype.fromRight
-        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
-        view.window!.layer.add(transition, forKey: kCATransition)
+//        let transition = CATransition()
+//        transition.duration = 0.3
+//        transition.type = CATransitionType.push
+//        transition.subtype = CATransitionSubtype.fromRight
+//        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
+//        view.window!.layer.add(transition, forKey: kCATransition)
         vc.coursePurchased = studentProgress.courseAccess == "1" ? true : false
+        #if DEBUG
+        vc.coursePurchased = true
+        #endif
         vc.models = modelsWithProgress
         vc.courseTitle = model.title
         vc.descriptionText = model.fullDescription
         vc.courseImageUrl = model.img
         vc.courseId = model.id
-        self.present(vc, animated: false)
+        //self.present(vc, animated: false)
+        self.tabBarController?.addChild(vc)
+        self.tabBarController?.view.addSubview(vc.view)
+        vc.didMove(toParent: self.tabBarController)
+        var onScreenFrame = self.view.frame
+        onScreenFrame = CGRect(x: onScreenFrame.minX, y: onScreenFrame.minY + topPadding, width: onScreenFrame.width, height: onScreenFrame.height - bottomPadding - topPadding)
+        vc.view.frame = onScreenFrame.offsetBy(dx: UIScreen.main.bounds.width, dy: 0)
+        UIView.animate(withDuration: 0.3) {
+            vc.view.frame = onScreenFrame
+        } completion: { _ in
+            self.cellTap.isEnabled = true
+        }
     }
     
     @objc
