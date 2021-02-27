@@ -18,13 +18,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     var callObserver = CXCallObserver()
-
+    var loginCalled = false
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = .white
         //UIApplication.shared.isIdleTimerDisabled = true
-        
         //self.window?.rootViewController = PageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         //self.window?.rootViewController = LoginViewController()
         //loginUser()
@@ -57,19 +56,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     //MARK: - Handle user credentials
     private func loginUser() {
+        
         let appleIDProvider = ASAuthorizationAppleIDProvider()
         //print(KeychainItem.currentUserIdentifier)
-        appleIDProvider.getCredentialState(forUserID: KeychainItem.currentUserIdentifier) { (credentialState, error) in
-                if KeychainItem.currentUserIdentifier == "" {
-                    let letters = "abcdefghijklmnopqrstuvwxyz0123456789"
-                    let userIdentifier = String((0..<17).map{ _ in letters.randomElement()! })
-                    UserDefaults.standard.set(userIdentifier, forKey: "userIdentifier")
-                } else {
-                    UserDefaults.standard.set(KeychainItem.currentUserIdentifier, forKey: "userIdentifier")
-                }
+        let userIdentifier = UserDefaults.standard.string(forKey: "userIdentifier") ?? ""
+        appleIDProvider.getCredentialState(forUserID: userIdentifier) { (credentialState, error) in
+            guard !self.loginCalled else { return }
+            if KeychainItem.currentUserIdentifier == "" {
+                //                    let letters = "abcdefghijklmnopqrstuvwxyz0123456789"
+                //                    let userIdentifier = String((0..<17).map{ _ in letters.randomElement()! })
+                //                    UserDefaults.standard.set(userIdentifier, forKey: "userIdentifier")
+            } else if KeychainItem.currentUserIdentifier != "" {
+                UserDefaults.standard.set(KeychainItem.currentUserIdentifier, forKey: "userIdentifier")
+            }
             switch credentialState {
             case .authorized:
-                
                 DispatchQueue.main.async {
                     self.window?.rootViewController = TabBarController()
                 }
@@ -90,6 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             DispatchQueue.main.async {
                 self.window?.makeKeyAndVisible()
             }
+            self.loginCalled = true
         }
     }
     

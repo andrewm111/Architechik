@@ -40,7 +40,10 @@ extension SwipeToDismissControllerDelegate {
             self.view.transform = CGAffineTransform(translationX: UIScreen.main.bounds.width, y: 0)
         }) { _ in
             self.pan.isEnabled = true
-            self.dismiss(animated: false)
+            //self.dismiss(animated: false)
+            self.willMove(toParent: nil)
+            self.view.removeFromSuperview()
+            self.removeFromParent()
         }
     }
     

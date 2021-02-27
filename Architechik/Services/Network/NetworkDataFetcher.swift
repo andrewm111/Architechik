@@ -230,11 +230,13 @@ class NetworkDataFetcher {
         NetworkDataFetcher.shared.fetchStudentProgress { studentProgress in
             guard let progress = studentProgress else {
                 //NotificationCenter.default.post(name: NSNotification.Name("CreateMonitor"), object: nil)
+                completion([])
                 return
             }
             //print(progress)
             if progress.isEmpty {
                 self.createUserWithToken { result in }
+                completion([])
             } else {
                 
                 //let correctProgress = self.compareAndGetCorrectPurchaseStatus(newModels: progress)

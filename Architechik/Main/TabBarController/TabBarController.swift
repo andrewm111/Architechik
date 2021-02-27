@@ -28,9 +28,12 @@ class TabBarController: UITabBarController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         fetchFromDevice()
-        NetworkDataFetcher.shared.checkUserInDatabase { _ in
-            self.fetchCourses()
-        }
+        createMonitor()
+//        var completionHandlerCalled = false
+//        NetworkDataFetcher.shared.checkUserInDatabase { _ in
+//            if !completionHandlerCalled { self.fetchCourses() }
+//            completionHandlerCalled = true
+//        }
         NotificationCenter.default.addObserver(self, selector: #selector(createMonitor), name: NSNotification.Name("CreateMonitor"), object: nil)
         setViewControllers([coursesVC, articlesVC, grammarVC, profileVC], animated: false)
         selectedViewController = coursesVC
@@ -69,8 +72,10 @@ class TabBarController: UITabBarController {
             print("Path update handler called")
             switch path.status {
             case .satisfied:
+                var completionHandlerCalled = false
                 NetworkDataFetcher.shared.checkUserInDatabase { _ in
-                    self.fetchCourses()
+                    if !completionHandlerCalled { self.fetchCourses() }
+                    completionHandlerCalled = true
                 }
             case .unsatisfied:
                 break
