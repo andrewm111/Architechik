@@ -69,7 +69,6 @@ class TabBarController: UITabBarController {
         guard self.monitor == nil else { return }
         self.monitor = NWPathMonitor()
         monitor?.pathUpdateHandler = { path in
-            print("Path update handler called")
             switch path.status {
             case .satisfied:
                 var completionHandlerCalled = false
@@ -87,7 +86,6 @@ class TabBarController: UITabBarController {
         }
         let queue = DispatchQueue(label: "Monitor", qos: .background)
         monitor?.start(queue: queue)
-        
     }
     
     private func configureTabBar() {

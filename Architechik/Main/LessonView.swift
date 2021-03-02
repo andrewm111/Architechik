@@ -14,18 +14,18 @@ class LessonView: UIView {
     //MARK: - Subviews
     private let webView: WKWebView = {
         //initial-scale=1.0, maximum-scale=1.0, 
-        //let view = WKWebView()
-        let source: String = "var meta = document.createElement('meta');" +
-            "meta.name = 'viewport';" +
-            "meta.content = 'user-scalable=no';" +
-            "var head = document.getElementsByTagName('head')[0];" +
-            "head.appendChild(meta);"
-        let script: WKUserScript = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
-        let userContentController: WKUserContentController = WKUserContentController()
-        let conf = WKWebViewConfiguration()
-        conf.userContentController = userContentController
-        userContentController.addUserScript(script)
-        let view = WKWebView(frame: CGRect.zero, configuration: conf)
+        let view = WKWebView()
+//        let source: String = "var meta = document.createElement('meta');" +
+//            "meta.name = 'viewport';" +
+//            "meta.content = 'user-scalable=no';" +
+//            "var head = document.getElementsByTagName('head')[0];" +
+//            "head.appendChild(meta);"
+//        let script: WKUserScript = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+//        let userContentController: WKUserContentController = WKUserContentController()
+//        let conf = WKWebViewConfiguration()
+//        conf.userContentController = userContentController
+//        userContentController.addUserScript(script)
+//        let view = WKWebView(frame: CGRect.zero, configuration: conf)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

@@ -129,6 +129,10 @@ extension TabBarController {
     //MARK: - Fetch from device
     func fetchFromDevice() {
         fetchCoursesFromDevice()
+        fetchLessonsFromDevice()
+        fetchArticlesFromDevice()
+        fetchGrammarFromDevice()
+        fetchAchievementsFromDevice()
     }
     
     private func fetchCoursesFromDevice() {
@@ -138,7 +142,6 @@ extension TabBarController {
             courses.append(Course(fromModel: courseCD))
         }
         if !courses.isEmpty { coursesVC.models = courses }
-        fetchLessonsFromDevice()
     }
     
     private func fetchLessonsFromDevice() {
@@ -148,18 +151,15 @@ extension TabBarController {
             lessons.append(Lesson(fromModel: lessonCD))
         }
         if !lessons.isEmpty { coursesVC.lessons = lessons }
-        fetchArticlesFromDevice()
     }
     
     private func fetchArticlesFromDevice() {
         let articlesCD = DataManager.shared.fetchAllArticles()
-        
         var articles: Array<Article> = []
         _ = articlesCD.map { articleCD in
             articles.append(Article(fromModel: articleCD))
         }
         if !articles.isEmpty { articlesVC.models = articles }
-        fetchGrammarFromDevice()
     }
     
     private func fetchGrammarFromDevice() {
@@ -170,7 +170,6 @@ extension TabBarController {
             grammars.append(Grammar(fromModel: grammarCD))
         }
         if !grammars.isEmpty { grammarVC.models = grammars }
-        fetchAchievementsFromDevice()
     }
     
     private func fetchAchievementsFromDevice() {

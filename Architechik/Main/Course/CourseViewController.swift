@@ -47,6 +47,7 @@ class CourseViewController: ViewController, SwipeToDismissControllerDelegate {
     lazy var pan = UIPanGestureRecognizer(target: self, action: #selector(viewDragged))
     var product: SKProduct?
     //var helper: IAPHelper = IAPHelper(productIds: ["FirstInArchitectureCourseTest"])
+    var productId: String = ""
     var descriptionText: String = ""
     var courseTitle: String = ""
     var courseImageUrl: String = ""
@@ -56,6 +57,7 @@ class CourseViewController: ViewController, SwipeToDismissControllerDelegate {
             tableView.reloadData()
         }
     }
+    private var notificationPosted = false
 
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -82,9 +84,11 @@ class CourseViewController: ViewController, SwipeToDismissControllerDelegate {
         tableView.isUserInteractionEnabled = true
         tableView.addGestureRecognizer(tap)
         view.addGestureRecognizer(pan)
+        NotificationCenter.default.addObserver(self, selector: #selector(purchaseCourse), name: NSNotification.Name("CoursePurchased"), object: nil)
         lessonView.transform = CGAffineTransform(translationX: UIScreen.main.bounds.width, y: 0)
         purchaseView.transform = CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.height)
         activityIndicator.transform = CGAffineTransform(scaleX: 2, y: 2)
+        notificationPosted = false
 //        DispatchQueue.main.async {
 //            UIView.animate(withDuration: 0.4) {
 //                self.purchaseView.transform = .identity
@@ -248,22 +252,16 @@ extension CourseViewController: WebDelegate {
 extension CourseViewController {
     private func purchase() {
         //activityIndicator.startAnimating()
-        SwiftyStoreKit.purchaseProduct("FirstInArchitectureCourseTest", quantity: 1, atomically: true) { result in
+        SwiftyStoreKit.purchaseProduct(productId, quantity: 1, atomically: true) { result in
+            
             switch result {
-            case .success(purchase: let purchase):
-                DispatchQueue.main.async {
-                    UIView.animate(withDuration: 0.4) {
-                        self.purchaseView.transform = .identity
-                    } completion: { _ in
-                        self.coursePurchased = true
-                    }
+            case .success(purchase: _):
+                if let cell = self.tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as? UnlockCell {
+                    cell.hideActivityIndicator()
                 }
-                if let index = NetworkDataFetcher.shared.studentProgress.firstIndex(where: { $0.idCourses == self.courseId } ) {
-                    NetworkDataFetcher.shared.studentProgress[index].courseAccess = "1"
-                    DataManager.shared.saveStudentProgress(NetworkDataFetcher.shared.studentProgress)
-                }
-                self.makeBuyRequest(timesCalled: 0)
-                print(purchase)
+                //print(result)
+                NotificationCenter.default.post(name: NSNotification.Name("CoursePurchased"), object: nil)
+                //print(purchase)
                 //self.verifyPurchase()
             case .error(error: let error):
                 if let cell = self.tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as? UnlockCell {
@@ -273,6 +271,24 @@ extension CourseViewController {
             }
             //self.activityIndicator.stopAnimating()
         }
+    }
+    
+    @objc
+    private func purchaseCourse() {
+        guard !notificationPosted else { return }
+        notificationPosted = true
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.4) {
+                self.purchaseView.transform = .identity
+            } completion: { _ in
+                self.coursePurchased = true
+            }
+        }
+        if let index = NetworkDataFetcher.shared.studentProgress.firstIndex(where: { $0.idCourses == self.courseId } ) {
+            NetworkDataFetcher.shared.studentProgress[index].courseAccess = "1"
+            DataManager.shared.saveStudentProgress(NetworkDataFetcher.shared.studentProgress)
+        }
+        self.makeBuyRequest(timesCalled: 0)
     }
     
 //    private func verifyPurchase() {

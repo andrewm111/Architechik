@@ -143,9 +143,9 @@ class ListCourseViewController: ViewController {
         let setProducts = Set<String>(products)
         SwiftyStoreKit.retrieveProductsInfo(setProducts) { result in
             self.products = result.retrievedProducts
-            if let product = result.retrievedProducts.first {
-                let priceString = product.localizedPrice
-                print("Product: \(product.localizedDescription), price: \(String(describing: priceString))")
+            if let _ = result.retrievedProducts.first {
+                //let priceString = product.localizedPrice
+                //print("Product: \(product.localizedDescription), price: \(String(describing: priceString))")
             } else if let invalidProductId = result.invalidProductIDs.first {
                 print("Invalid product identifier: \(invalidProductId) in \(#function)")
             } else {
@@ -264,6 +264,7 @@ class ListCourseViewController: ViewController {
         vc.descriptionText = model.fullDescription
         vc.courseImageUrl = model.img
         vc.courseId = model.id
+        vc.productId = model.idProduct
         //self.present(vc, animated: false)
         self.tabBarController?.addChild(vc)
         self.tabBarController?.view.addSubview(vc.view)
@@ -327,6 +328,7 @@ class ListCourseViewController: ViewController {
         } completion: { _ in
             self.filterIsHidden = false
         }
+        
     }
 }
 

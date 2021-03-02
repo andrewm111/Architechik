@@ -32,7 +32,8 @@ class UnlockCell: TableViewCell {
     private let titleLabel: UILabel = {
         let view = UILabel()
         let font = UIFont(name: "Arial", size: 17) ?? UIFont.systemFont(ofSize: 17)
-        let attributedString = NSAttributedString(string: "Оплатить курс", attributes: [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: UIColor.black])
+        let color = UIColor(hex: "642BAC")
+        let attributedString = NSAttributedString(string: "Оплатить курс", attributes: [NSAttributedString.Key.font: font, NSAttributedString.Key.foregroundColor: color])
         view.attributedText = attributedString
         //view.textAlignment = .left
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -45,18 +46,18 @@ class UnlockCell: TableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let unlockIcon: UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(named: "appleIcon")
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    private let unlockView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    lazy var stackView = UIStackView(arrangedSubviews: [unlockView, titleLabel])
+//    private let unlockIcon: UIImageView = {
+//        let view = UIImageView()
+//        view.image = UIImage(named: "purchaseIcon")
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        return view
+//    }()
+//    private let unlockView: UIView = {
+//        let view = UIView()
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        return view
+//    }()
+    //lazy var stackView = UIStackView(arrangedSubviews: [unlockView, titleLabel])
     private var delegate: UnlockDelegate?
 
     func configure(withDelegate delegate: UnlockDelegate) {
@@ -77,11 +78,11 @@ class UnlockCell: TableViewCell {
     private func setupSubviews() {
         //addSubview(mainView)
         addSubview(buttonView)
-        addSubview(unlockIcon)
+        //addSubview(unlockIcon)
         addSubview(activityIndicatorView)
         //mainView.addSubview(unlockIcon)
         //mainView.addSubview(titleLabel)
-        
+        buttonView.addSubview(titleLabel)
         
 //        let mainViewWidth = UIScreen.main.bounds.width - UnlockButton.spacing.rawValue * 2
 //        let leftSpacing = UnlockButton.spacing.rawValue - (UnlockButton.getHorizontalShadow() * mainViewWidth)
@@ -92,12 +93,12 @@ class UnlockCell: TableViewCell {
 //        mainView.frame = CGRect(x: leftSpacing, y: topSpacing, width: mainViewTotalWidth, height: mainViewTotalHeight)
         
         
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.spacing = 12
-        stackView.distribution = .fillProportionally
-        buttonView.addSubview(stackView)
-        let stackViewWidth = titleLabel.intrinsicContentSize.width + 12 + 20
+//        stackView.translatesAutoresizingMaskIntoConstraints = false
+//        stackView.axis = .horizontal
+//        stackView.spacing = 12
+//        stackView.distribution = .fillProportionally
+        //buttonView.addSubview(stackView)
+        //let stackViewWidth = titleLabel.intrinsicContentSize.width + 12 + 40
         
         NSLayoutConstraint.activate([
             buttonView.topAnchor.constraint(equalTo: self.topAnchor, constant: 30),
@@ -110,17 +111,22 @@ class UnlockCell: TableViewCell {
 //            activityIndicatorView.heightAnchor.constraint(lessThanOrEqualTo: buttonView.heightAnchor, multiplier: 0.9),
 //            activityIndicatorView.widthAnchor.constraint(lessThanOrEqualTo: buttonView.widthAnchor, multiplier: 0.3),
             
-            stackView.centerYAnchor.constraint(equalTo: buttonView.centerYAnchor),
-            stackView.centerXAnchor.constraint(equalTo: buttonView.centerXAnchor),
-            stackView.widthAnchor.constraint(equalToConstant: stackViewWidth),
+            titleLabel.centerYAnchor.constraint(equalTo: buttonView.centerYAnchor),
+            titleLabel.centerXAnchor.constraint(equalTo: buttonView.centerXAnchor),
+            titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: buttonView.leadingAnchor, constant: 15),
+            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: buttonView.trailingAnchor, constant: -15),
             
-            unlockIcon.heightAnchor.constraint(equalTo: unlockIcon.widthAnchor, multiplier: 1.25),
-            unlockIcon.widthAnchor.constraint(equalToConstant: 20),
-            unlockIcon.centerXAnchor.constraint(equalTo: unlockView.centerXAnchor),
-            unlockIcon.centerYAnchor.constraint(equalTo: unlockView.centerYAnchor, constant: -3),
+//            stackView.centerYAnchor.constraint(equalTo: buttonView.centerYAnchor),
+//            stackView.centerXAnchor.constraint(equalTo: buttonView.centerXAnchor),
+//            stackView.widthAnchor.constraint(equalToConstant: stackViewWidth),
             
-            unlockView.heightAnchor.constraint(equalTo: unlockView.widthAnchor, multiplier: 1.25),
-            unlockView.widthAnchor.constraint(equalToConstant: 20),
+//            unlockIcon.heightAnchor.constraint(equalTo: unlockIcon.widthAnchor, multiplier: 1),
+//            unlockIcon.widthAnchor.constraint(equalToConstant: 40),
+//            unlockIcon.centerXAnchor.constraint(equalTo: unlockView.centerXAnchor),
+//            unlockIcon.centerYAnchor.constraint(equalTo: unlockView.centerYAnchor),
+            
+//            unlockView.heightAnchor.constraint(equalTo: unlockView.widthAnchor, multiplier: 1),
+//            unlockView.widthAnchor.constraint(equalToConstant: 40),
             //unlockIcon.centerYAnchor.constraint(equalTo: buttonView.centerYAnchor),
             //unlockIcon.leadingAnchor.constraint(equalTo: buttonView.leadingAnchor, constant: 14),
             //unlockIcon.trailingAnchor.constraint(equalTo: titleLabel.leadingAnchor, constant: -12),
@@ -141,15 +147,17 @@ class UnlockCell: TableViewCell {
     
     func showActivityIndicator() {
         activityIndicatorView.startAnimating()
-        stackView.isHidden = true
-        unlockIcon.isHidden = true
+        titleLabel.isHidden = true
+//        stackView.isHidden = true
+//        unlockIcon.isHidden = true
 //        titleLabel.isHidden = true
     }
     
     func hideActivityIndicator() {
         activityIndicatorView.stopAnimating()
-        stackView.isHidden = false
-        unlockIcon.isHidden = false
+        titleLabel.isHidden = false
+//        stackView.isHidden = false
+//        unlockIcon.isHidden = false
 //        titleLabel.isHidden = false
     }
 }
