@@ -28,7 +28,7 @@ class TabBarController: UITabBarController {
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         fetchFromDevice()
-        createMonitor()
+        self.fetchCourses()
 //        var completionHandlerCalled = false
 //        NetworkDataFetcher.shared.checkUserInDatabase { _ in
 //            if !completionHandlerCalled { self.fetchCourses() }
@@ -48,7 +48,11 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(showAlert), name: NSNotification.Name("ShowServerAlert"), object: nil)
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        createMonitor()
     }
     
     //MARK: - Supporting methods

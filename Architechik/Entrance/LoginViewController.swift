@@ -76,6 +76,7 @@ class LoginViewController: IndexableViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    private let mainTabBarController = TabBarController()
 
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -141,15 +142,17 @@ class LoginViewController: IndexableViewController {
 
     //MARK: - User events handling
     @objc private func loginButtonTapped() {
+        #if DEBUG
+        showTabBarController()
+        #else
         let appleIDProvider = ASAuthorizationAppleIDProvider()
         let request = appleIDProvider.createRequest()
         request.requestedScopes = [.fullName, .email]
-
         let authorizationController = ASAuthorizationController(authorizationRequests: [request])
         authorizationController.delegate = self
         authorizationController.presentationContextProvider = self
         authorizationController.performRequests()
-        //showTabBarController()
+        #endif
     }
     
     func performExistingAccountSetupFlows() {
@@ -166,10 +169,9 @@ class LoginViewController: IndexableViewController {
     }
     
     private func showTabBarController() {
-        let tabBarController = TabBarController()
-        tabBarController.modalPresentationStyle = .fullScreen
-        tabBarController.modalTransitionStyle = .crossDissolve
-        present(tabBarController, animated: true)
+        mainTabBarController.modalPresentationStyle = .fullScreen
+        mainTabBarController.modalTransitionStyle = .crossDissolve
+        present(mainTabBarController, animated: true)
     }
 }
 

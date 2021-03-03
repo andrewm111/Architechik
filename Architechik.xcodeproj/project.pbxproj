@@ -40,6 +40,7 @@
 		1F517F4B25ADF71400F121D4 /* WebImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F517F4A25ADF71400F121D4 /* WebImageView.swift */; };
 		1F517F4D25AE050900F121D4 /* KeychainItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F517F4C25AE050900F121D4 /* KeychainItem.swift */; };
 		1F517F4F25AE0FBB00F121D4 /* Data + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F517F4E25AE0FBB00F121D4 /* Data + Extension.swift */; };
+		1F5B5F6D25EEE6C900F607A3 /* RestorePurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5B5F6C25EEE6C900F607A3 /* RestorePurchaseViewController.swift */; };
 		1F5F935125CE896200FBF0D3 /* LessonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5F935025CE896200FBF0D3 /* LessonView.swift */; };
 		1F5F935325CE8D8D00FBF0D3 /* SwipeToDismissViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5F935225CE8D8D00FBF0D3 /* SwipeToDismissViewDelegate.swift */; };
 		1F6DF55A25C5539E0085D3D8 /* SwipeToDismissControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6DF55925C5539E0085D3D8 /* SwipeToDismissControllerDelegate.swift */; };
@@ -129,6 +130,7 @@
 		1F517F4A25ADF71400F121D4 /* WebImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImageView.swift; sourceTree = "<group>"; };
 		1F517F4C25AE050900F121D4 /* KeychainItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainItem.swift; sourceTree = "<group>"; };
 		1F517F4E25AE0FBB00F121D4 /* Data + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data + Extension.swift"; sourceTree = "<group>"; };
+		1F5B5F6C25EEE6C900F607A3 /* RestorePurchaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestorePurchaseViewController.swift; sourceTree = "<group>"; };
 		1F5F935025CE896200FBF0D3 /* LessonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonView.swift; sourceTree = "<group>"; };
 		1F5F935225CE8D8D00FBF0D3 /* SwipeToDismissViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeToDismissViewDelegate.swift; sourceTree = "<group>"; };
 		1F6DF55925C5539E0085D3D8 /* SwipeToDismissControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeToDismissControllerDelegate.swift; sourceTree = "<group>"; };
@@ -391,6 +393,7 @@
 			isa = PBXGroup;
 			children = (
 				1F83355C25A756BC00BCEDE8 /* ProfileViewController.swift */,
+				1F5B5F6C25EEE6C900F607A3 /* RestorePurchaseViewController.swift */,
 				1FD1891F25C005AD0006FB29 /* Cells */,
 			);
 			path = Profile;
@@ -656,6 +659,7 @@
 				1F18094525CB091600377C93 /* ArticleCD+CoreDataClass.swift in Sources */,
 				1FCD9EBF25CAFD3B00C94083 /* GrammarCD+CoreDataProperties.swift in Sources */,
 				1F0B69B825C836D400103B17 /* UIView + AnchorPoint.swift in Sources */,
+				1F5B5F6D25EEE6C900F607A3 /* RestorePurchaseViewController.swift in Sources */,
 				1FCF656C25B7943F00624C61 /* PageViewController.swift in Sources */,
 				1FCD9EC325CAFD3B00C94083 /* CourseCD+CoreDataProperties.swift in Sources */,
 				1FF8AA1825B6CFF60095663A /* NetworkError.swift in Sources */,
@@ -827,7 +831,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.55;
+				MARKETING_VERSION = 1.56;
 				PRODUCT_BUNDLE_IDENTIFIER = mikel.Shmonov.Architechik;
 				PRODUCT_NAME = Architechick;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -851,7 +855,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.55;
+				MARKETING_VERSION = 1.56;
 				PRODUCT_BUNDLE_IDENTIFIER = mikel.Shmonov.Architechik;
 				PRODUCT_NAME = Architechick;
 				PROVISIONING_PROFILE_SPECIFIER = "";

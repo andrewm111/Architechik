@@ -28,8 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //self.window?.rootViewController = LoginViewController()
         //loginUser()
         #if DEBUG
-        UserDefaults.standard.setValue("19198703", forKey: "userIdentifier")
-        self.window?.rootViewController = TabBarController()
+        UserDefaults.standard.setValue("19198704", forKey: "userIdentifier")
+        self.window?.rootViewController = LoginViewController()
         self.window?.makeKeyAndVisible()
         #else
         loginUser()
