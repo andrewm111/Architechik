@@ -27,7 +27,13 @@ class TabBarController: UITabBarController {
     //MARK: - Init
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        fetchData()
+        fetchFromDevice()
+        self.fetchCourses()
+//        var completionHandlerCalled = false
+//        NetworkDataFetcher.shared.checkUserInDatabase { _ in
+//            if !completionHandlerCalled { self.fetchCourses() }
+//            completionHandlerCalled = true
+//        }
         NotificationCenter.default.addObserver(self, selector: #selector(createMonitor), name: NSNotification.Name("CreateMonitor"), object: nil)
         setViewControllers([coursesVC, articlesVC, grammarVC, profileVC], animated: false)
         selectedViewController = coursesVC
@@ -42,6 +48,11 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(showAlert), name: NSNotification.Name("ShowServerAlert"), object: nil)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        createMonitor()
     }
     
     //MARK: - Supporting methods
@@ -64,8 +75,11 @@ class TabBarController: UITabBarController {
         monitor?.pathUpdateHandler = { path in
             switch path.status {
             case .satisfied:
-                self.fetchCourses()
-                NetworkDataFetcher.shared.checkUserInDatabase { studentProgress in }
+                var completionHandlerCalled = false
+                NetworkDataFetcher.shared.checkUserInDatabase { _ in
+                    if !completionHandlerCalled { self.fetchCourses() }
+                    completionHandlerCalled = true
+                }
             case .unsatisfied:
                 break
             case .requiresConnection:
@@ -76,7 +90,6 @@ class TabBarController: UITabBarController {
         }
         let queue = DispatchQueue(label: "Monitor", qos: .background)
         monitor?.start(queue: queue)
-        
     }
     
     private func configureTabBar() {

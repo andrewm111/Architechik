@@ -17,6 +17,7 @@ class LessonCell: TableViewCell {
         view.contentMode = .scaleAspectFill
         view.layer.cornerRadius = 10
         view.clipsToBounds = true
+        view.backgroundColor = .gray
         view.translatesAutoresizingMaskIntoConstraints = false
         let layer = CALayer()
         let rect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 140)
@@ -88,6 +89,7 @@ class LessonCell: TableViewCell {
         setupSubviews(withDataSource: dataSource)
         if !(dataSource is Lesson) {
             titleLabel.font = UIFont(name: "Arial-BoldMT", size: 17)
+            
         }
     }
     
@@ -126,17 +128,6 @@ class LessonCell: TableViewCell {
     //MARK: - Setup
     private func initialSetup(withDataSource dataSource: LessonCellDataSource) {
         isUserInteractionEnabled = true
-        guard dataSource.id != "" else { return }
-        switch dataSource.category {
-        case "2":
-            break
-        case "3":
-            backImageView.image = UIImage(named: "repeatBackground")
-        case "4":
-            backImageView.image = UIImage(named: "testBackground")
-        default:
-            break
-        }
         titleLabel.text = dataSource.title
         descriptionLabel.text = dataSource.description
         if let isDone = dataSource.isDone {
@@ -144,6 +135,17 @@ class LessonCell: TableViewCell {
         } else {
             makeNotDone()
         }
+        guard dataSource.id != "" else { return }
+//        switch dataSource.category {
+//        case "2":
+//            break
+//        case "3":
+//            backImageView.image = UIImage(named: "repeatBackground")
+//        case "4":
+//            backImageView.image = UIImage(named: "testBackground")
+//        default:
+//            break
+//        }
     }
     
     private func setupSubviews(withDataSource dataSource: LessonCellDataSource) {
@@ -156,6 +158,8 @@ class LessonCell: TableViewCell {
         
         let needMoreSpace = dataSource.category == "3" || dataSource.category == "4"
         let bottomSpacing: CGFloat = needMoreSpace ? -9 : -4
+        
+        let spacing: CGFloat = !(dataSource is Lesson) ? 4 : 0
         
         NSLayoutConstraint.activate([
             backImageView.topAnchor.constraint(equalTo: self.topAnchor),
@@ -178,7 +182,7 @@ class LessonCell: TableViewCell {
             titleLabel.leadingAnchor.constraint(equalTo: backImageView.leadingAnchor, constant: 10),
             titleLabel.trailingAnchor.constraint(equalTo: backImageView.trailingAnchor, constant: -10),
             
-            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: spacing),
             descriptionLabel.bottomAnchor.constraint(lessThanOrEqualTo: backImageView.bottomAnchor, constant: bottomSpacing),
             descriptionLabel.leadingAnchor.constraint(equalTo: backImageView.leadingAnchor, constant: 10),
             descriptionLabel.trailingAnchor.constraint(equalTo: backImageView.trailingAnchor, constant: -10),

@@ -123,12 +123,11 @@ extension TabBarController {
                 } else { self.timesFetchAchievementsCalled = 0 }
             }
         } // NetworkDataFetcher
-        NotificationCenter.default.post(name: NSNotification.Name("CreateMonitor"), object: nil)
-        
+        //NotificationCenter.default.post(name: NSNotification.Name("CreateMonitor"), object: nil)
     }
     
     //MARK: - Fetch from device
-    private func fetchFromDevice() {
+    func fetchFromDevice() {
         fetchCoursesFromDevice()
         fetchLessonsFromDevice()
         fetchArticlesFromDevice()
@@ -156,7 +155,6 @@ extension TabBarController {
     
     private func fetchArticlesFromDevice() {
         let articlesCD = DataManager.shared.fetchAllArticles()
-        
         var articles: Array<Article> = []
         _ = articlesCD.map { articleCD in
             articles.append(Article(fromModel: articleCD))
@@ -180,8 +178,9 @@ extension TabBarController {
         _ = achievementsCD.map { achievementCD in
             achievements.append(Achievement(fromModel: achievementCD))
         }
-        profileVC.models = achievements
-        if !achievements.isEmpty { profileVC.models = achievements }
+        if !achievements.isEmpty {
+            profileVC.models = achievements
+        }
     }
     
 }

@@ -11,24 +11,31 @@ import CoreData
 import AuthenticationServices
 import SwiftyStoreKit
 import Network
+import CallKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    var callObserver = CXCallObserver()
+    var loginCalled = false
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.backgroundColor = .white
-        UserDefaults.standard.setValue("19198700", forKey: "userIdentifier")
+        //UIApplication.shared.isIdleTimerDisabled = true
         //self.window?.rootViewController = PageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         //self.window?.rootViewController = LoginViewController()
+        //loginUser()
         #if DEBUG
-        self.window?.rootViewController = TabBarController()
+        UserDefaults.standard.setValue("19198704", forKey: "userIdentifier")
+        self.window?.rootViewController = LoginViewController()
         self.window?.makeKeyAndVisible()
         #else
         loginUser()
         #endif
+        //loginUser()
+        callObserver.setDelegate(self, queue: nil) // nil queue means main thread
         registerStorePaymentHandler()
         addTransactionObserver()
         return true
@@ -49,19 +56,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     //MARK: - Handle user credentials
     private func loginUser() {
+        
         let appleIDProvider = ASAuthorizationAppleIDProvider()
         //print(KeychainItem.currentUserIdentifier)
+        //let userIdentifier = UserDefaults.standard.string(forKey: "userIdentifier") ?? ""
         appleIDProvider.getCredentialState(forUserID: KeychainItem.currentUserIdentifier) { (credentialState, error) in
-                if KeychainItem.currentUserIdentifier == "" {
-                    let letters = "abcdefghijklmnopqrstuvwxyz0123456789"
-                    let userIdentifier = String((0..<17).map{ _ in letters.randomElement()! })
-                    UserDefaults.standard.set(userIdentifier, forKey: "userIdentifier")
-                } else {
-                    UserDefaults.standard.set(KeychainItem.currentUserIdentifier, forKey: "userIdentifier")
-                }
+            guard !self.loginCalled else { return }
+            if KeychainItem.currentUserIdentifier == "" {
+                //                    let letters = "abcdefghijklmnopqrstuvwxyz0123456789"
+                //                    let userIdentifier = String((0..<17).map{ _ in letters.randomElement()! })
+                //                    UserDefaults.standard.set(userIdentifier, forKey: "userIdentifier")
+            } else if KeychainItem.currentUserIdentifier != "" {
+                UserDefaults.standard.set(KeychainItem.currentUserIdentifier, forKey: "userIdentifier")
+            }
             switch credentialState {
             case .authorized:
-                
                 DispatchQueue.main.async {
                     self.window?.rootViewController = TabBarController()
                 }
@@ -82,6 +91,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             DispatchQueue.main.async {
                 self.window?.makeKeyAndVisible()
             }
+            self.loginCalled = true
         }
     }
     
@@ -124,6 +134,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     //MARK: - In App Purchase
     private func addTransactionObserver() {
         SwiftyStoreKit.completeTransactions(atomically: true) { purchases in
+            //print(#function)
             for purchase in purchases {
                 switch purchase.transaction.transactionState {
                 case .purchased, .restored:
@@ -131,6 +142,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         // Deliver content from server, then:
                         SwiftyStoreKit.finishTransaction(purchase.transaction)
                     }
+                    NotificationCenter.default.post(name: NSNotification.Name("CoursePurchased"), object: nil)
                 // Unlock content
                 case .failed, .purchasing, .deferred:
                 break // do nothing
@@ -143,8 +155,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private func registerStorePaymentHandler() {
         SwiftyStoreKit.shouldAddStorePaymentHandler = { payment, product in
-            print(payment)
-            print(product)
+//            print(payment)
+//            print(product)
+            //print(#function)
             // return true if the content can be delivered by your app
             // return false otherwise
             return true
@@ -157,4 +170,32 @@ extension AppDelegate: NetworkSpeedProviderDelegate {
     func callWhileSpeedChange(networkStatus: NetworkStatus) {
         print(networkStatus)
     }
+}
+
+//MARK: - CXCallObserverDelegate
+extension AppDelegate: CXCallObserverDelegate {
+    func callObserver(_ callObserver: CXCallObserver, callChanged call: CXCall) {
+        if call.hasEnded == true {
+            print("Disconnected")
+            UIApplication.shared.isIdleTimerDisabled = true
+            UIApplication.shared.isIdleTimerDisabled = false
+        }
+        if call.isOutgoing == true && call.hasConnected == false {
+            print("Dialing")
+            UIApplication.shared.isIdleTimerDisabled = false
+            UIApplication.shared.isIdleTimerDisabled = true
+        }
+        if call.isOutgoing == false && call.hasConnected == false && call.hasEnded == false {
+            print("Incoming")
+            UIApplication.shared.isIdleTimerDisabled = false
+            UIApplication.shared.isIdleTimerDisabled = true
+        }
+        if call.hasConnected == true && call.hasEnded == false {
+            print("Connected")
+            UIApplication.shared.isIdleTimerDisabled = false
+            UIApplication.shared.isIdleTimerDisabled = true
+        }
+    }
+    
+    
 }

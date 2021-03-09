@@ -19,27 +19,37 @@ class ListCourseViewController: ViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private lazy var filterButton: UIButton = {
-        let view = UIButton(type: .custom)
-        let radius: CGFloat = smallScreen ? 20 : 30
-        view.layer.cornerRadius = radius
+    private lazy var filterBackView: UIView = {
+        let view = UIView()
+        view.isUserInteractionEnabled = true
+        view.clipsToBounds = true
         view.backgroundColor = UIColor(hex: "613191")
-        let image = smallScreen ? UIImage(named: "filterSmall") : UIImage(named: "filter")
-        view.setImage(image, for: .normal)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private lazy var filterView: FilterView = {
-        let view = FilterView(withCategoryName: "course")
-        view.isHidden = true
+    private lazy var filterImageView: UIImageView = {
+        let view = UIImageView()
+        view.isUserInteractionEnabled = true
+        view.image = UIImage(named: "filter")
+        view.contentMode = .scaleAspectFit
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    private let activityIndicatorView: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(style: .large)
+        view.hidesWhenStopped = true
+        view.color = .white
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     //MARK: - Properties
-    lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
+    lazy var cellTap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
     lazy var jsonPath = Bundle.main.path(forResource: "courses", ofType: "json")
     var models: Array<Course> = [] {
+        willSet {
+            if !newValue.isEmpty { activityIndicatorView.stopAnimating() }
+        }
         didSet {
             if currentCategory == -1 {
                 filteredModels = models
@@ -48,7 +58,12 @@ class ListCourseViewController: ViewController {
                     return model.idCategory == "\(currentCategory)"
                 }
             }
-            if models.count != 0 { tableView.reloadData() }
+            if !models.isEmpty {
+                if models.first?.idProduct != "" {
+                    retrieveProducts()
+                }
+                tableView.reloadData()
+            }
         }
     }
     var filteredModels: Array<Course> = []
@@ -56,7 +71,10 @@ class ListCourseViewController: ViewController {
     private var cellHeights: Array<CGFloat> = []
     var products: Set<SKProduct> = []
     private var currentCategory: Int = -1
-    private lazy var filterViewConstraint = filterView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 280 + bottomPadding)
+    private let topPadding: CGFloat = {
+        let window = UIApplication.shared.windows[0]
+        return window.safeAreaInsets.top
+    }()
     private let bottomPadding: CGFloat = {
         let window = UIApplication.shared.windows[0]
         return window.safeAreaInsets.bottom
@@ -68,6 +86,7 @@ class ListCourseViewController: ViewController {
         return vc
     }()
     private var filterIsHidden = true
+    private lazy var filterHeight: CGFloat = UIScreen.main.bounds.height * 0.344827586206897
     
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -90,19 +109,23 @@ class ListCourseViewController: ViewController {
     
     //MARK: - Setup
     private func initialSetup() {
-        //view.backgroundColor = UIColor(hex: "1F1F24")
         edgesForExtendedLayout = .bottom
         extendedLayoutIncludesOpaqueBars = true
         view.backgroundColor = UIColor.black
         NotificationCenter.default.addObserver(self, selector: #selector(categoryChanged), name: NSNotification.Name("CategoryChanged"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(setProgress), name: NSNotification.Name("SetProgress"), object: nil)
-        retrieveProducts()
         configureTableView()
-        filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
+        let tap1 = UITapGestureRecognizer(target: self, action: #selector(filterButtonTapped))
+        filterBackView.addGestureRecognizer(tap1)
         NotificationCenter.default.post(name: NSNotification.Name("CategoryChanged"), object: nil, userInfo: ["category": -1])
     }
     
     private func configureTableView() {
+//        tableView.alwaysBounceVertical = false
+//        tableView.alwaysBounceHorizontal = false
+//        tableView.bounces = false
+        tableView.showsVerticalScrollIndicator = false
+        tableView.showsHorizontalScrollIndicator = false
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(CourseCell.self)
@@ -110,15 +133,19 @@ class ListCourseViewController: ViewController {
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.isUserInteractionEnabled = true
-        tableView.addGestureRecognizer(tap)
+        tableView.addGestureRecognizer(cellTap)
     }
     
     private func retrieveProducts() {
-        SwiftyStoreKit.retrieveProductsInfo(["FirstInArchitectureCourseTest"]) { result in
+        let products = models.map { course -> String in
+            return course.idProduct
+        }
+        let setProducts = Set<String>(products)
+        SwiftyStoreKit.retrieveProductsInfo(setProducts) { result in
             self.products = result.retrievedProducts
-            if let product = result.retrievedProducts.first {
-                let priceString = product.localizedPrice
-                print("Product: \(product.localizedDescription), price: \(String(describing: priceString))")
+            if let _ = result.retrievedProducts.first {
+                //let priceString = product.localizedPrice
+                //print("Product: \(product.localizedDescription), price: \(String(describing: priceString))")
             } else if let invalidProductId = result.invalidProductIDs.first {
                 print("Invalid product identifier: \(invalidProductId) in \(#function)")
             } else {
@@ -130,20 +157,37 @@ class ListCourseViewController: ViewController {
     private func setupSubviews() {
         addTabBarSeparator()
         view.addSubview(tableView)
-        view.addSubview(filterButton)
+        view.addSubview(filterBackView)
+        filterBackView.addSubview(filterImageView)
+        view.addSubview(activityIndicatorView)
         
-        let filterSize: CGFloat = smallScreen ? 40 : 60
+        let screenHeight = UIScreen.main.bounds.height
+        let screenWidth = UIScreen.main.bounds.width
+        let filterSize: CGFloat = screenHeight * 0.07696428571428571
+        filterBackView.layer.cornerRadius = filterSize / 2
+        let filterBottomSpacing: CGFloat = 0.098522167487685 * screenHeight
+        let filterTrailingSpacing: CGFloat = 0.048 * screenWidth
+        
+        if models.isEmpty { activityIndicatorView.startAnimating() }
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -2),
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -2),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
-            filterButton.heightAnchor.constraint(equalToConstant: filterSize),
-            filterButton.widthAnchor.constraint(equalToConstant: filterSize),
-            filterButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -80 - bottomPadding),
-            filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
+            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            filterBackView.heightAnchor.constraint(equalToConstant: filterSize),
+            filterBackView.widthAnchor.constraint(equalToConstant: filterSize),
+            filterBackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -filterBottomSpacing - bottomPadding),
+            filterBackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -filterTrailingSpacing),
+            
+            filterImageView.centerYAnchor.constraint(equalTo: filterBackView.centerYAnchor),
+            filterImageView.centerXAnchor.constraint(equalTo: filterBackView.centerXAnchor),
+            filterImageView.widthAnchor.constraint(equalTo: filterBackView.widthAnchor, multiplier: 0.5),
+            filterImageView.heightAnchor.constraint(equalTo: filterBackView.heightAnchor, multiplier: 0.5),
         ])
     }
     
@@ -154,7 +198,7 @@ class ListCourseViewController: ViewController {
             let width = UIScreen.main.bounds.width
             let height = UIScreen.main.bounds.height
             UIView.animate(withDuration: 0.2) {
-                self.filterVC.view.frame = CGRect(x: 0, y: height, width: width, height: 280)
+                self.filterVC.view.frame = CGRect(x: 0, y: height, width: width, height: self.filterHeight)
             } completion: { _ in
                 self.tableView.isScrollEnabled = true
                 self.filterIsHidden = true
@@ -168,12 +212,13 @@ class ListCourseViewController: ViewController {
             showNetworkAlert()
             return
         }
-        let tapLocation = tap.location(in: tableView)
+        let tapLocation = cellTap.location(in: tableView)
         guard
             let tapIndexPath = self.tableView.indexPathForRow(at: tapLocation),
             let cell = tableView.cellForRow(at: tapIndexPath) as? CourseCell,
             models.count > tapIndexPath.row - 1
             else { return }
+        cellTap.isEnabled = false
         let model = models[tapIndexPath.row - 1]
         let vc = CourseViewController()
         vc.product = products.first
@@ -185,7 +230,10 @@ class ListCourseViewController: ViewController {
             guard let id1 = Int(lesson1.id), let id2 = Int(lesson2.id) else { return false }
             return id1 < id2
         }
-        guard NetworkDataFetcher.shared.studentProgress.count > tapIndexPath.row - 1 else { return }
+        guard NetworkDataFetcher.shared.studentProgress.count > tapIndexPath.row - 1 else {
+            cellTap.isEnabled = true
+            return
+        }
         let studentProgress = NetworkDataFetcher.shared.studentProgress[tapIndexPath.row - 1]
         let progress = studentProgress.currentProgress
         var modelsWithProgress: Array<Lesson> = []
@@ -201,19 +249,34 @@ class ListCourseViewController: ViewController {
                 modelsWithProgress.append(newModel)
             }
         }
-        let transition = CATransition()
-        transition.duration = 0.3
-        transition.type = CATransitionType.push
-        transition.subtype = CATransitionSubtype.fromRight
-        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
-        view.window!.layer.add(transition, forKey: kCATransition)
+//        let transition = CATransition()
+//        transition.duration = 0.3
+//        transition.type = CATransitionType.push
+//        transition.subtype = CATransitionSubtype.fromRight
+//        transition.timingFunction = CAMediaTimingFunction(name:CAMediaTimingFunctionName.easeInEaseOut)
+//        view.window!.layer.add(transition, forKey: kCATransition)
         vc.coursePurchased = studentProgress.courseAccess == "1" ? true : false
+        #if DEBUG
+        vc.coursePurchased = true
+        #endif
         vc.models = modelsWithProgress
         vc.courseTitle = model.title
         vc.descriptionText = model.fullDescription
         vc.courseImageUrl = model.img
         vc.courseId = model.id
-        self.present(vc, animated: false)
+        vc.productId = model.idProduct
+        //self.present(vc, animated: false)
+        self.tabBarController?.addChild(vc)
+        self.tabBarController?.view.addSubview(vc.view)
+        vc.didMove(toParent: self.tabBarController)
+        var onScreenFrame = self.view.frame
+        onScreenFrame = CGRect(x: onScreenFrame.minX, y: onScreenFrame.minY + topPadding, width: onScreenFrame.width, height: onScreenFrame.height - bottomPadding - topPadding)
+        vc.view.frame = onScreenFrame.offsetBy(dx: UIScreen.main.bounds.width, dy: 0)
+        UIView.animate(withDuration: 0.3) {
+            vc.view.frame = onScreenFrame
+        } completion: { _ in
+            self.cellTap.isEnabled = true
+        }
     }
     
     @objc
@@ -231,7 +294,7 @@ class ListCourseViewController: ViewController {
         let width = UIScreen.main.bounds.width
         let height = UIScreen.main.bounds.height
         UIView.animate(withDuration: 0.2) {
-            self.filterVC.view.frame = CGRect(x: 0, y: height, width: width, height: 280)
+            self.filterVC.view.frame = CGRect(x: 0, y: height, width: width, height: self.filterHeight)
         } completion: { _ in
             self.tableView.isScrollEnabled = true
             self.filterIsHidden = true
@@ -247,23 +310,25 @@ class ListCourseViewController: ViewController {
                 return model.idCategory == "\(category)"
             }
         }
+        if tableView.numberOfRows(inSection: 0) != 0 { tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false) }
         tableView.reloadData()
     }
     
     @objc
     private func filterButtonTapped() {
+        self.tableView.isScrollEnabled = false
         self.tabBarController?.addChild(filterVC)
         self.tabBarController?.view.addSubview(filterVC.view)
         filterVC.didMove(toParent: self.tabBarController)
         let width = UIScreen.main.bounds.width
         let height = UIScreen.main.bounds.height
-        self.filterVC.view.frame = CGRect(x: 0, y: height, width: width, height: 280)
+        self.filterVC.view.frame = CGRect(x: 0, y: height, width: width, height: self.filterHeight)
         UIView.animate(withDuration: 0.2) {
-            self.filterVC.view.frame = CGRect(x: 0, y: height - 280, width: width, height: 280)
+            self.filterVC.view.frame = CGRect(x: 0, y: height - self.filterHeight, width: width, height: self.filterHeight)
         } completion: { _ in
-            self.tableView.isScrollEnabled = false
             self.filterIsHidden = false
         }
+        
     }
 }
 

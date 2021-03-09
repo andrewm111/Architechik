@@ -16,19 +16,19 @@ class GrammarViewController: ViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private lazy var filterButton: UIButton = {
-        let view = UIButton(type: .custom)
-        let radius: CGFloat = smallScreen ? 20 : 30
-        view.layer.cornerRadius = radius
-        view.backgroundColor = UIColor(hex: "613191")
-        let image = smallScreen ? UIImage(named: "filterSmall") : UIImage(named: "filter")
-        view.setImage(image, for: .normal)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    private let filterView: FilterView = {
-        let view = FilterView(withCategoryName: "grammar")
-        view.isHidden = true
+    private lazy var filterBackView: UIView = {
+            let view = UIView()
+            view.isUserInteractionEnabled = true
+            view.clipsToBounds = true
+            view.backgroundColor = UIColor(hex: "613191")
+            view.translatesAutoresizingMaskIntoConstraints = false
+            return view
+        }()
+    private lazy var filterImageView: UIImageView = {
+        let view = UIImageView()
+        view.isUserInteractionEnabled = true
+        view.image = UIImage(named: "filter")
+        view.contentMode = .scaleAspectFit
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -37,10 +37,20 @@ class GrammarViewController: ViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    private let activityIndicatorView: UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView(style: .large)
+        view.hidesWhenStopped = true
+        view.color = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     //MARK: - Properties
     lazy var jsonPath = Bundle.main.path(forResource: "grammar", ofType: "json")
     var models: Array<Grammar> = [] {
+        willSet {
+            if !newValue.isEmpty { activityIndicatorView.stopAnimating() }
+        }
         didSet {
             if currentCategory == -1 {
                 filteredModels = models
@@ -49,17 +59,24 @@ class GrammarViewController: ViewController {
                     return model.idCategory == "\(currentCategory)"
                 }
             }
-            if models.count != 0 { tableView.reloadData() }
+            if !models.isEmpty { tableView.reloadData() }
         }
     }
     var filteredModels: Array<Grammar> = []
     private lazy var tap = UITapGestureRecognizer(target: self, action: #selector(cellTapped))
     private var currentCategory: Int = -1
-    private lazy var filterViewConstraint = filterView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 280)
     private let bottomPadding: CGFloat = {
         let window = UIApplication.shared.windows[0]
         return window.safeAreaInsets.bottom
     }()
+    private lazy var filterVC: FilterViewController = {
+        let vc = FilterViewController()
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.filterView = FilterView(withCategoryName: "grammar")
+        return vc
+    }()
+    private var filterIsHidden = true
+    private lazy var filterHeight: CGFloat = UIScreen.main.bounds.height * 0.344827586206897
     
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -74,6 +91,8 @@ class GrammarViewController: ViewController {
         view.backgroundColor = UIColor.black
         edgesForExtendedLayout = .bottom
         extendedLayoutIncludesOpaqueBars = true
+        tableView.showsVerticalScrollIndicator = false
+        tableView.showsHorizontalScrollIndicator = false
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(LessonCell.self)
@@ -84,7 +103,8 @@ class GrammarViewController: ViewController {
         tableView.isUserInteractionEnabled = true
         
         lessonView.transform = CGAffineTransform(translationX: UIScreen.main.bounds.width, y: 0)
-        filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
+        let tap1 = UITapGestureRecognizer(target: self, action: #selector(filterButtonTapped))
+        filterBackView.addGestureRecognizer(tap1)
         NotificationCenter.default.addObserver(self, selector: #selector(categoryChanged), name: NSNotification.Name("CategoryChanged"), object: nil)
         NotificationCenter.default.post(name: NSNotification.Name("CategoryChanged"), object: nil, userInfo: ["category": -1, "categoryName": "grammar"])
     }
@@ -92,13 +112,19 @@ class GrammarViewController: ViewController {
     private func setupSubviews() {
         addTabBarSeparator()
         view.addSubview(tableView)
-        view.addSubview(filterButton)
-        view.addSubview(filterView)
+        view.addSubview(filterBackView)
+        filterBackView.addSubview(filterImageView)
         view.addSubview(lessonView)
+        view.addSubview(activityIndicatorView)
         
-        let filterSize: CGFloat = smallScreen ? 40 : 60
-        let window = UIApplication.shared.windows[0]
-        let bottomPadding = window.safeAreaInsets.bottom
+        let screenHeight = UIScreen.main.bounds.height
+        let screenWidth = UIScreen.main.bounds.width
+        let filterSize: CGFloat = screenHeight * 0.07696428571428571
+        filterBackView.layer.cornerRadius = filterSize / 2
+        let filterBottomSpacing: CGFloat = 0.098522167487685 * screenHeight
+        let filterTrailingSpacing: CGFloat = 0.048 * screenWidth
+        
+        if models.isEmpty { activityIndicatorView.startAnimating() }
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -106,18 +132,21 @@ class GrammarViewController: ViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
-            filterButton.heightAnchor.constraint(equalToConstant: filterSize),
-            filterButton.widthAnchor.constraint(equalToConstant: filterSize),
-            filterButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -80 - bottomPadding),
-            filterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -18),
+            activityIndicatorView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicatorView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
-            filterView.heightAnchor.constraint(equalToConstant: 280),
-            filterViewConstraint,
-            filterView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            filterView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            filterBackView.heightAnchor.constraint(equalToConstant: filterSize),
+            filterBackView.widthAnchor.constraint(equalToConstant: filterSize),
+            filterBackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -filterBottomSpacing - bottomPadding),
+            filterBackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -filterTrailingSpacing),
+            
+            filterImageView.centerYAnchor.constraint(equalTo: filterBackView.centerYAnchor),
+            filterImageView.centerXAnchor.constraint(equalTo: filterBackView.centerXAnchor),
+            filterImageView.widthAnchor.constraint(equalTo: filterBackView.widthAnchor, multiplier: 0.5),
+            filterImageView.heightAnchor.constraint(equalTo: filterBackView.heightAnchor, multiplier: 0.5),
             
             lessonView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            lessonView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            lessonView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -2),
             lessonView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             lessonView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
@@ -131,18 +160,18 @@ class GrammarViewController: ViewController {
             let name = notification.userInfo?["categoryName"] as? String,
             name == "grammar"
             else { return }
-        currentCategory = category
-        DispatchQueue.main.async {
-            self.filterViewConstraint.constant = 280
-            UIView.animate(withDuration: 0.2) {
-                self.view.layoutIfNeeded()
-            } completion: { _ in
-                self.tableView.isScrollEnabled = true
-                self.filterView.isHidden = true
-                self.tabBarController?.tabBar.isHidden = false
-                self.tabBarController?.tabBar.isTranslucent = false
-            }
+        let width = UIScreen.main.bounds.width
+        let height = UIScreen.main.bounds.height
+        UIView.animate(withDuration: 0.2) {
+            self.filterVC.view.frame = CGRect(x: 0, y: height, width: width, height: self.filterHeight)
+        } completion: { _ in
+            self.tableView.isScrollEnabled = true
+            self.filterIsHidden = true
+            self.filterVC.willMove(toParent: nil)
+            self.filterVC.view.removeFromSuperview()
+            self.filterVC.removeFromParent()
         }
+        currentCategory = category
         if category == -1 {
             filteredModels = models
         } else {
@@ -150,39 +179,40 @@ class GrammarViewController: ViewController {
                 return model.idCategory == "\(category)"
             }
         }
+        if tableView.numberOfRows(inSection: 0) != 0 { tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false) }
         tableView.reloadData()
-        
-        //filterView.isHidden = true
     }
     
     @objc
     private func filterButtonTapped() {
-        //self.tabBarController?.tabBar.isTranslucent = true
-        self.tabBarController?.tabBar.isHidden = true
         self.tableView.isScrollEnabled = false
-        DispatchQueue.main.async {
-            self.filterView.isHidden = false
-            self.filterViewConstraint.constant = 0
-            UIView.animate(withDuration: 0.2) {
-                self.view.layoutIfNeeded()
-            }
+        self.tabBarController?.addChild(filterVC)
+        self.tabBarController?.view.addSubview(filterVC.view)
+        filterVC.didMove(toParent: self.tabBarController)
+        let width = UIScreen.main.bounds.width
+        let height = UIScreen.main.bounds.height
+        self.filterVC.view.frame = CGRect(x: 0, y: height, width: width, height: self.filterHeight)
+        UIView.animate(withDuration: 0.2) {
+            self.filterVC.view.frame = CGRect(x: 0, y: height - self.filterHeight, width: width, height: self.filterHeight)
+        } completion: { _ in
+            self.filterIsHidden = false
         }
-        //filterView.frame = CGRect(x: 0, y: 629, width: 375, height: 200)
+
     }
     
     @objc
     private func cellTapped() {
-        guard filterView.isHidden else {
-            DispatchQueue.main.async {
-                self.filterViewConstraint.constant = 280
-                UIView.animate(withDuration: 0.2) {
-                    self.view.layoutIfNeeded()
-                } completion: { _ in
-                    self.tableView.isScrollEnabled = true
-                    self.filterView.isHidden = true
-                    self.tabBarController?.tabBar.isHidden = false
-                    self.tabBarController?.tabBar.isTranslucent = false
-                }
+        guard filterIsHidden else {
+            let width = UIScreen.main.bounds.width
+            let height = UIScreen.main.bounds.height
+            UIView.animate(withDuration: 0.2) {
+                self.filterVC.view.frame = CGRect(x: 0, y: height, width: width, height: 280)
+            } completion: { _ in
+                self.tableView.isScrollEnabled = true
+                self.filterIsHidden = true
+                self.filterVC.willMove(toParent: nil)
+                self.filterVC.view.removeFromSuperview()
+                self.filterVC.removeFromParent()
             }
             return
         }
@@ -191,11 +221,6 @@ class GrammarViewController: ViewController {
             let tapIndexPath = self.tableView.indexPathForRow(at: tapLocation),
             let _ = tableView.cellForRow(at: tapIndexPath) as? LessonCell
             else { return }
-//        let vc = WebViewController()
-//        vc.urlString = filteredModels[tapIndexPath.row].file
-//        vc.modalPresentationStyle = .overCurrentContext
-//        vc.modalTransitionStyle = .coverVertical
-//        present(vc, animated: true)
         guard Reachability.isConnectedToNetwork() else {
             showNetworkAlert()
             return

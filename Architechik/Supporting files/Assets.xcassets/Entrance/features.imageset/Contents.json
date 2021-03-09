@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "features-4.png",
+      "filename" : "hello-3-text.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "features-3.png",
+      "filename" : "hello-3-text-1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "features-2.png",
+      "filename" : "hello-3-text-2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

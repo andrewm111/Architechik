@@ -47,6 +47,7 @@ class CourseViewController: ViewController, SwipeToDismissControllerDelegate {
     lazy var pan = UIPanGestureRecognizer(target: self, action: #selector(viewDragged))
     var product: SKProduct?
     //var helper: IAPHelper = IAPHelper(productIds: ["FirstInArchitectureCourseTest"])
+    var productId: String = ""
     var descriptionText: String = ""
     var courseTitle: String = ""
     var courseImageUrl: String = ""
@@ -56,6 +57,7 @@ class CourseViewController: ViewController, SwipeToDismissControllerDelegate {
             tableView.reloadData()
         }
     }
+    private var notificationPosted = false
 
     //MARK: - View lifecycle
     override func viewDidLoad() {
@@ -68,6 +70,8 @@ class CourseViewController: ViewController, SwipeToDismissControllerDelegate {
     private func initialSetup() {
         //view.backgroundColor = UIColor(hex: "1F1F24")
         view.backgroundColor = UIColor.black
+        tableView.showsVerticalScrollIndicator = false
+        tableView.showsHorizontalScrollIndicator = false
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(LessonCell.self)
@@ -80,9 +84,11 @@ class CourseViewController: ViewController, SwipeToDismissControllerDelegate {
         tableView.isUserInteractionEnabled = true
         tableView.addGestureRecognizer(tap)
         view.addGestureRecognizer(pan)
+        NotificationCenter.default.addObserver(self, selector: #selector(purchaseCourse), name: NSNotification.Name("CoursePurchased"), object: nil)
         lessonView.transform = CGAffineTransform(translationX: UIScreen.main.bounds.width, y: 0)
         purchaseView.transform = CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.height)
         activityIndicator.transform = CGAffineTransform(scaleX: 2, y: 2)
+        notificationPosted = false
 //        DispatchQueue.main.async {
 //            UIView.animate(withDuration: 0.4) {
 //                self.purchaseView.transform = .identity
@@ -157,7 +163,8 @@ class CourseViewController: ViewController, SwipeToDismissControllerDelegate {
         }
         lessonView.showView()
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.models[lessonIndex].isDone = true
+            
+            if !self.models.isEmpty { self.models[lessonIndex].isDone = true }
         }
         lessonView.urlString = string
         pan.isEnabled = false
@@ -245,23 +252,17 @@ extension CourseViewController: WebDelegate {
 extension CourseViewController {
     private func purchase() {
         //activityIndicator.startAnimating()
-        SwiftyStoreKit.purchaseProduct("FirstInArchitectureCourseTest", quantity: 1, atomically: true) { result in
+        SwiftyStoreKit.purchaseProduct(productId, quantity: 1, atomically: true) { result in
+            
             switch result {
-            case .success(purchase: let purchase):
-                DispatchQueue.main.async {
-                    UIView.animate(withDuration: 0.4) {
-                        self.purchaseView.transform = .identity
-                    } completion: { _ in
-                        self.coursePurchased = true
-                    }
+            case .success(purchase: _):
+                if let cell = self.tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as? UnlockCell {
+                    cell.hideActivityIndicator()
                 }
-                if let index = NetworkDataFetcher.shared.studentProgress.firstIndex(where: { $0.idCourses == self.courseId } ) {
-                    NetworkDataFetcher.shared.studentProgress[index].courseAccess = "1"
-                    DataManager.shared.saveStudentProgress(NetworkDataFetcher.shared.studentProgress)
-                }
-                self.makeBuyRequest(timesCalled: 0)
-                print(purchase)
-                self.verifyPurchase()
+                //print(result)
+                NotificationCenter.default.post(name: NSNotification.Name("CoursePurchased"), object: nil)
+                //print(purchase)
+                //self.verifyPurchase()
             case .error(error: let error):
                 if let cell = self.tableView.cellForRow(at: IndexPath(row: 3, section: 0)) as? UnlockCell {
                     cell.hideActivityIndicator()
@@ -272,28 +273,46 @@ extension CourseViewController {
         }
     }
     
-    private func verifyPurchase() {
-        let appleValidator = AppleReceiptValidator(service: .production, sharedSecret: "999")
-        SwiftyStoreKit.verifyReceipt(using: appleValidator, forceRefresh: false) { result in
-            switch result {
-            case .success(let receipt):
-                let productId = "FirstInArchitectureCourseTest"
-                // Verify the purchase of Consumable or NonConsumable
-                let purchaseResult = SwiftyStoreKit.verifyPurchase(
-                    productId: productId,
-                    inReceipt: receipt)
-                    
-                switch purchaseResult {
-                case .purchased(let receiptItem):
-                    print("\(productId) is purchased: \(receiptItem)")
-                case .notPurchased:
-                    print("The user has never purchased \(productId)")
-                }
-            case .error(let error):
-                print("Verify receipt failed: \(error)")
+    @objc
+    private func purchaseCourse() {
+        guard !notificationPosted else { return }
+        notificationPosted = true
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: 0.4) {
+                self.purchaseView.transform = .identity
+            } completion: { _ in
+                self.coursePurchased = true
             }
         }
+        if let index = NetworkDataFetcher.shared.studentProgress.firstIndex(where: { $0.idCourses == self.courseId } ) {
+            NetworkDataFetcher.shared.studentProgress[index].courseAccess = "1"
+            DataManager.shared.saveStudentProgress(NetworkDataFetcher.shared.studentProgress)
+        }
+        self.makeBuyRequest(timesCalled: 0)
     }
+    
+//    private func verifyPurchase() {
+//        let appleValidator = AppleReceiptValidator(service: .production, sharedSecret: "999")
+//        SwiftyStoreKit.verifyReceipt(using: appleValidator, forceRefresh: false) { result in
+//            switch result {
+//            case .success(let receipt):
+//                let productId = "FirstInArchitectureCourseTest"
+//                // Verify the purchase of Consumable or NonConsumable
+//                let purchaseResult = SwiftyStoreKit.verifyPurchase(
+//                    productId: productId,
+//                    inReceipt: receipt)
+//
+//                switch purchaseResult {
+//                case .purchased(let receiptItem):
+//                    print("\(productId) is purchased: \(receiptItem)")
+//                case .notPurchased:
+//                    print("The user has never purchased \(productId)")
+//                }
+//            case .error(let error):
+//                print("Verify receipt failed: \(error)")
+//            }
+//        }
+//    }
 
     private func makeBuyRequest(timesCalled: Int) {
         guard timesCalled < 4 else { return }
@@ -376,14 +395,17 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
         case 1:
             return calculateDescriptionHeight()
         default:
-            switch models[indexPath.row - 1].category {
-            case "2":
-                return 140
-            case "3", "4":
-                return 80
-            default:
-                return 140
+            if models.count >= indexPath.row {
+                switch models[indexPath.row - 1].category {
+                case "2":
+                    return 140
+                case "3", "4":
+                    return 80
+                default:
+                    return 140
+                }
             }
+            return 140
         }
     }
     
@@ -403,14 +425,17 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
             //let mainViewTotalHeight = mainViewHeight + (UnlockButton.getVerticalShadow() * mainViewHeight)
             return mainViewHeight + 80
         default:
-            switch models[indexPath.row - 3].category {
-            case "2":
-                return 140
-            case "3", "4":
-                return 80
-            default:
-                return 140
+            if models.count >= indexPath.row - 2 {
+                switch models[indexPath.row - 3].category {
+                case "2":
+                    return 140
+                case "3", "4":
+                    return 80
+                default:
+                    return 140
+                }
             }
+            return 140
         }
     }
     
@@ -427,9 +452,9 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.configure(withDataSource: model)
                 cell.unlock()
                 if model.isDone == true { cell.makeDone() }
-                if model.idType == "2" {
-                    cell.setImage(imageString: model.img ?? "")
-                }
+                //if model.idType == "2" {
+                cell.setImage(imageString: model.img ?? "")
+                //}
                 return cell
             }
             return UITableViewCell()
@@ -455,9 +480,9 @@ extension CourseViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.configure(withDataSource: model)
                 if model.isDone == true { cell.makeDone() }
                 if indexPath.row >= 4 { cell.lock() }
-                if model.idType == "2" {
-                    cell.setImage(imageString: model.img ?? "")
-                }
+                //if model.idType == "2" {
+                cell.setImage(imageString: model.img ?? "")
+                //}
                 return cell
             }
             return UITableViewCell()

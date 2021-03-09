@@ -230,17 +230,21 @@ class NetworkDataFetcher {
         NetworkDataFetcher.shared.fetchStudentProgress { studentProgress in
             guard let progress = studentProgress else {
                 //NotificationCenter.default.post(name: NSNotification.Name("CreateMonitor"), object: nil)
+                completion([])
                 return
             }
-            print(progress)
+            //print(progress)
             if progress.isEmpty {
                 self.createUserWithToken { result in }
+                completion([])
             } else {
                 
-                let correctProgress = self.compareAndGetCorrectPurchaseStatus(newModels: progress)
+                //let correctProgress = self.compareAndGetCorrectPurchaseStatus(newModels: progress)
+                let correctProgress = progress
                 DataManager.shared.saveStudentProgress(correctProgress)
                 self.studentProgress = correctProgress.sorted(by: { $0.idCourses < $1.idCourses } )
                 NotificationCenter.default.post(name: NSNotification.Name("SetProgress"), object: nil)
+                completion([])
             }
             //NotificationCenter.default.post(name: NSNotification.Name("CreateMonitor"), object: nil)
         }
@@ -250,7 +254,6 @@ class NetworkDataFetcher {
         NetworkService.shared.createUser { result in
             switch result {
             case .success(let data):
-                
                 if let dataString = String(data: data, encoding: .utf8) {
                     if dataString.contains("<b>Warning</b>") || dataString.contains("[]") || dataString.contains("0") {
                         completion(.failure(NetworkError.userNotCreated))

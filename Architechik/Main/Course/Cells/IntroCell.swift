@@ -11,7 +11,7 @@ import UIKit
 class IntroCell: TableViewCell {
     
     //MARK: - Subviews
-    let mainView: UIImageView = {
+    private let mainView: UIImageView = {
         let view = UIImageView()
         view.image = UIImage(named: "button")
         view.isUserInteractionEnabled = true

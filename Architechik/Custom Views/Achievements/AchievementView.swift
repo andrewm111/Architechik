@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AchievementView: UIView, CardViewProtocol {
+final class AchievementView: UIView, CardViewProtocol {
     
     //MARK: - Subviews
     private let backView: UIView = {
@@ -19,8 +19,8 @@ class AchievementView: UIView, CardViewProtocol {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let imageView: WebImageView = {
-        let view = WebImageView()
+    private let imageView: UIImageView = {
+        let view = UIImageView()
         //view.layer.cornerRadius = 66.875
         view.backgroundColor = UIColor(hex: "613191")
         view.contentMode = .scaleAspectFit
@@ -116,28 +116,49 @@ class AchievementView: UIView, CardViewProtocol {
         let totalWidth: CGFloat = 24 + 10 + buttonLabel.intrinsicContentSize.width
         let spacing: CGFloat = (UIScreen.main.bounds.width - totalWidth) / 2
         
+        //let buttonViewHeight: CGFloat = (delegate.achievementHeight - delegate.bottomPadding - 49) / 4
+        let buttonViewHeight: CGFloat = ((UIScreen.main.bounds.height * 0.344827586206897) - bottomPadding - 20) / 4
+        //let backViewHeight = (UIScreen.main.bounds.height * 0.312807881773399) - buttonViewHeight - bottomPadding - 49
+        //let imageViewHeight: CGFloat = (buttonViewHeight * 3) - 20
+        guard let delegate = self.delegate else { return }
+        let backViewHeight: CGFloat = delegate.achievementHeight - (2 * delegate.bottomPadding) - 49 - buttonViewHeight
+        let backViewWidth: CGFloat = UIScreen.main.bounds.width - 20
+        var imageViewHeight: CGFloat = (backViewWidth / 3)
+        var textWidth: CGFloat = imageViewHeight * 2
+        
+        if imageViewHeight > backViewHeight - 20 {
+            imageViewHeight = backViewHeight - 20
+            textWidth = backViewWidth - 30 - imageViewHeight
+        }
+        imageView.layer.cornerRadius = imageViewHeight / 2
+        
+        
         NSLayoutConstraint.activate([
             backView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-            backView.heightAnchor.constraint(equalTo: buttonView.heightAnchor, multiplier: 3),
+            //backView.heightAnchor.constraint(equalTo: buttonView.heightAnchor, multiplier: 3),
             backView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
             backView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
             
-            imageView.topAnchor.constraint(equalTo: backView.topAnchor, constant: 10),
-            imageView.bottomAnchor.constraint(equalTo: backView.bottomAnchor, constant: -10),
+            imageView.topAnchor.constraint(greaterThanOrEqualTo: backView.topAnchor, constant: 10),
+            imageView.bottomAnchor.constraint(lessThanOrEqualTo: backView.bottomAnchor, constant: -10),
+            imageView.centerYAnchor.constraint(equalTo: backView.centerYAnchor),
             imageView.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 10),
+            imageView.heightAnchor.constraint(equalToConstant: imageViewHeight),
             imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
             
-            titleLabel.topAnchor.constraint(equalTo: imageView.topAnchor, constant: -2),
-            titleLabel.bottomAnchor.constraint(equalTo: descriptionLabel.topAnchor, constant: -8),
+            titleLabel.topAnchor.constraint(equalTo: backView.topAnchor, constant: 8),
+            titleLabel.widthAnchor.constraint(equalToConstant: textWidth),
+            titleLabel.bottomAnchor.constraint(equalTo: descriptionLabel.topAnchor, constant: -2),
             titleLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 10),
             titleLabel.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -10),
             
+            descriptionLabel.widthAnchor.constraint(equalToConstant: textWidth),
             descriptionLabel.bottomAnchor.constraint(lessThanOrEqualTo: backView.bottomAnchor, constant: -5),
             descriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             descriptionLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
             
             buttonView.topAnchor.constraint(equalTo: backView.bottomAnchor, constant: 15),
-            buttonView.heightAnchor.constraint(equalToConstant: 205 / 4),
+            buttonView.heightAnchor.constraint(equalToConstant: buttonViewHeight),
             buttonView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -24 - bottomPadding),
             buttonView.leadingAnchor.constraint(equalTo: backView.leadingAnchor),
             buttonView.trailingAnchor.constraint(equalTo: backView.trailingAnchor),
@@ -154,22 +175,69 @@ class AchievementView: UIView, CardViewProtocol {
         ])
     }
     
-    func configure(withModel model: Achievement, image: UIImage?) {
-        titleLabel.text = model.title
-        descriptionLabel.text = model.description
-        imageView.image = image
+    func roundImageView() {
+        print(imageView.frame)
+        imageView.layer.cornerRadius = imageView.frame.height / 2
     }
     
-    func roundImageView() {
-        imageView.layer.cornerRadius = imageView.frame.height / 2
+    func configure(withModel model: Achievement, image: UIImage?) {
+        self.model = model
+        titleLabel.text = model.title
+        imageView.image = image
+        
+        descriptionLabel.text = model.progress == 1 ? model.description : "Пройди курс чтобы открыть достижение"
+    }
+    
+    private func setupConstraints() {
+//        NSLayoutConstraint.activate([
+//            backView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+//            backView.heightAnchor.constraint(equalTo: buttonView.heightAnchor, multiplier: 3),
+//            backView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
+//            backView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+//
+//            imageView.topAnchor.constraint(equalTo: backView.topAnchor, constant: 10),
+//            imageView.bottomAnchor.constraint(equalTo: backView.bottomAnchor, constant: -10),
+//            imageView.leadingAnchor.constraint(equalTo: backView.leadingAnchor, constant: 10),
+//            imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
+//
+//            titleLabel.topAnchor.constraint(equalTo: imageView.topAnchor, constant: -2),
+//            titleLabel.bottomAnchor.constraint(equalTo: descriptionLabel.topAnchor, constant: -2),
+//            titleLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 10),
+//            titleLabel.trailingAnchor.constraint(equalTo: backView.trailingAnchor, constant: -10),
+//
+//            descriptionLabel.bottomAnchor.constraint(lessThanOrEqualTo: backView.bottomAnchor, constant: -5),
+//            descriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+//            descriptionLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+//
+//            buttonView.topAnchor.constraint(equalTo: backView.bottomAnchor, constant: 15),
+//            buttonView.heightAnchor.constraint(equalToConstant: buttonViewHeight),
+//            buttonView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -24 - bottomPadding),
+//            buttonView.leadingAnchor.constraint(equalTo: backView.leadingAnchor),
+//            buttonView.trailingAnchor.constraint(equalTo: backView.trailingAnchor),
+//
+//            shareIcon.heightAnchor.constraint(equalTo: shareIcon.heightAnchor),
+//            shareIcon.widthAnchor.constraint(equalToConstant: shareIconWidth),
+//            shareIcon.centerYAnchor.constraint(equalTo: buttonView.centerYAnchor),
+//            shareIcon.trailingAnchor.constraint(equalTo: buttonLabel.leadingAnchor, constant: -10),
+//            shareIcon.leadingAnchor.constraint(equalTo: buttonView.leadingAnchor, constant: spacing),
+//
+//            buttonLabel.topAnchor.constraint(equalTo: buttonView.topAnchor, constant: 5),
+//            buttonLabel.bottomAnchor.constraint(equalTo: buttonView.bottomAnchor, constant: -5),
+//            buttonLabel.trailingAnchor.constraint(equalTo: buttonView.trailingAnchor, constant: spacing),
+//        ])
     }
     
     @objc
     private func shareTapped() {
-        delegate?.shareTapped(image: imageView.image, text: descriptionLabel.text ?? "Я получил достижение в Architechik")
+        //guard model?.progress == 1 else { return }
+        let descriptionText = descriptionLabel.text ?? "Я получил достижение в Architechik"
+        let textToShare = model?.progress == 1 ? descriptionText : "Для открытия достижения пройдите курс"
+        delegate?.shareTapped(image: imageView.image, text: textToShare)
     }
 }
 
 protocol SharingDelegate {
+    var achievementHeight: CGFloat { get set }
+    var bottomPadding: CGFloat { get set }
     func shareTapped(image: UIImage?, text: String)
 }

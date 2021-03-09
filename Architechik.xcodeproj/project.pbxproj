@@ -24,6 +24,7 @@
 		1F18094525CB091600377C93 /* ArticleCD+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F18094325CB091600377C93 /* ArticleCD+CoreDataClass.swift */; };
 		1F18094625CB091600377C93 /* ArticleCD+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F18094425CB091600377C93 /* ArticleCD+CoreDataProperties.swift */; };
 		1F18094825CB10A900377C93 /* CoreDataConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F18094725CB10A900377C93 /* CoreDataConvertible.swift */; };
+		1F25D52525E23F320043ED1C /* AchievementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F25D52425E23F320043ED1C /* AchievementViewController.swift */; };
 		1F3B0E3925B0EA8F005CF0BC /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F3B0E3825B0EA8F005CF0BC /* StoreKit.framework */; };
 		1F3CB71825AF122B000B6922 /* String + Height.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3CB71725AF122B000B6922 /* String + Height.swift */; };
 		1F3CB71A25B092BC000B6922 /* UIViewController + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F3CB71925B092BC000B6922 /* UIViewController + Extension.swift */; };
@@ -39,6 +40,7 @@
 		1F517F4B25ADF71400F121D4 /* WebImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F517F4A25ADF71400F121D4 /* WebImageView.swift */; };
 		1F517F4D25AE050900F121D4 /* KeychainItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F517F4C25AE050900F121D4 /* KeychainItem.swift */; };
 		1F517F4F25AE0FBB00F121D4 /* Data + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F517F4E25AE0FBB00F121D4 /* Data + Extension.swift */; };
+		1F5B5F6D25EEE6C900F607A3 /* RestorePurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5B5F6C25EEE6C900F607A3 /* RestorePurchaseViewController.swift */; };
 		1F5F935125CE896200FBF0D3 /* LessonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5F935025CE896200FBF0D3 /* LessonView.swift */; };
 		1F5F935325CE8D8D00FBF0D3 /* SwipeToDismissViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5F935225CE8D8D00FBF0D3 /* SwipeToDismissViewDelegate.swift */; };
 		1F6DF55A25C5539E0085D3D8 /* SwipeToDismissControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F6DF55925C5539E0085D3D8 /* SwipeToDismissControllerDelegate.swift */; };
@@ -111,6 +113,7 @@
 		1F18094325CB091600377C93 /* ArticleCD+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArticleCD+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
 		1F18094425CB091600377C93 /* ArticleCD+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArticleCD+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		1F18094725CB10A900377C93 /* CoreDataConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataConvertible.swift; sourceTree = "<group>"; };
+		1F25D52425E23F320043ED1C /* AchievementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementViewController.swift; sourceTree = "<group>"; };
 		1F3B0E3525B0E677005CF0BC /* Architechik.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = Architechik.entitlements; path = "Architechik/Supporting files/Architechik.entitlements"; sourceTree = SOURCE_ROOT; };
 		1F3B0E3825B0EA8F005CF0BC /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		1F3CB71725AF122B000B6922 /* String + Height.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String + Height.swift"; sourceTree = "<group>"; };
@@ -127,6 +130,7 @@
 		1F517F4A25ADF71400F121D4 /* WebImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImageView.swift; sourceTree = "<group>"; };
 		1F517F4C25AE050900F121D4 /* KeychainItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainItem.swift; sourceTree = "<group>"; };
 		1F517F4E25AE0FBB00F121D4 /* Data + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data + Extension.swift"; sourceTree = "<group>"; };
+		1F5B5F6C25EEE6C900F607A3 /* RestorePurchaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestorePurchaseViewController.swift; sourceTree = "<group>"; };
 		1F5F935025CE896200FBF0D3 /* LessonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonView.swift; sourceTree = "<group>"; };
 		1F5F935225CE8D8D00FBF0D3 /* SwipeToDismissViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeToDismissViewDelegate.swift; sourceTree = "<group>"; };
 		1F6DF55925C5539E0085D3D8 /* SwipeToDismissControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeToDismissControllerDelegate.swift; sourceTree = "<group>"; };
@@ -151,6 +155,7 @@
 		1FB3ADF225BEF7CF00710D5B /* TitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleCell.swift; sourceTree = "<group>"; };
 		1FB3ADF525BF217400710D5B /* CourseTitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseTitleCell.swift; sourceTree = "<group>"; };
 		1FC0377A25DEB2DA007636C0 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		1FC3282E25F2F74000E2E5BE /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		1FCD9E9D25CAF8FD00C94083 /* CourseCD+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CourseCD+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		1FCD9E9E25CAF8FD00C94083 /* CourseCD+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CourseCD+CoreDataClass.swift"; sourceTree = "<group>"; };
 		1FCD9EA125CAFA2900C94083 /* GrammarCD+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GrammarCD+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -239,7 +244,7 @@
 		1F156D8225CA238E00552840 /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
-				1FD1892025C005CE0006FB29 /* AchievementView.swift */,
+				1F25D52225E23F050043ED1C /* Achievements */,
 				1FF579F225C4CF7D0019C010 /* ProgressView.swift */,
 				1F08325125C0A12D0043F39F /* PurchaseView.swift */,
 				1F0C101625B5FF300040CCC3 /* Filter */,
@@ -277,6 +282,15 @@
 				1FCD9E9D25CAF8FD00C94083 /* CourseCD+CoreDataProperties.swift */,
 			);
 			path = "CoreData Models";
+			sourceTree = "<group>";
+		};
+		1F25D52225E23F050043ED1C /* Achievements */ = {
+			isa = PBXGroup;
+			children = (
+				1FD1892025C005CE0006FB29 /* AchievementView.swift */,
+				1F25D52425E23F320043ED1C /* AchievementViewController.swift */,
+			);
+			path = Achievements;
 			sourceTree = "<group>";
 		};
 		1F3B0E5925B1CFA4005CF0BC /* Services */ = {
@@ -380,6 +394,7 @@
 			isa = PBXGroup;
 			children = (
 				1F83355C25A756BC00BCEDE8 /* ProfileViewController.swift */,
+				1F5B5F6C25EEE6C900F607A3 /* RestorePurchaseViewController.swift */,
 				1FD1891F25C005AD0006FB29 /* Cells */,
 			);
 			path = Profile;
@@ -515,6 +530,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = 1F1158FE25A0D2DB00682A69;
 			productRefGroup = 1F11590825A0D2DB00682A69 /* Products */;
@@ -645,6 +661,7 @@
 				1F18094525CB091600377C93 /* ArticleCD+CoreDataClass.swift in Sources */,
 				1FCD9EBF25CAFD3B00C94083 /* GrammarCD+CoreDataProperties.swift in Sources */,
 				1F0B69B825C836D400103B17 /* UIView + AnchorPoint.swift in Sources */,
+				1F5B5F6D25EEE6C900F607A3 /* RestorePurchaseViewController.swift in Sources */,
 				1FCF656C25B7943F00624C61 /* PageViewController.swift in Sources */,
 				1FCD9EC325CAFD3B00C94083 /* CourseCD+CoreDataProperties.swift in Sources */,
 				1FF8AA1825B6CFF60095663A /* NetworkError.swift in Sources */,
@@ -662,6 +679,7 @@
 				1FF579F325C4CF7D0019C010 /* ProgressView.swift in Sources */,
 				1FF6707225A9F3F0006D4EEE /* CourseViewController.swift in Sources */,
 				1F503CBE25B6D08C00E62291 /* RequestType.swift in Sources */,
+				1F25D52525E23F320043ED1C /* AchievementViewController.swift in Sources */,
 				1F99B8EF25CFFC3B0085AF19 /* TabBarController + DataFetch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -673,6 +691,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				1F11591125A0D2DC00682A69 /* Base */,
+				1FC3282E25F2F74000E2E5BE /* ru */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -684,6 +703,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -739,6 +759,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -746,6 +767,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -794,6 +816,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -813,7 +836,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.35;
+				MARKETING_VERSION = 1.56;
 				PRODUCT_BUNDLE_IDENTIFIER = mikel.Shmonov.Architechik;
 				PRODUCT_NAME = Architechick;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -837,7 +860,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.35;
+				MARKETING_VERSION = 1.56;
 				PRODUCT_BUNDLE_IDENTIFIER = mikel.Shmonov.Architechik;
 				PRODUCT_NAME = Architechick;
 				PROVISIONING_PROFILE_SPECIFIER = "";

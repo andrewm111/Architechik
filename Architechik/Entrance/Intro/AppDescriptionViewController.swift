@@ -18,9 +18,10 @@ class AppDescriptionViewController: IndexableViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let infoLabel: UILabel = {
+    private lazy var infoLabel: UILabel = {
         let view = UILabel()
-        view.font = UIFont(name: "Arial-BoldMT", size: 24)
+        let fontSize: CGFloat = smallScreen ? 18 : 24
+        view.font = UIFont(name: "Arial-BoldMT", size: fontSize)
         view.textAlignment = .left
         view.textColor = .white
         view.text = "Тут мы собрали все\nнеобходимые материалы \nиз более чем 20\nисточников и\nадаптировали их под тебя!"

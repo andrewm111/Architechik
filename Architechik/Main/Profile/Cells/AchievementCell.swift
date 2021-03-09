@@ -76,7 +76,6 @@ class AchievementCell: TableViewCell {
             achievementImageView.widthAnchor.constraint(equalToConstant: 80),
             
             titleLabel.topAnchor.constraint(equalTo: achievementImageView.topAnchor),
-            
             titleLabel.leadingAnchor.constraint(equalTo: achievementImageView.trailingAnchor, constant: 10),
             titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -4),
             
